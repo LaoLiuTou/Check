@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.results.IResultsMapper"> 
+	<select id="selectresultsById" parameterType="String" resultType="Results">
+		SELECT * FROM results WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteresults" parameterType="String"> 
+		DELETE FROM results WHERE ID=#{id}
+	</delete>
+
+	<select id="selectresultsByParam" parameterType="java.util.Map" resultType="Results">
+		SELECT *
+		FROM results
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="prod_name != null"> AND PROD_NAME =#{prod_name} </if>
+			<if test="bool != null"> AND BOOL =#{bool} </if>
+			<if test="value != null"> AND VALUE =#{value} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="statand_lv != null"> AND STATAND_LV =#{statand_lv} </if>
+			<if test="statand != null"> AND STATAND =#{statand} </if>
+			<if test="statand_va != null"> AND STATAND_VA =#{statand_va} </if>
+			<if test="rel_id != null"> AND REL_ID =#{rel_id} </if>
+			<if test="inbz_t != null"> AND INBZ_T =#{inbz_t} </if>
+			<if test="cm_t != null"> AND CM_T =#{cm_t} </if>
+			<if test="wd != null"> AND WD =#{wd} </if>
+			<if test="sd != null"> AND SD =#{sd} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountresultsByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM results 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="prod_name != null"> AND PROD_NAME =#{prod_name} </if>
+			<if test="bool != null"> AND BOOL =#{bool} </if>
+			<if test="value != null"> AND VALUE =#{value} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="statand_lv != null"> AND STATAND_LV =#{statand_lv} </if>
+			<if test="statand != null"> AND STATAND =#{statand} </if>
+			<if test="statand_va != null"> AND STATAND_VA =#{statand_va} </if>
+			<if test="rel_id != null"> AND REL_ID =#{rel_id} </if>
+			<if test="inbz_t != null"> AND INBZ_T =#{inbz_t} </if>
+			<if test="cm_t != null"> AND CM_T =#{cm_t} </if>
+			<if test="wd != null"> AND WD =#{wd} </if>
+			<if test="sd != null"> AND SD =#{sd} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updateresults" parameterType="Results">
+		UPDATE results 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="pid != null">PID=#{pid}, </if>
+			<if test="prod_id != null">PROD_ID=#{prod_id}, </if>
+			<if test="prod_name != null">PROD_NAME=#{prod_name}, </if>
+			<if test="bool != null">BOOL=#{bool}, </if>
+			<if test="value != null">VALUE=#{value}, </if>
+			<if test="flg != null">FLG=#{flg}, </if>
+			<if test="statand_lv != null">STATAND_LV=#{statand_lv}, </if>
+			<if test="statand != null">STATAND=#{statand}, </if>
+			<if test="statand_va != null">STATAND_VA=#{statand_va}, </if>
+			<if test="rel_id != null">REL_ID=#{rel_id}, </if>
+			<if test="inbz_t != null">INBZ_T=#{inbz_t}, </if>
+			<if test="cm_t != null">CM_T=#{cm_t}, </if>
+			<if test="wd != null">WD=#{wd}, </if>
+			<if test="sd != null">SD=#{sd}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addresults" parameterType="Results">
+		INSERT INTO results 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="pid != null">PID, </if>
+			<if test="prod_id != null">PROD_ID, </if>
+			<if test="prod_name != null">PROD_NAME, </if>
+			<if test="bool != null">BOOL, </if>
+			<if test="value != null">VALUE, </if>
+			<if test="flg != null">FLG, </if>
+			<if test="statand_lv != null">STATAND_LV, </if>
+			<if test="statand != null">STATAND, </if>
+			<if test="statand_va != null">STATAND_VA, </if>
+			<if test="rel_id != null">REL_ID, </if>
+			<if test="inbz_t != null">INBZ_T, </if>
+			<if test="cm_t != null">CM_T, </if>
+			<if test="wd != null">WD, </if>
+			<if test="sd != null">SD, </if>
+			<if test="bu_id != null">BU_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="pid != null">#{pid}, </if>
+			<if test="prod_id != null">#{prod_id}, </if>
+			<if test="prod_name != null">#{prod_name}, </if>
+			<if test="bool != null">#{bool}, </if>
+			<if test="value != null">#{value}, </if>
+			<if test="flg != null">#{flg}, </if>
+			<if test="statand_lv != null">#{statand_lv}, </if>
+			<if test="statand != null">#{statand}, </if>
+			<if test="statand_va != null">#{statand_va}, </if>
+			<if test="rel_id != null">#{rel_id}, </if>
+			<if test="inbz_t != null">#{inbz_t}, </if>
+			<if test="cm_t != null">#{cm_t}, </if>
+			<if test="wd != null">#{wd}, </if>
+			<if test="sd != null">#{sd}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

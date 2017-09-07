@@ -1,0 +1,69 @@
+package com.check.service.accnt;
+import java.util.List;
+import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.check.dao.accnt.IAccntMapper;
+import com.check.model.accnt.Accnt;
+public class AccntServiceImpl  implements IAccntService {
+
+	@Autowired
+	private IAccntMapper iAccntMapper;
+	/**
+ * 通过id选取
+ * @return
+ */
+ @Transactional
+	public Accnt selectaccntById(String id){
+		return iAccntMapper.selectaccntById(id);
+	}
+
+	/**
+ * 通过查询参数获取信息
+ * @return
+ */ 
+ @SuppressWarnings("rawtypes")
+ @Transactional
+	public List<Accnt> selectaccntByParam(Map paramMap){ 
+		return iAccntMapper.selectaccntByParam(paramMap);
+	}
+
+	/**
+	* 通过查询参数获取总条数
+	 * @return
+	 */ 
+ @SuppressWarnings("rawtypes")
+ @Transactional
+	public int selectCountaccntByParam(Map paramMap){ 
+		return iAccntMapper.selectCountaccntByParam(paramMap);
+	}
+
+	/**
+ * 更新 
+ * @return 
+ */ 
+ @Transactional
+	public  int updateaccnt(Accnt accnt){
+		return iAccntMapper.updateaccnt(accnt);
+	}
+
+	/**
+ * 添加 
+ * @return
+ */ 
+ @Transactional
+	public  Object addaccnt(Accnt accnt){
+		return iAccntMapper.addaccnt(accnt);
+	}
+
+	/**
+ * 删除 
+ * @return 
+ */ 
+ @Transactional
+	public  int deleteaccnt(String id){
+		return iAccntMapper.deleteaccnt(id);
+	}
+
+}
+

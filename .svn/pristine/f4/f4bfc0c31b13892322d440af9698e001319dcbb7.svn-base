@@ -1,0 +1,390 @@
+package com.check.action.price;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import net.sf.json.processors.JsonValueProcessor;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.opensymphony.xwork2.Action;
+import com.check.service.price.IPriceService;
+import com.check.model.price.Price;
+public class PriceAction implements Action {
+	private int page;
+	private int size;
+	private int totalpage;
+	private int totalnumber;
+	private String message;
+	private String callback;//跨域
+	@Autowired
+	private IPriceService iPriceService;
+	private List<Price> list;
+	private Price price;
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
+	public int getTotalpage() {
+		return totalpage;
+	}
+	public void setTotalpage(int totalpage) {
+		this.totalpage = totalpage;
+	}
+	public int getTotalnumber() {
+		return totalnumber;
+	}
+	public void setTotalnumber(int totalnumber) {
+		this.totalnumber = totalnumber;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public Price getPrice() {
+		return price;
+	}
+	public void setPrice(Price price) {
+		this.price = price;
+	}
+	public List<Price> getList() {
+		return list;
+	}
+	public void setList(List<Price> list) {
+		this.list = list;
+	}
+	public String getCallback() {
+		return callback;
+	}
+	public void setCallback(String callback) {
+		this.callback = callback;
+	}
+	HttpServletResponse response = ServletActionContext.getResponse(); 
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	Logger logger = Logger.getLogger("CheckLogger");
+	private String id;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	private String row_id;
+	public String getRow_id() {
+		return row_id;
+	}
+	public void setRow_id(String row_id) {
+		this.row_id = row_id;
+	}
+	private String c_dt;
+	public String getC_dt() {
+		return c_dt;
+	}
+	public void setC_dt(String c_dt) {
+		this.c_dt = c_dt;
+	}
+	private String up_dt;
+	public String getUp_dt() {
+		return up_dt;
+	}
+	public void setUp_dt(String up_dt) {
+		this.up_dt = up_dt;
+	}
+	private String c_id;
+	public String getC_id() {
+		return c_id;
+	}
+	public void setC_id(String c_id) {
+		this.c_id = c_id;
+	}
+	private String prod_id;
+	public String getProd_id() {
+		return prod_id;
+	}
+	public void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
+	}
+	private String ty_lv;
+	public String getTy_lv() {
+		return ty_lv;
+	}
+	public void setTy_lv(String ty_lv) {
+		this.ty_lv = ty_lv;
+	}
+	private String prix;
+	public String getPrix() {
+		return prix;
+	}
+	public void setPrix(String prix) {
+		this.prix = prix;
+	}
+	private String s_dt;
+	public String getS_dt() {
+		return s_dt;
+	}
+	public void setS_dt(String s_dt) {
+		this.s_dt = s_dt;
+	}
+	private String e_dt;
+	public String getE_dt() {
+		return e_dt;
+	}
+	public void setE_dt(String e_dt) {
+		this.e_dt = e_dt;
+	}
+	public String add() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Price price =new Price(); 
+		if(id!=null&&!id.equals(""))
+		price.setId(Long.parseLong(id));
+		price.setRow_id(row_id);
+		price.setC_dt(c_dt);
+		price.setUp_dt(up_dt);
+		price.setC_id(c_id);
+		price.setProd_id(prod_id);
+		price.setTy_lv(ty_lv);
+		if(prix!=null&&!prix.equals(""))
+		price.setPrix(Long.parseLong(prix));
+		price.setS_dt(s_dt);
+		price.setE_dt(e_dt);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			int result = Integer.parseInt(iPriceService.addprice(price).toString());
+			msg.append("\"success\",\"msg\":\"");
+			msg.append(price.getId()+"\"");
+			logger.info(result+"添加成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String list() throws Exception {
+
+		response.setContentType("text/html;charset=UTF-8"); 
+		Map  paramMap = new HashMap ();
+		paramMap.put("fromPage",(page-1)*size);
+		paramMap.put("toPage",page*size); 
+			paramMap.put("id", id);
+			paramMap.put("row_id", row_id);
+			paramMap.put("c_dt", c_dt);
+			paramMap.put("up_dt", up_dt);
+			paramMap.put("c_id", c_id);
+			paramMap.put("prod_id", prod_id);
+			paramMap.put("ty_lv", ty_lv);
+			paramMap.put("prix", prix);
+			paramMap.put("s_dt", s_dt);
+			paramMap.put("e_dt", e_dt);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			list=iPriceService.selectpriceByParam(paramMap); 
+			totalnumber=iPriceService.selectCountpriceByParam(paramMap);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+			public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+				if(value instanceof Date){ 
+					return sdf.format((Date)value);
+				}
+				return value; 
+			}
+			});
+			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
+			msg.append(JSONArray.fromObject(list, jsonConfig));
+			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+
+	public String update() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Price price =new Price(); 
+		if(id!=null&&!id.equals(""))
+		price.setId(Long.parseLong(id));
+		price.setRow_id(row_id);
+		price.setC_dt(c_dt);
+		price.setUp_dt(up_dt);
+		price.setC_id(c_id);
+		price.setProd_id(prod_id);
+		price.setTy_lv(ty_lv);
+		if(prix!=null&&!prix.equals(""))
+		price.setPrix(Long.parseLong(prix));
+		price.setS_dt(s_dt);
+		price.setE_dt(e_dt);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			iPriceService.updateprice(price);
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"更新成功！\"");
+			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String delete() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			iPriceService.deleteprice(id);
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"删除成功！\"");
+			logger.info(id+"删除成功！");
+		} catch (Exception e) {
+			logger.info(id+"删除失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String select() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			price=iPriceService.selectpriceById(id);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+			public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+				if(value instanceof Date){ 
+					return sdf.format((Date)value);
+				}
+				return value; 
+			}
+			});
+			msg.append("\"success\",\"msg\":");
+			msg.append(JSONObject.fromObject(price, jsonConfig));
+			logger.info(id+"查询成功！");
+		} catch (Exception e) {
+			logger.info(id+"查询失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String all() throws Exception {
+
+		response.setContentType("text/html;charset=UTF-8"); 
+		Map  paramMap = new HashMap ();
+			paramMap.put("id", id);
+			paramMap.put("row_id", row_id);
+			paramMap.put("c_dt", c_dt);
+			paramMap.put("up_dt", up_dt);
+			paramMap.put("c_id", c_id);
+			paramMap.put("prod_id", prod_id);
+			paramMap.put("ty_lv", ty_lv);
+			paramMap.put("prix", prix);
+			paramMap.put("s_dt", s_dt);
+			paramMap.put("e_dt", e_dt);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			totalnumber=iPriceService.selectCountpriceByParam(paramMap);
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",totalnumber);
+			list=iPriceService.selectpriceByParam(paramMap); 
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+			public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+				if(value instanceof Date){ 
+					return sdf.format((Date)value);
+				}
+				return value; 
+			}
+			});
+			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
+			msg.append(JSONArray.fromObject(list, jsonConfig));
+			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+
+    public String execute() throws Exception {
+		return null;
+	}
+}

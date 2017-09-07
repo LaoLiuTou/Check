@@ -1,0 +1,78 @@
+<html lang="zh-cn">
+<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>  
+<script type="text/javascript" src="assets/js/jquery-1.8.1.min.js"></script>
+<script>
+/* 
+if(window.localStorage){
+ alert('This browser supports localStorage');
+}else{
+ alert('This browser does NOT support localStorage');
+}
+
+//localStorage.setItem("test","111111111");
+
+alert(localStorage.getItem("test")); */
+ 
+</script>
+<script type="text/javascript">
+/*     var xhr = new XMLHttpRequest();
+     xhr.onreadystatechange = callback;   
+    xhr.open("GET", "http://192.168.1.144/TTTMysql/listChatuser?page=1&size=10",true);
+    xhr.send();
+    //回调函数      
+	function callback(){      
+	    if(xhr.readyState == 4 && xhr.status == 200){      
+	        var b = xhr.responseText;      
+	         alert(b);      
+	    }      
+	}  */
+ 
+	/* var  token = "11111111111";
+	var timestamp = Date.parse(new Date());
+	var hash = md5(token+timestamp+"!QAZXSW@"); 
+	console.log(timestamp);
+	console.log(hash); */
+    $.ajax({
+           url:'http://192.168.1.144/Check/loginMembers',
+           type:"POST",
+           //dataType : "json",
+           //data : {'nm_t':'%吉林%水源水利%'},
+           data : {'username':'GHJL001','userpwd':'000000'},
+           /* headers: {
+            "token" : token,
+            "timesamp" : timestamp,
+            "sign" : hash
+        	}, */
+           //data : '',
+           success:function(response) {
+            console.log(response);
+             // alert(response);   
+           },
+           error:function(response){
+           	alert("wrong");   
+           }   
+         }); 
+   /* $.ajax({
+	        type : "GET", //jquey是不支持post方式跨域的
+	        async:false,
+	        url : "http://192.168.1.144/TTTMysql/listChatuser?page=1&size=10", //跨域请求的URL
+	        dataType : "jsonp",
+	        //传递给请求处理程序，用以获得jsonp回调函数名的参数名(默认为:callback)
+	        jsonp: "callback",
+	        //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+	        jsonpCallback:"success_jsonpCallback",
+	        //成功获取跨域服务器上的json数据后,会动态执行这个callback函数
+	        success : function(json){ 
+	            alert(json);
+	        }
+	 }); */
+    /* $.getJSON('http://192.168.1.144/TTTMysql/listChatuser?page=1&size=10&callback=?',function(data){ 
+		alert (data); 
+		}); */ 
+		
+		//后台配置
+		//result=callback+"("+msg.toString()+")";
+</script>
+
+
+

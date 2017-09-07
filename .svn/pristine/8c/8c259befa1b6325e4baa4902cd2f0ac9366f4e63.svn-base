@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.lot.ILotMapper"> 
+	<select id="selectlotById" parameterType="String" resultType="Lot">
+		SELECT * FROM lot WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletelot" parameterType="String"> 
+		DELETE FROM lot WHERE ID=#{id}
+	</delete>
+
+	<select id="selectlotByParam" parameterType="java.util.Map" resultType="Lot">
+		SELECT *
+		FROM lot
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="modification_num != null"> AND MODIFICATION_NUM =#{modification_num} </if>
+			<if test="comments != null"> AND COMMENTS =#{comments} </if>
+			<if test="db_last_upd_src != null"> AND DB_LAST_UPD_SRC =#{db_last_upd_src} </if>
+			<if test="group_code != null"> AND GROUP_CODE =#{group_code} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="wt_id != null"> AND WT_ID =#{wt_id} </if>
+			<if test="jc_id != null"> AND JC_ID =#{jc_id} </if>
+			<if test="ht_id != null"> AND HT_ID =#{ht_id} </if>
+			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
+			<if test="lotnumber != null"> AND LOTNUMBER =#{lotnumber} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="pro_code != null"> AND PRO_CODE =#{pro_code} </if>
+			<if test="pro_num != null"> AND PRO_NUM =#{pro_num} </if>
+			<if test="s_num != null"> AND S_NUM =#{s_num} </if>
+			<if test="year != null"> AND YEAR =#{year} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+	<select id="selectlotByParamOrder" parameterType="java.util.Map" resultType="Lot">
+		SELECT *
+		FROM lot
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="modification_num != null"> AND MODIFICATION_NUM =#{modification_num} </if>
+			<if test="comments != null"> AND COMMENTS =#{comments} </if>
+			<if test="db_last_upd_src != null"> AND DB_LAST_UPD_SRC =#{db_last_upd_src} </if>
+			<if test="group_code != null"> AND GROUP_CODE =#{group_code} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="wt_id != null"> AND WT_ID =#{wt_id} </if>
+			<if test="jc_id != null"> AND JC_ID =#{jc_id} </if>
+			<if test="ht_id != null"> AND HT_ID =#{ht_id} </if>
+			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
+			<if test="lotnumber != null"> AND LOTNUMBER =#{lotnumber} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="pro_code != null"> AND PRO_CODE =#{pro_code} </if>
+			<if test="pro_num != null"> AND PRO_NUM =#{pro_num} </if>
+			<if test="s_num != null"> AND S_NUM =#{s_num} </if>
+			<if test="year != null"> AND YEAR =#{year} </if>
+		</trim>  
+		 
+		<if test="order != null"> ${order}   </if>
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountlotByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM lot 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="modification_num != null"> AND MODIFICATION_NUM =#{modification_num} </if>
+			<if test="comments != null"> AND COMMENTS =#{comments} </if>
+			<if test="db_last_upd_src != null"> AND DB_LAST_UPD_SRC =#{db_last_upd_src} </if>
+			<if test="group_code != null"> AND GROUP_CODE =#{group_code} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="wt_id != null"> AND WT_ID =#{wt_id} </if>
+			<if test="jc_id != null"> AND JC_ID =#{jc_id} </if>
+			<if test="ht_id != null"> AND HT_ID =#{ht_id} </if>
+			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
+			<if test="lotnumber != null"> AND LOTNUMBER =#{lotnumber} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="pro_code != null"> AND PRO_CODE =#{pro_code} </if>
+			<if test="pro_num != null"> AND PRO_NUM =#{pro_num} </if>
+			<if test="s_num != null"> AND S_NUM =#{s_num} </if>
+			<if test="year != null"> AND YEAR =#{year} </if>
+		</trim>  
+	</select>
+
+	<update id="updatelot" parameterType="Lot">
+		UPDATE lot 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="modification_num != null">MODIFICATION_NUM=#{modification_num}, </if>
+			<if test="comments != null">COMMENTS=#{comments}, </if>
+			<if test="db_last_upd_src != null">DB_LAST_UPD_SRC=#{db_last_upd_src}, </if>
+			<if test="group_code != null">GROUP_CODE=#{group_code}, </if>
+			<if test="sy_dt != null">SY_DT=#{sy_dt}, </if>
+			<if test="wt_id != null">WT_ID=#{wt_id}, </if>
+			<if test="jc_id != null">JC_ID=#{jc_id}, </if>
+			<if test="ht_id != null">HT_ID=#{ht_id}, </if>
+			<if test="wt_dt != null">WT_DT=#{wt_dt}, </if>
+			<if test="lotnumber != null">LOTNUMBER=#{lotnumber}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="pro_code != null">PRO_CODE=#{pro_code}, </if>
+			<if test="pro_num != null">PRO_NUM=#{pro_num}, </if>
+			<if test="s_num != null">S_NUM=#{s_num}, </if>
+			<if test="year != null">YEAR=#{year}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addlot" parameterType="Lot">
+		INSERT INTO lot 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">C_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="modification_num != null">MODIFICATION_NUM, </if>
+			<if test="comments != null">COMMENTS, </if>
+			<if test="db_last_upd_src != null">DB_LAST_UPD_SRC, </if>
+			<if test="group_code != null">GROUP_CODE, </if>
+			<if test="sy_dt != null">SY_DT, </if>
+			<if test="wt_id != null">WT_ID, </if>
+			<if test="jc_id != null">JC_ID, </if>
+			<if test="ht_id != null">HT_ID, </if>
+			<if test="wt_dt != null">WT_DT, </if>
+			<if test="lotnumber != null">LOTNUMBER, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="pro_code != null">PRO_CODE, </if>
+			<if test="pro_num != null">PRO_NUM, </if>
+			<if test="s_num != null">S_NUM, </if>
+			<if test="year != null">YEAR, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="modification_num != null">#{modification_num}, </if>
+			<if test="comments != null">#{comments}, </if>
+			<if test="db_last_upd_src != null">#{db_last_upd_src}, </if>
+			<if test="group_code != null">#{group_code}, </if>
+			<if test="sy_dt != null">#{sy_dt}, </if>
+			<if test="wt_id != null">#{wt_id}, </if>
+			<if test="jc_id != null">#{jc_id}, </if>
+			<if test="ht_id != null">#{ht_id}, </if>
+			<if test="wt_dt != null">#{wt_dt}, </if>
+			<if test="lotnumber != null">#{lotnumber}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="pro_code != null">#{pro_code}, </if>
+			<if test="pro_num != null">#{pro_num}, </if>
+			<if test="s_num != null">#{s_num}, </if>
+			<if test="year != null">#{year}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

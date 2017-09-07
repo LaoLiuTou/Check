@@ -1,0 +1,56 @@
+package com.check.utils;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
+
+public class EncryptFilter extends StrutsPrepareAndExecuteFilter {  
+	 public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)  
+			 throws IOException, ServletException {  
+			  HttpServletRequest request = (HttpServletRequest) req;  
+			  HttpServletResponse reponse = (HttpServletResponse) res; 
+			  reponse.setContentType("text/html;charset=UTF-8");
+			  
+			  
+			  String encrypt = request.getParameter("encrypt");
+			  System.out.println(encrypt);
+			  System.out.println(request.getRequestURI());
+			  System.out.println(request.getServletPath());
+			  
+			  /*if(encrypt.equals("1111111")){
+				  StringBuffer msg = new StringBuffer("{\"state\":\"failure\",\"msg\":\"秘钥错误！\"}");
+				  
+				  reponse.getWriter().write(msg.toString()); 
+			  }
+			  else{
+				  super.doFilter(req, res, chain);// 调用父类的方法  
+				  
+			  }*/
+			  
+			  super.doFilter(req, res, chain);// 调用父类的方法  
+			  //在这里进行URLREWRITE的操作  
+			  /*if (request.getRequestURI().equals("/aa")) {  
+			   request.getRequestDispatcher("swp/getResource?type=page&id=609&edit=true").forward(req,  
+			   res);  
+			   return;  
+			  }  
+			  if (request.getServletPath().startsWith("/fckeditor")) {  
+			   super.doFilter(req, res, chain);  
+			  } else if (request.getServletPath().equals("/manager/")) {  
+			   reponse.sendRedirect(request.getRequestURI() + "manager.jsp");  
+			  } else if (request.getServletPath().equals("/login")) {  
+			   reponse.sendRedirect("manager/login.jsp");  
+			  } else if (request.getServletPath().equals("/login/")) {  
+			   reponse.sendRedirect("../manager/login.jsp");  
+			  } else {  
+			   super.doFilter(req, res, chain);// 调用父类的方法  
+			  } */ 
+	 }  
+  }  

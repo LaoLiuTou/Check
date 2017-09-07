@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ 	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.action.excludePattern" value="/services,/services/.*,/FileUpload" />
+	<package name="Accnt" namespace="/"  extends="struts-default">
+		<action name="*Accnt" class="com.check.action.accnt.AccntAction" method="{1}">
+			<result name="add" type="redirect">/listAccnt.action?page=1</result>
+			<result name="select">/pages/accnt/accntDetails.jsp</result>
+			<result name="delete" type="redirect">/listAccnt.action?page=1</result>
+			<result name="update" type="redirect">/listAccnt.action?page=1</result>
+			<result name="list">/pages/accnt/accntList.jsp</result>
+		</action>
+	</package>
+	<package name="Area" namespace="/"  extends="struts-default">
+		<action name="*Area" class="com.check.action.area.AreaAction" method="{1}">
+			<result name="add" type="redirect">/listArea.action?page=1</result>
+			<result name="select">/pages/area/areaDetails.jsp</result>
+			<result name="delete" type="redirect">/listArea.action?page=1</result>
+			<result name="update" type="redirect">/listArea.action?page=1</result>
+			<result name="list">/pages/area/areaList.jsp</result>
+		</action>
+	</package>
+	<package name="Asset" namespace="/"  extends="struts-default">
+		<action name="*Asset" class="com.check.action.asset.AssetAction" method="{1}">
+			<result name="add" type="redirect">/listAsset.action?page=1</result>
+			<result name="select">/pages/asset/assetDetails.jsp</result>
+			<result name="delete" type="redirect">/listAsset.action?page=1</result>
+			<result name="update" type="redirect">/listAsset.action?page=1</result>
+			<result name="list">/pages/asset/assetList.jsp</result>
+		</action>
+	</package>
+	<package name="Atta" namespace="/"  extends="struts-default">
+		<action name="*Atta" class="com.check.action.atta.AttaAction" method="{1}">
+			<result name="add" type="redirect">/listAtta.action?page=1</result>
+			<result name="select">/pages/atta/attaDetails.jsp</result>
+			<result name="delete" type="redirect">/listAtta.action?page=1</result>
+			<result name="update" type="redirect">/listAtta.action?page=1</result>
+			<result name="list">/pages/atta/attaList.jsp</result>
+		</action>
+	</package>
+	<package name="Auth_group" namespace="/"  extends="struts-default">
+		<action name="*Auth_group" class="com.check.action.auth_group.Auth_groupAction" method="{1}">
+			<result name="add" type="redirect">/listAuth_group.action?page=1</result>
+			<result name="select">/pages/auth_group/auth_groupDetails.jsp</result>
+			<result name="delete" type="redirect">/listAuth_group.action?page=1</result>
+			<result name="update" type="redirect">/listAuth_group.action?page=1</result>
+			<result name="list">/pages/auth_group/auth_groupList.jsp</result>
+		</action>
+	</package>
+	<package name="Auth_group_access" namespace="/"  extends="struts-default">
+		<action name="*Auth_group_access" class="com.check.action.auth_group_access.Auth_group_accessAction" method="{1}">
+			<result name="add" type="redirect">/listAuth_group_access.action?page=1</result>
+			<result name="select">/pages/auth_group_access/auth_group_accessDetails.jsp</result>
+			<result name="delete" type="redirect">/listAuth_group_access.action?page=1</result>
+			<result name="update" type="redirect">/listAuth_group_access.action?page=1</result>
+			<result name="list">/pages/auth_group_access/auth_group_accessList.jsp</result>
+		</action>
+	</package>
+	<package name="Auth_rule" namespace="/"  extends="struts-default">
+		<action name="*Auth_rule" class="com.check.action.auth_rule.Auth_ruleAction" method="{1}">
+			<result name="add" type="redirect">/listAuth_rule.action?page=1</result>
+			<result name="select">/pages/auth_rule/auth_ruleDetails.jsp</result>
+			<result name="delete" type="redirect">/listAuth_rule.action?page=1</result>
+			<result name="update" type="redirect">/listAuth_rule.action?page=1</result>
+			<result name="list">/pages/auth_rule/auth_ruleList.jsp</result>
+		</action>
+	</package>
+	<package name="Bu" namespace="/"  extends="struts-default">
+		<action name="*Bu" class="com.check.action.bu.BuAction" method="{1}">
+			<result name="add" type="redirect">/listBu.action?page=1</result>
+			<result name="select">/pages/bu/buDetails.jsp</result>
+			<result name="delete" type="redirect">/listBu.action?page=1</result>
+			<result name="update" type="redirect">/listBu.action?page=1</result>
+			<result name="list">/pages/bu/buList.jsp</result>
+		</action>
+	</package>
+	<package name="Conclusion_templet" namespace="/"  extends="struts-default">
+		<action name="*Conclusion_templet" class="com.check.action.conclusion_templet.Conclusion_templetAction" method="{1}">
+			<result name="add" type="redirect">/listConclusion_templet.action?page=1</result>
+			<result name="select">/pages/conclusion_templet/conclusion_templetDetails.jsp</result>
+			<result name="delete" type="redirect">/listConclusion_templet.action?page=1</result>
+			<result name="update" type="redirect">/listConclusion_templet.action?page=1</result>
+			<result name="list">/pages/conclusion_templet/conclusion_templetList.jsp</result>
+		</action>
+	</package>
+	<package name="Cont" namespace="/"  extends="struts-default">
+		<action name="*Cont" class="com.check.action.cont.ContAction" method="{1}">
+			<result name="add" type="redirect">/listCont.action?page=1</result>
+			<result name="select">/pages/cont/contDetails.jsp</result>
+			<result name="delete" type="redirect">/listCont.action?page=1</result>
+			<result name="update" type="redirect">/listCont.action?page=1</result>
+			<result name="list">/pages/cont/contList.jsp</result>
+		</action>
+	</package>
+	<package name="Data_cache" namespace="/"  extends="struts-default">
+		<action name="*Data_cache" class="com.check.action.data_cache.Data_cacheAction" method="{1}">
+			<result name="add" type="redirect">/listData_cache.action?page=1</result>
+			<result name="select">/pages/data_cache/data_cacheDetails.jsp</result>
+			<result name="delete" type="redirect">/listData_cache.action?page=1</result>
+			<result name="update" type="redirect">/listData_cache.action?page=1</result>
+			<result name="list">/pages/data_cache/data_cacheList.jsp</result>
+		</action>
+	</package>
+	<package name="Entrust" namespace="/"  extends="struts-default">
+		<action name="*Entrust" class="com.check.action.entrust.EntrustAction" method="{1}">
+			<result name="add" type="redirect">/listEntrust.action?page=1</result>
+			<result name="select">/pages/entrust/entrustDetails.jsp</result>
+			<result name="delete" type="redirect">/listEntrust.action?page=1</result>
+			<result name="update" type="redirect">/listEntrust.action?page=1</result>
+			<result name="list">/pages/entrust/entrustList.jsp</result>
+		</action>
+	</package>
+	<package name="Entrust_asset" namespace="/"  extends="struts-default">
+		<action name="*Entrust_asset" class="com.check.action.entrust_asset.Entrust_assetAction" method="{1}">
+			<result name="add" type="redirect">/listEntrust_asset.action?page=1</result>
+			<result name="select">/pages/entrust_asset/entrust_assetDetails.jsp</result>
+			<result name="delete" type="redirect">/listEntrust_asset.action?page=1</result>
+			<result name="update" type="redirect">/listEntrust_asset.action?page=1</result>
+			<result name="list">/pages/entrust_asset/entrust_assetList.jsp</result>
+		</action>
+	</package>
+	<package name="Entrust_pin" namespace="/"  extends="struts-default">
+		<action name="*Entrust_pin" class="com.check.action.entrust_pin.Entrust_pinAction" method="{1}">
+			<result name="add" type="redirect">/listEntrust_pin.action?page=1</result>
+			<result name="select">/pages/entrust_pin/entrust_pinDetails.jsp</result>
+			<result name="delete" type="redirect">/listEntrust_pin.action?page=1</result>
+			<result name="update" type="redirect">/listEntrust_pin.action?page=1</result>
+			<result name="list">/pages/entrust_pin/entrust_pinList.jsp</result>
+		</action>
+	</package>
+	<package name="Entrust_sample" namespace="/"  extends="struts-default">
+		<action name="*Entrust_sample" class="com.check.action.entrust_sample.Entrust_sampleAction" method="{1}">
+			<result name="add" type="redirect">/listEntrust_sample.action?page=1</result>
+			<result name="select">/pages/entrust_sample/entrust_sampleDetails.jsp</result>
+			<result name="delete" type="redirect">/listEntrust_sample.action?page=1</result>
+			<result name="update" type="redirect">/listEntrust_sample.action?page=1</result>
+			<result name="list">/pages/entrust_sample/entrust_sampleList.jsp</result>
+		</action>
+	</package>
+	<package name="Lot" namespace="/"  extends="struts-default">
+		<action name="*Lot" class="com.check.action.lot.LotAction" method="{1}">
+			<result name="add" type="redirect">/listLot.action?page=1</result>
+			<result name="select">/pages/lot/lotDetails.jsp</result>
+			<result name="delete" type="redirect">/listLot.action?page=1</result>
+			<result name="update" type="redirect">/listLot.action?page=1</result>
+			<result name="list">/pages/lot/lotList.jsp</result>
+		</action>
+	</package>
+	<package name="Lov" namespace="/"  extends="struts-default">
+		<action name="*Lov" class="com.check.action.lov.LovAction" method="{1}">
+			<result name="add" type="redirect">/listLov.action?page=1</result>
+			<result name="select">/pages/lov/lovDetails.jsp</result>
+			<result name="delete" type="redirect">/listLov.action?page=1</result>
+			<result name="update" type="redirect">/listLov.action?page=1</result>
+			<result name="list">/pages/lov/lovList.jsp</result>
+		</action>
+	</package>
+	<package name="Members" namespace="/"  extends="struts-default">
+		<action name="*Members" class="com.check.action.members.MembersAction" method="{1}">
+			<result name="add" type="redirect">/listMembers.action?page=1</result>
+			<result name="select">/pages/members/membersDetails.jsp</result>
+			<result name="delete" type="redirect">/listMembers.action?page=1</result>
+			<result name="update" type="redirect">/listMembers.action?page=1</result>
+			<result name="list">/pages/members/membersList.jsp</result>
+		</action>
+	</package>
+	<package name="Pact" namespace="/"  extends="struts-default">
+		<action name="*Pact" class="com.check.action.pact.PactAction" method="{1}">
+			<result name="add" type="redirect">/listPact.action?page=1</result>
+			<result name="select">/pages/pact/pactDetails.jsp</result>
+			<result name="delete" type="redirect">/listPact.action?page=1</result>
+			<result name="update" type="redirect">/listPact.action?page=1</result>
+			<result name="list">/pages/pact/pactList.jsp</result>
+		</action>
+	</package>
+	<package name="Pay" namespace="/"  extends="struts-default">
+		<action name="*Pay" class="com.check.action.pay.PayAction" method="{1}">
+			<result name="add" type="redirect">/listPay.action?page=1</result>
+			<result name="select">/pages/pay/payDetails.jsp</result>
+			<result name="delete" type="redirect">/listPay.action?page=1</result>
+			<result name="update" type="redirect">/listPay.action?page=1</result>
+			<result name="list">/pages/pay/payList.jsp</result>
+		</action>
+	</package>
+	<package name="Price" namespace="/"  extends="struts-default">
+		<action name="*Price" class="com.check.action.price.PriceAction" method="{1}">
+			<result name="add" type="redirect">/listPrice.action?page=1</result>
+			<result name="select">/pages/price/priceDetails.jsp</result>
+			<result name="delete" type="redirect">/listPrice.action?page=1</result>
+			<result name="update" type="redirect">/listPrice.action?page=1</result>
+			<result name="list">/pages/price/priceList.jsp</result>
+		</action>
+	</package>
+	<package name="Prod" namespace="/"  extends="struts-default">
+		<action name="*Prod" class="com.check.action.prod.ProdAction" method="{1}">
+			<result name="add" type="redirect">/listProd.action?page=1</result>
+			<result name="select">/pages/prod/prodDetails.jsp</result>
+			<result name="delete" type="redirect">/listProd.action?page=1</result>
+			<result name="update" type="redirect">/listProd.action?page=1</result>
+			<result name="list">/pages/prod/prodList.jsp</result>
+		</action>
+	</package>
+	<package name="Prod_term" namespace="/"  extends="struts-default">
+		<action name="*Prod_term" class="com.check.action.prod_term.Prod_termAction" method="{1}">
+			<result name="add" type="redirect">/listProd_term.action?page=1</result>
+			<result name="select">/pages/prod_term/prod_termDetails.jsp</result>
+			<result name="delete" type="redirect">/listProd_term.action?page=1</result>
+			<result name="update" type="redirect">/listProd_term.action?page=1</result>
+			<result name="list">/pages/prod_term/prod_termList.jsp</result>
+		</action>
+	</package>
+	<package name="Results" namespace="/"  extends="struts-default">
+		<action name="*Results" class="com.check.action.results.ResultsAction" method="{1}">
+			<result name="add" type="redirect">/listResults.action?page=1</result>
+			<result name="select">/pages/results/resultsDetails.jsp</result>
+			<result name="delete" type="redirect">/listResults.action?page=1</result>
+			<result name="update" type="redirect">/listResults.action?page=1</result>
+			<result name="list">/pages/results/resultsList.jsp</result>
+		</action>
+	</package>
+	<package name="Sample" namespace="/"  extends="struts-default">
+		<action name="*Sample" class="com.check.action.sample.SampleAction" method="{1}">
+			<result name="add" type="redirect">/listSample.action?page=1</result>
+			<result name="select">/pages/sample/sampleDetails.jsp</result>
+			<result name="delete" type="redirect">/listSample.action?page=1</result>
+			<result name="update" type="redirect">/listSample.action?page=1</result>
+			<result name="list">/pages/sample/sampleList.jsp</result>
+		</action>
+	</package>
+	<package name="Sample_templet" namespace="/"  extends="struts-default">
+		<action name="*Sample_templet" class="com.check.action.sample_templet.Sample_templetAction" method="{1}">
+			<result name="add" type="redirect">/listSample_templet.action?page=1</result>
+			<result name="select">/pages/sample_templet/sample_templetDetails.jsp</result>
+			<result name="delete" type="redirect">/listSample_templet.action?page=1</result>
+			<result name="update" type="redirect">/listSample_templet.action?page=1</result>
+			<result name="list">/pages/sample_templet/sample_templetList.jsp</result>
+		</action>
+	</package>
+	<package name="Terms" namespace="/"  extends="struts-default">
+		<action name="*Terms" class="com.check.action.terms.TermsAction" method="{1}">
+			<result name="add" type="redirect">/listTerms.action?page=1</result>
+			<result name="select">/pages/terms/termsDetails.jsp</result>
+			<result name="delete" type="redirect">/listTerms.action?page=1</result>
+			<result name="update" type="redirect">/listTerms.action?page=1</result>
+			<result name="list">/pages/terms/termsList.jsp</result>
+		</action>
+	</package>
+	<package name="Test" namespace="/"  extends="struts-default">
+		<action name="*Test" class="com.check.action.test.TestAction" method="{1}">
+			<result name="add" type="redirect">/listTest.action?page=1</result>
+			<result name="select">/pages/test/testDetails.jsp</result>
+			<result name="delete" type="redirect">/listTest.action?page=1</result>
+			<result name="update" type="redirect">/listTest.action?page=1</result>
+			<result name="list">/pages/test/testList.jsp</result>
+		</action>
+	</package>
+	<package name="Warn" namespace="/"  extends="struts-default">
+		<action name="*Warn" class="com.check.action.warn.WarnAction" method="{1}">
+			<result name="add" type="redirect">/listWarn.action?page=1</result>
+			<result name="select">/pages/warn/warnDetails.jsp</result>
+			<result name="delete" type="redirect">/listWarn.action?page=1</result>
+			<result name="update" type="redirect">/listWarn.action?page=1</result>
+			<result name="list">/pages/warn/warnList.jsp</result>
+		</action>
+	</package>
+</struts>

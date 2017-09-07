@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.terms.ITermsMapper"> 
+	<select id="selecttermsById" parameterType="String" resultType="Terms">
+		SELECT * FROM terms WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteterms" parameterType="String"> 
+		DELETE FROM terms WHERE ID=#{id}
+	</delete>
+
+	<select id="selecttermsByParam" parameterType="java.util.Map" resultType="Terms">
+		SELECT *
+		FROM terms
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCounttermsByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM terms 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updateterms" parameterType="Terms">
+		UPDATE terms 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="code != null">CODE=#{code}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="st_lv != null">ST_LV=#{st_lv}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addterms" parameterType="Terms">
+		INSERT INTO terms 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="code != null">CODE, </if>
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="st_lv != null">ST_LV, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="bu_id != null">BU_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="code != null">#{code}, </if>
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="st_lv != null">#{st_lv}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

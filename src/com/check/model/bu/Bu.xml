@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.bu.IBuMapper"> 
+	<select id="selectbuById" parameterType="String" resultType="Bu">
+		SELECT * FROM bu WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletebu" parameterType="String"> 
+		DELETE FROM bu WHERE ID=#{id}
+	</delete>
+
+	<select id="selectbuByParam" parameterType="java.util.Map" resultType="Bu">
+		SELECT *
+		FROM bu
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="loc != null"> AND LOC =#{loc} </if>
+			<if test="kh_t != null"> AND KH_T =#{kh_t} </if>
+			<if test="zh_t != null"> AND ZH_T =#{zh_t} </if>
+			<if test="lhzh != null"> AND LHZH =#{lhzh} </if>
+			<if test="lxr_t != null"> AND LXR_T =#{lxr_t} </if>
+			<if test="lx_p != null"> AND LX_P =#{lx_p} </if>
+			<if test="state != null"> AND STATE =#{state} </if>
+			<if test="city != null"> AND CITY =#{city} </if>
+			<if test="county != null"> AND COUNTY =#{county} </if>
+			<if test="street != null"> AND STREET =#{street} </if>
+			<if test="postal != null"> AND POSTAL =#{postal} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="approve != null"> AND APPROVE =#{approve} </if>
+			<if test="gs_p != null"> AND GS_P =#{gs_p} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountbuByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM bu 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="loc != null"> AND LOC =#{loc} </if>
+			<if test="kh_t != null"> AND KH_T =#{kh_t} </if>
+			<if test="zh_t != null"> AND ZH_T =#{zh_t} </if>
+			<if test="lhzh != null"> AND LHZH =#{lhzh} </if>
+			<if test="lxr_t != null"> AND LXR_T =#{lxr_t} </if>
+			<if test="lx_p != null"> AND LX_P =#{lx_p} </if>
+			<if test="state != null"> AND STATE =#{state} </if>
+			<if test="city != null"> AND CITY =#{city} </if>
+			<if test="county != null"> AND COUNTY =#{county} </if>
+			<if test="street != null"> AND STREET =#{street} </if>
+			<if test="postal != null"> AND POSTAL =#{postal} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="approve != null"> AND APPROVE =#{approve} </if>
+			<if test="gs_p != null"> AND GS_P =#{gs_p} </if>
+		</trim>  
+	</select>
+
+	<update id="updatebu" parameterType="Bu">
+		UPDATE bu 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="loc != null">LOC=#{loc}, </if>
+			<if test="kh_t != null">KH_T=#{kh_t}, </if>
+			<if test="zh_t != null">ZH_T=#{zh_t}, </if>
+			<if test="lhzh != null">LHZH=#{lhzh}, </if>
+			<if test="lxr_t != null">LXR_T=#{lxr_t}, </if>
+			<if test="lx_p != null">LX_P=#{lx_p}, </if>
+			<if test="state != null">STATE=#{state}, </if>
+			<if test="city != null">CITY=#{city}, </if>
+			<if test="county != null">COUNTY=#{county}, </if>
+			<if test="street != null">STREET=#{street}, </if>
+			<if test="postal != null">POSTAL=#{postal}, </if>
+			<if test="code != null">CODE=#{code}, </if>
+			<if test="approve != null">APPROVE=#{approve}, </if>
+			<if test="gs_p != null">GS_P=#{gs_p}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addbu" parameterType="Bu">
+		INSERT INTO bu 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="loc != null">LOC, </if>
+			<if test="kh_t != null">KH_T, </if>
+			<if test="zh_t != null">ZH_T, </if>
+			<if test="lhzh != null">LHZH, </if>
+			<if test="lxr_t != null">LXR_T, </if>
+			<if test="lx_p != null">LX_P, </if>
+			<if test="state != null">STATE, </if>
+			<if test="city != null">CITY, </if>
+			<if test="county != null">COUNTY, </if>
+			<if test="street != null">STREET, </if>
+			<if test="postal != null">POSTAL, </if>
+			<if test="code != null">CODE, </if>
+			<if test="approve != null">APPROVE, </if>
+			<if test="gs_p != null">GS_P, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="loc != null">#{loc}, </if>
+			<if test="kh_t != null">#{kh_t}, </if>
+			<if test="zh_t != null">#{zh_t}, </if>
+			<if test="lhzh != null">#{lhzh}, </if>
+			<if test="lxr_t != null">#{lxr_t}, </if>
+			<if test="lx_p != null">#{lx_p}, </if>
+			<if test="state != null">#{state}, </if>
+			<if test="city != null">#{city}, </if>
+			<if test="county != null">#{county}, </if>
+			<if test="street != null">#{street}, </if>
+			<if test="postal != null">#{postal}, </if>
+			<if test="code != null">#{code}, </if>
+			<if test="approve != null">#{approve}, </if>
+			<if test="gs_p != null">#{gs_p}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

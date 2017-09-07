@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.entrust.IEntrustMapper"> 
+	<select id="selectentrustById" parameterType="String" resultType="Entrust">
+		SELECT * FROM entrust WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteentrust" parameterType="String"> 
+		DELETE FROM entrust WHERE ID=#{id}
+	</delete>
+
+	<select id="selectentrustByParam" parameterType="java.util.Map" resultType="Entrust">
+		SELECT *
+		FROM entrust
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="qy_lv != null"> AND QY_LV =#{qy_lv} </if>
+			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
+			<if test="sp_id != null"> AND SP_ID =#{sp_id} </if>
+			<if test="lq_id != null"> AND LQ_ID =#{lq_id} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="pay_lv != null"> AND PAY_LV =#{pay_lv} </if>
+			<if test="price != null"> AND PRICE =#{price} </if>
+			<if test="cs_n != null"> AND CS_N =#{cs_n} </if>
+			<if test="syr_id != null"> AND SYR_ID =#{syr_id} </if>
+			<if test="jh_dt != null"> AND JH_DT =#{jh_dt} </if>
+			<if test="cg_f != null"> AND CG_F =#{cg_f} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="ls_n != null"> AND LS_N =#{ls_n} </if>
+			<if test="gg_code != null"> AND GG_CODE =#{gg_code} </if>
+			<if test="sy_code != null"> AND SY_CODE =#{sy_code} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
+			<if test="submit != null"> AND SUBMIT =#{submit} </if>
+			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
+			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="spyj_t != null"> AND SPYJ_T =#{spyj_t} </if>
+			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountentrustByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM entrust 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="qy_lv != null"> AND QY_LV =#{qy_lv} </if>
+			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
+			<if test="sp_id != null"> AND SP_ID =#{sp_id} </if>
+			<if test="lq_id != null"> AND LQ_ID =#{lq_id} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="pay_lv != null"> AND PAY_LV =#{pay_lv} </if>
+			<if test="price != null"> AND PRICE =#{price} </if>
+			<if test="cs_n != null"> AND CS_N =#{cs_n} </if>
+			<if test="syr_id != null"> AND SYR_ID =#{syr_id} </if>
+			<if test="jh_dt != null"> AND JH_DT =#{jh_dt} </if>
+			<if test="cg_f != null"> AND CG_F =#{cg_f} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="ls_n != null"> AND LS_N =#{ls_n} </if>
+			<if test="gg_code != null"> AND GG_CODE =#{gg_code} </if>
+			<if test="sy_code != null"> AND SY_CODE =#{sy_code} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
+			<if test="submit != null"> AND SUBMIT =#{submit} </if>
+			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
+			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="spyj_t != null"> AND SPYJ_T =#{spyj_t} </if>
+			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updateentrust" parameterType="Entrust">
+		UPDATE entrust 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="code != null">CODE=#{code}, </if>
+			<if test="prod_id != null">PROD_ID=#{prod_id}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="qy_lv != null">QY_LV=#{qy_lv}, </if>
+			<if test="jl_id != null">JL_ID=#{jl_id}, </if>
+			<if test="sp_id != null">SP_ID=#{sp_id}, </if>
+			<if test="lq_id != null">LQ_ID=#{lq_id}, </if>
+			<if test="st_lv != null">ST_LV=#{st_lv}, </if>
+			<if test="pay_lv != null">PAY_LV=#{pay_lv}, </if>
+			<if test="price != null">PRICE=#{price}, </if>
+			<if test="cs_n != null">CS_N=#{cs_n}, </if>
+			<if test="syr_id != null">SYR_ID=#{syr_id}, </if>
+			<if test="jh_dt != null">JH_DT=#{jh_dt}, </if>
+			<if test="cg_f != null">CG_F=#{cg_f}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="flg != null">FLG=#{flg}, </if>
+			<if test="pid != null">PID=#{pid}, </if>
+			<if test="ls_n != null">LS_N=#{ls_n}, </if>
+			<if test="gg_code != null">GG_CODE=#{gg_code}, </if>
+			<if test="sy_code != null">SY_CODE=#{sy_code}, </if>
+			<if test="ewm != null">EWM=#{ewm}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="wt_dt != null">WT_DT=#{wt_dt}, </if>
+			<if test="submit != null">SUBMIT=#{submit}, </if>
+			<if test="sjwc_dt != null">SJWC_DT=#{sjwc_dt}, </if>
+			<if test="ff_dt != null">FF_DT=#{ff_dt}, </if>
+			<if test="fq_flg != null">FQ_FLG=#{fq_flg}, </if>
+			<if test="spyj_t != null">SPYJ_T=#{spyj_t}, </if>
+			<if test="copy_id != null">COPY_ID=#{copy_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addentrust" parameterType="Entrust">
+		INSERT INTO entrust 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="code != null">CODE, </if>
+			<if test="prod_id != null">PROD_ID, </if>
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="qy_lv != null">QY_LV, </if>
+			<if test="jl_id != null">JL_ID, </if>
+			<if test="sp_id != null">SP_ID, </if>
+			<if test="lq_id != null">LQ_ID, </if>
+			<if test="st_lv != null">ST_LV, </if>
+			<if test="pay_lv != null">PAY_LV, </if>
+			<if test="price != null">PRICE, </if>
+			<if test="cs_n != null">CS_N, </if>
+			<if test="syr_id != null">SYR_ID, </if>
+			<if test="jh_dt != null">JH_DT, </if>
+			<if test="cg_f != null">CG_F, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="flg != null">FLG, </if>
+			<if test="pid != null">PID, </if>
+			<if test="ls_n != null">LS_N, </if>
+			<if test="gg_code != null">GG_CODE, </if>
+			<if test="sy_code != null">SY_CODE, </if>
+			<if test="ewm != null">EWM, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="wt_dt != null">WT_DT, </if>
+			<if test="submit != null">SUBMIT, </if>
+			<if test="sjwc_dt != null">SJWC_DT, </if>
+			<if test="ff_dt != null">FF_DT, </if>
+			<if test="fq_flg != null">FQ_FLG, </if>
+			<if test="spyj_t != null">SPYJ_T, </if>
+			<if test="copy_id != null">COPY_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="code != null">#{code}, </if>
+			<if test="prod_id != null">#{prod_id}, </if>
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="qy_lv != null">#{qy_lv}, </if>
+			<if test="jl_id != null">#{jl_id}, </if>
+			<if test="sp_id != null">#{sp_id}, </if>
+			<if test="lq_id != null">#{lq_id}, </if>
+			<if test="st_lv != null">#{st_lv}, </if>
+			<if test="pay_lv != null">#{pay_lv}, </if>
+			<if test="price != null">#{price}, </if>
+			<if test="cs_n != null">#{cs_n}, </if>
+			<if test="syr_id != null">#{syr_id}, </if>
+			<if test="jh_dt != null">#{jh_dt}, </if>
+			<if test="cg_f != null">#{cg_f}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="flg != null">#{flg}, </if>
+			<if test="pid != null">#{pid}, </if>
+			<if test="ls_n != null">#{ls_n}, </if>
+			<if test="gg_code != null">#{gg_code}, </if>
+			<if test="sy_code != null">#{sy_code}, </if>
+			<if test="ewm != null">#{ewm}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="wt_dt != null">#{wt_dt}, </if>
+			<if test="submit != null">#{submit}, </if>
+			<if test="sjwc_dt != null">#{sjwc_dt}, </if>
+			<if test="ff_dt != null">#{ff_dt}, </if>
+			<if test="fq_flg != null">#{fq_flg}, </if>
+			<if test="spyj_t != null">#{spyj_t}, </if>
+			<if test="copy_id != null">#{copy_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

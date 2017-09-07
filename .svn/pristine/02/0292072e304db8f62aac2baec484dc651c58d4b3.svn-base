@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="logImpl" value="STDOUT_LOGGING"/> 
+		<setting name="cacheEnabled" value="true"/> 
+		<setting name="lazyLoadingEnabled" value="true"/> 
+		<setting name="multipleResultSetsEnabled" value="true"/> 
+		<setting name="useColumnLabel" value="true"/> 
+		<setting name="useGeneratedKeys" value="false"/> 
+		<setting name="autoMappingBehavior" value="PARTIAL"/> 
+		<setting name="defaultExecutorType" value="SIMPLE"/> 
+		<setting name="defaultStatementTimeout" value="25"/> 
+		<setting name="safeRowBoundsEnabled" value="false"/> 
+		<setting name="mapUnderscoreToCamelCase" value="false"/> 
+		<setting name="localCacheScope" value="SESSION"/> 
+		<setting name="jdbcTypeForNull" value="OTHER"/> 
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/> 
+	</settings> 
+	<typeAliases>
+		<typeAlias alias="Accnt" type="com.check.model.accnt.Accnt" /> 
+		<typeAlias alias="Area" type="com.check.model.area.Area" /> 
+		<typeAlias alias="Asset" type="com.check.model.asset.Asset" /> 
+		<typeAlias alias="Atta" type="com.check.model.atta.Atta" /> 
+		<typeAlias alias="Auth_group" type="com.check.model.auth_group.Auth_group" /> 
+		<typeAlias alias="Auth_group_access" type="com.check.model.auth_group_access.Auth_group_access" /> 
+		<typeAlias alias="Auth_rule" type="com.check.model.auth_rule.Auth_rule" /> 
+		<typeAlias alias="Bu" type="com.check.model.bu.Bu" /> 
+		<typeAlias alias="Conclusion_templet" type="com.check.model.conclusion_templet.Conclusion_templet" /> 
+		<typeAlias alias="Cont" type="com.check.model.cont.Cont" /> 
+		<typeAlias alias="Data_cache" type="com.check.model.data_cache.Data_cache" /> 
+		<typeAlias alias="Entrust" type="com.check.model.entrust.Entrust" /> 
+		<typeAlias alias="Entrust_asset" type="com.check.model.entrust_asset.Entrust_asset" /> 
+		<typeAlias alias="Entrust_pin" type="com.check.model.entrust_pin.Entrust_pin" /> 
+		<typeAlias alias="Entrust_sample" type="com.check.model.entrust_sample.Entrust_sample" /> 
+		<typeAlias alias="Lot" type="com.check.model.lot.Lot" /> 
+		<typeAlias alias="Lov" type="com.check.model.lov.Lov" /> 
+		<typeAlias alias="Members" type="com.check.model.members.Members" /> 
+		<typeAlias alias="Pact" type="com.check.model.pact.Pact" /> 
+		<typeAlias alias="Pay" type="com.check.model.pay.Pay" /> 
+		<typeAlias alias="Price" type="com.check.model.price.Price" /> 
+		<typeAlias alias="Prod" type="com.check.model.prod.Prod" /> 
+		<typeAlias alias="Prod_term" type="com.check.model.prod_term.Prod_term" /> 
+		<typeAlias alias="Results" type="com.check.model.results.Results" /> 
+		<typeAlias alias="Sample" type="com.check.model.sample.Sample" /> 
+		<typeAlias alias="Sample_templet" type="com.check.model.sample_templet.Sample_templet" /> 
+		<typeAlias alias="Terms" type="com.check.model.terms.Terms" /> 
+		<typeAlias alias="Test" type="com.check.model.test.Test" /> 
+		<typeAlias alias="Warn" type="com.check.model.warn.Warn" /> 
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/check/model/accnt/Accnt.xml"/> 
+		<mapper resource="com/check/model/area/Area.xml"/> 
+		<mapper resource="com/check/model/asset/Asset.xml"/> 
+		<mapper resource="com/check/model/atta/Atta.xml"/> 
+		<mapper resource="com/check/model/auth_group/Auth_group.xml"/> 
+		<mapper resource="com/check/model/auth_group_access/Auth_group_access.xml"/> 
+		<mapper resource="com/check/model/auth_rule/Auth_rule.xml"/> 
+		<mapper resource="com/check/model/bu/Bu.xml"/> 
+		<mapper resource="com/check/model/conclusion_templet/Conclusion_templet.xml"/> 
+		<mapper resource="com/check/model/cont/Cont.xml"/> 
+		<mapper resource="com/check/model/data_cache/Data_cache.xml"/> 
+		<mapper resource="com/check/model/entrust/Entrust.xml"/> 
+		<mapper resource="com/check/model/entrust_asset/Entrust_asset.xml"/> 
+		<mapper resource="com/check/model/entrust_pin/Entrust_pin.xml"/> 
+		<mapper resource="com/check/model/entrust_sample/Entrust_sample.xml"/> 
+		<mapper resource="com/check/model/lot/Lot.xml"/> 
+		<mapper resource="com/check/model/lov/Lov.xml"/> 
+		<mapper resource="com/check/model/members/Members.xml"/> 
+		<mapper resource="com/check/model/pact/Pact.xml"/> 
+		<mapper resource="com/check/model/pay/Pay.xml"/> 
+		<mapper resource="com/check/model/price/Price.xml"/> 
+		<mapper resource="com/check/model/prod/Prod.xml"/> 
+		<mapper resource="com/check/model/prod_term/Prod_term.xml"/> 
+		<mapper resource="com/check/model/results/Results.xml"/> 
+		<mapper resource="com/check/model/sample/Sample.xml"/> 
+		<mapper resource="com/check/model/sample_templet/Sample_templet.xml"/> 
+		<mapper resource="com/check/model/terms/Terms.xml"/> 
+		<mapper resource="com/check/model/test/Test.xml"/> 
+		<mapper resource="com/check/model/warn/Warn.xml"/> 
+	</mappers>  
+</configuration>

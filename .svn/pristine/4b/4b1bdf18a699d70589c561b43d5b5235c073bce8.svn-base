@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc/jdbc.properties"/>
+</bean>
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" value="${driverClassName}"/>
+	<property name="url" value="${url}"/>
+	<property name="username" value="${username}"/>
+	<property name="password" value="${password}"/>
+</bean>
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="configLocation"><value>classpath:Configuration.xml</value></property>
+	<property name="dataSource"><ref bean="dataSource"/></property>
+ </bean>
+<bean id="sqlSessionTemplate_app" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg index="0" ref="sqlSessionFactory" />
+</bean>
+<!-- 该 BeanPostProcessor 将自动起作用，对标注 @Autowired 的 Bean 进行自动注入 -->
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+<!-- 配置事务管理器 -->
+<bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+	p:dataSource-ref="dataSource">
+</bean>
+<!-- 配置多个事务管理器 -->
+<!--<bean id="tran_1"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+	p:dataSource-ref="dataSource">
+	<qualifier value="tran_1"/>
+</bean>
+@Transactional("tran_1")
+-->
+<!-- enables scanning for @Transactional annotations -->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+<bean id="iAccntMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.accnt.IAccntMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAccntService" class="com.check.service.accnt.AccntServiceImpl"></bean>
+<bean id="iAreaMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.area.IAreaMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAreaService" class="com.check.service.area.AreaServiceImpl"></bean>
+<bean id="iAssetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.asset.IAssetMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAssetService" class="com.check.service.asset.AssetServiceImpl"></bean>
+<bean id="iAttaMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.atta.IAttaMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAttaService" class="com.check.service.atta.AttaServiceImpl"></bean>
+<bean id="iAuth_groupMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.auth_group.IAuth_groupMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAuth_groupService" class="com.check.service.auth_group.Auth_groupServiceImpl"></bean>
+<bean id="iAuth_group_accessMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.auth_group_access.IAuth_group_accessMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAuth_group_accessService" class="com.check.service.auth_group_access.Auth_group_accessServiceImpl"></bean>
+<bean id="iAuth_ruleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.auth_rule.IAuth_ruleMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iAuth_ruleService" class="com.check.service.auth_rule.Auth_ruleServiceImpl"></bean>
+<bean id="iBuMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.bu.IBuMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iBuService" class="com.check.service.bu.BuServiceImpl"></bean>
+<bean id="iConclusion_templetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.conclusion_templet.IConclusion_templetMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iConclusion_templetService" class="com.check.service.conclusion_templet.Conclusion_templetServiceImpl"></bean>
+<bean id="iContMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.cont.IContMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iContService" class="com.check.service.cont.ContServiceImpl"></bean>
+<bean id="iData_cacheMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.data_cache.IData_cacheMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iData_cacheService" class="com.check.service.data_cache.Data_cacheServiceImpl"></bean>
+<bean id="iEntrustMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.entrust.IEntrustMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iEntrustService" class="com.check.service.entrust.EntrustServiceImpl"></bean>
+<bean id="iEntrust_assetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.entrust_asset.IEntrust_assetMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iEntrust_assetService" class="com.check.service.entrust_asset.Entrust_assetServiceImpl"></bean>
+<bean id="iEntrust_pinMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.entrust_pin.IEntrust_pinMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iEntrust_pinService" class="com.check.service.entrust_pin.Entrust_pinServiceImpl"></bean>
+<bean id="iEntrust_sampleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.entrust_sample.IEntrust_sampleMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iEntrust_sampleService" class="com.check.service.entrust_sample.Entrust_sampleServiceImpl"></bean>
+<bean id="iLotMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.lot.ILotMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iLotService" class="com.check.service.lot.LotServiceImpl"></bean>
+<bean id="iLovMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.lov.ILovMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iLovService" class="com.check.service.lov.LovServiceImpl"></bean>
+<bean id="iMembersMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.members.IMembersMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iMembersService" class="com.check.service.members.MembersServiceImpl"></bean>
+<bean id="iPactMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.pact.IPactMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iPactService" class="com.check.service.pact.PactServiceImpl"></bean>
+<bean id="iPayMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.pay.IPayMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iPayService" class="com.check.service.pay.PayServiceImpl"></bean>
+<bean id="iPriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.price.IPriceMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iPriceService" class="com.check.service.price.PriceServiceImpl"></bean>
+<bean id="iProdMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.prod.IProdMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iProdService" class="com.check.service.prod.ProdServiceImpl"></bean>
+<bean id="iProd_termMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.prod_term.IProd_termMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iProd_termService" class="com.check.service.prod_term.Prod_termServiceImpl"></bean>
+<bean id="iResultsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.results.IResultsMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iResultsService" class="com.check.service.results.ResultsServiceImpl"></bean>
+<bean id="iSampleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.sample.ISampleMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iSampleService" class="com.check.service.sample.SampleServiceImpl"></bean>
+<bean id="iSample_templetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.sample_templet.ISample_templetMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iSample_templetService" class="com.check.service.sample_templet.Sample_templetServiceImpl"></bean>
+<bean id="iTermsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.terms.ITermsMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iTermsService" class="com.check.service.terms.TermsServiceImpl"></bean>
+<bean id="iTestMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.test.ITestMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iTestService" class="com.check.service.test.TestServiceImpl"></bean>
+<bean id="iWarnMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.warn.IWarnMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iWarnService" class="com.check.service.warn.WarnServiceImpl"></bean>
+</beans>

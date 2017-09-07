@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.sample.ISampleMapper"> 
+	<select id="selectsampleById" parameterType="String" resultType="Sample">
+		SELECT * FROM sample WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletesample" parameterType="String"> 
+		DELETE FROM sample WHERE ID=#{id}
+	</delete>
+
+	<select id="selectsampleByParam" parameterType="java.util.Map" resultType="Sample">
+		SELECT *
+		FROM sample
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			
+			
+			<if test="pid_no != null"> AND PID <![CDATA[ <> ]]> #{pid_no} </if>
+			
+			
+			
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="part != null"> AND PART =#{part} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="lot != null"> AND LOT =#{lot} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="jd_lv != null"> AND JD_LV =#{jd_lv} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="cd_t != null"> AND CD_T =#{cd_t} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="gg_t != null"> AND GG_T =#{gg_t} </if>
+			<if test="fz_id != null"> AND FZ_ID =#{fz_id} </if>
+			<if test="bw_t != null"> AND BW_T =#{bw_t} </if>
+			<if test="ly_lv != null"> AND LY_LV =#{ly_lv} </if>
+			<if test="db_n != null"> AND DB_N =#{db_n} </if>
+			<if test="dw_lv != null"> AND DW_LV =#{dw_lv} </if>
+			<if test="sc_id != null"> AND SC_ID =#{sc_id} </if>
+			<if test="qd_t != null"> AND QD_T =#{qd_t} </if>
+			<if test="gc_t != null"> AND GC_T =#{gc_t} </if>
+			<if test="jl_t != null"> AND JL_T =#{jl_t} </if>
+			<if test="zz_dt != null"> AND ZZ_DT =#{zz_dt} </if>
+			<if test="test_dt != null"> AND TEST_DT =#{test_dt} </if>
+			<if test="kd_t != null"> AND KD_T =#{kd_t} </if>
+			<if test="lo_t != null"> AND LO_T =#{lo_t} </if>
+			<if test="la_t != null"> AND LA_T =#{la_t} </if>
+			<if test="hi_t != null"> AND HI_T =#{hi_t} </if>
+			<if test="jc_f != null"> AND JC_F =#{jc_f} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="cj_lv != null"> AND CJ_LV =#{cj_lv} </if>
+			<if test="sn_t != null"> AND SN_T =#{sn_t} </if>
+			<if test="sz_t != null"> AND SZ_T =#{sz_t} </if>
+			<if test="st_t != null"> AND ST_T =#{st_t} </if>
+			<if test="pp_t != null"> AND PP_T =#{pp_t} </if>
+			<if test="wj_t != null"> AND WJ_T =#{wj_t} </if>
+			<if test="ch_t != null"> AND CH_T =#{ch_t} </if>
+			<if test="sh_t != null"> AND SH_T =#{sh_t} </if>
+			<if test="snl_t != null"> AND SNL_T =#{snl_t} </if>
+			<if test="wa_t != null"> AND WA_T =#{wa_t} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="txm != null"> AND TXM =#{txm} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountsampleByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM sample 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			
+			<if test="pid_no != null"> AND PID <![CDATA[ <> ]]> #{pid_no} </if>
+			
+			
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="part != null"> AND PART =#{part} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="lot != null"> AND LOT =#{lot} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="jd_lv != null"> AND JD_LV =#{jd_lv} </if>
+			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
+			<if test="cd_t != null"> AND CD_T =#{cd_t} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="gg_t != null"> AND GG_T =#{gg_t} </if>
+			<if test="fz_id != null"> AND FZ_ID =#{fz_id} </if>
+			<if test="bw_t != null"> AND BW_T =#{bw_t} </if>
+			<if test="ly_lv != null"> AND LY_LV =#{ly_lv} </if>
+			<if test="db_n != null"> AND DB_N =#{db_n} </if>
+			<if test="dw_lv != null"> AND DW_LV =#{dw_lv} </if>
+			<if test="sc_id != null"> AND SC_ID =#{sc_id} </if>
+			<if test="qd_t != null"> AND QD_T =#{qd_t} </if>
+			<if test="gc_t != null"> AND GC_T =#{gc_t} </if>
+			<if test="jl_t != null"> AND JL_T =#{jl_t} </if>
+			<if test="zz_dt != null"> AND ZZ_DT =#{zz_dt} </if>
+			<if test="test_dt != null"> AND TEST_DT =#{test_dt} </if>
+			<if test="kd_t != null"> AND KD_T =#{kd_t} </if>
+			<if test="lo_t != null"> AND LO_T =#{lo_t} </if>
+			<if test="la_t != null"> AND LA_T =#{la_t} </if>
+			<if test="hi_t != null"> AND HI_T =#{hi_t} </if>
+			<if test="jc_f != null"> AND JC_F =#{jc_f} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="cj_lv != null"> AND CJ_LV =#{cj_lv} </if>
+			<if test="sn_t != null"> AND SN_T =#{sn_t} </if>
+			<if test="sz_t != null"> AND SZ_T =#{sz_t} </if>
+			<if test="st_t != null"> AND ST_T =#{st_t} </if>
+			<if test="pp_t != null"> AND PP_T =#{pp_t} </if>
+			<if test="wj_t != null"> AND WJ_T =#{wj_t} </if>
+			<if test="ch_t != null"> AND CH_T =#{ch_t} </if>
+			<if test="sh_t != null"> AND SH_T =#{sh_t} </if>
+			<if test="snl_t != null"> AND SNL_T =#{snl_t} </if>
+			<if test="wa_t != null"> AND WA_T =#{wa_t} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="flg != null"> AND FLG =#{flg} </if>
+			<if test="txm != null"> AND TXM =#{txm} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updatesample" parameterType="Sample">
+		UPDATE sample 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="pid != null">PID=#{pid}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="part != null">PART=#{part}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="lot != null">LOT=#{lot}, </if>
+			<if test="st_lv != null">ST_LV=#{st_lv}, </if>
+			<if test="jd_lv != null">JD_LV=#{jd_lv}, </if>
+			<if test="prod_id != null">PROD_ID=#{prod_id}, </if>
+			<if test="cd_t != null">CD_T=#{cd_t}, </if>
+			<if test="sy_dt != null">SY_DT=#{sy_dt}, </if>
+			<if test="gg_t != null">GG_T=#{gg_t}, </if>
+			<if test="fz_id != null">FZ_ID=#{fz_id}, </if>
+			<if test="bw_t != null">BW_T=#{bw_t}, </if>
+			<if test="ly_lv != null">LY_LV=#{ly_lv}, </if>
+			<if test="db_n != null">DB_N=#{db_n}, </if>
+			<if test="dw_lv != null">DW_LV=#{dw_lv}, </if>
+			<if test="sc_id != null">SC_ID=#{sc_id}, </if>
+			<if test="qd_t != null">QD_T=#{qd_t}, </if>
+			<if test="gc_t != null">GC_T=#{gc_t}, </if>
+			<if test="jl_t != null">JL_T=#{jl_t}, </if>
+			<if test="zz_dt != null">ZZ_DT=#{zz_dt}, </if>
+			<if test="test_dt != null">TEST_DT=#{test_dt}, </if>
+			<if test="kd_t != null">KD_T=#{kd_t}, </if>
+			<if test="lo_t != null">LO_T=#{lo_t}, </if>
+			<if test="la_t != null">LA_T=#{la_t}, </if>
+			<if test="hi_t != null">HI_T=#{hi_t}, </if>
+			<if test="jc_f != null">JC_F=#{jc_f}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="cj_lv != null">CJ_LV=#{cj_lv}, </if>
+			<if test="sn_t != null">SN_T=#{sn_t}, </if>
+			<if test="sz_t != null">SZ_T=#{sz_t}, </if>
+			<if test="st_t != null">ST_T=#{st_t}, </if>
+			<if test="pp_t != null">PP_T=#{pp_t}, </if>
+			<if test="wj_t != null">WJ_T=#{wj_t}, </if>
+			<if test="ch_t != null">CH_T=#{ch_t}, </if>
+			<if test="sh_t != null">SH_T=#{sh_t}, </if>
+			<if test="snl_t != null">SNL_T=#{snl_t}, </if>
+			<if test="wa_t != null">WA_T=#{wa_t}, </if>
+			<if test="ewm != null">EWM=#{ewm}, </if>
+			<if test="flg != null">FLG=#{flg}, </if>
+			<if test="txm != null">TXM=#{txm}, </if>
+			<if test="fq_flg != null">FQ_FLG=#{fq_flg}, </if>
+			<if test="copy_id != null">COPY_ID=#{copy_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addsample" parameterType="Sample">
+		INSERT INTO sample 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="pid != null">PID, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="part != null">PART, </if>
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="lot != null">LOT, </if>
+			<if test="st_lv != null">ST_LV, </if>
+			<if test="jd_lv != null">JD_LV, </if>
+			<if test="prod_id != null">PROD_ID, </if>
+			<if test="cd_t != null">CD_T, </if>
+			<if test="sy_dt != null">SY_DT, </if>
+			<if test="gg_t != null">GG_T, </if>
+			<if test="fz_id != null">FZ_ID, </if>
+			<if test="bw_t != null">BW_T, </if>
+			<if test="ly_lv != null">LY_LV, </if>
+			<if test="db_n != null">DB_N, </if>
+			<if test="dw_lv != null">DW_LV, </if>
+			<if test="sc_id != null">SC_ID, </if>
+			<if test="qd_t != null">QD_T, </if>
+			<if test="gc_t != null">GC_T, </if>
+			<if test="jl_t != null">JL_T, </if>
+			<if test="zz_dt != null">ZZ_DT, </if>
+			<if test="test_dt != null">TEST_DT, </if>
+			<if test="kd_t != null">KD_T, </if>
+			<if test="lo_t != null">LO_T, </if>
+			<if test="la_t != null">LA_T, </if>
+			<if test="hi_t != null">HI_T, </if>
+			<if test="jc_f != null">JC_F, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="cj_lv != null">CJ_LV, </if>
+			<if test="sn_t != null">SN_T, </if>
+			<if test="sz_t != null">SZ_T, </if>
+			<if test="st_t != null">ST_T, </if>
+			<if test="pp_t != null">PP_T, </if>
+			<if test="wj_t != null">WJ_T, </if>
+			<if test="ch_t != null">CH_T, </if>
+			<if test="sh_t != null">SH_T, </if>
+			<if test="snl_t != null">SNL_T, </if>
+			<if test="wa_t != null">WA_T, </if>
+			<if test="ewm != null">EWM, </if>
+			<if test="flg != null">FLG, </if>
+			<if test="txm != null">TXM, </if>
+			<if test="fq_flg != null">FQ_FLG, </if>
+			<if test="copy_id != null">COPY_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="pid != null">#{pid}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="part != null">#{part}, </if>
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="lot != null">#{lot}, </if>
+			<if test="st_lv != null">#{st_lv}, </if>
+			<if test="jd_lv != null">#{jd_lv}, </if>
+			<if test="prod_id != null">#{prod_id}, </if>
+			<if test="cd_t != null">#{cd_t}, </if>
+			<if test="sy_dt != null">#{sy_dt}, </if>
+			<if test="gg_t != null">#{gg_t}, </if>
+			<if test="fz_id != null">#{fz_id}, </if>
+			<if test="bw_t != null">#{bw_t}, </if>
+			<if test="ly_lv != null">#{ly_lv}, </if>
+			<if test="db_n != null">#{db_n}, </if>
+			<if test="dw_lv != null">#{dw_lv}, </if>
+			<if test="sc_id != null">#{sc_id}, </if>
+			<if test="qd_t != null">#{qd_t}, </if>
+			<if test="gc_t != null">#{gc_t}, </if>
+			<if test="jl_t != null">#{jl_t}, </if>
+			<if test="zz_dt != null">#{zz_dt}, </if>
+			<if test="test_dt != null">#{test_dt}, </if>
+			<if test="kd_t != null">#{kd_t}, </if>
+			<if test="lo_t != null">#{lo_t}, </if>
+			<if test="la_t != null">#{la_t}, </if>
+			<if test="hi_t != null">#{hi_t}, </if>
+			<if test="jc_f != null">#{jc_f}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="cj_lv != null">#{cj_lv}, </if>
+			<if test="sn_t != null">#{sn_t}, </if>
+			<if test="sz_t != null">#{sz_t}, </if>
+			<if test="st_t != null">#{st_t}, </if>
+			<if test="pp_t != null">#{pp_t}, </if>
+			<if test="wj_t != null">#{wj_t}, </if>
+			<if test="ch_t != null">#{ch_t}, </if>
+			<if test="sh_t != null">#{sh_t}, </if>
+			<if test="snl_t != null">#{snl_t}, </if>
+			<if test="wa_t != null">#{wa_t}, </if>
+			<if test="ewm != null">#{ewm}, </if>
+			<if test="flg != null">#{flg}, </if>
+			<if test="txm != null">#{txm}, </if>
+			<if test="fq_flg != null">#{fq_flg}, </if>
+			<if test="copy_id != null">#{copy_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

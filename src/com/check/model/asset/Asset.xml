@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.asset.IAssetMapper"> 
+	<select id="selectassetById" parameterType="String" resultType="Asset">
+		SELECT * FROM asset WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteasset" parameterType="String"> 
+		DELETE FROM asset WHERE ID=#{id}
+	</delete>
+
+	<select id="selectassetByParam" parameterType="java.util.Map" resultType="Asset">
+		SELECT *
+		FROM asset
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="xh_t != null"> AND XH_T =#{xh_t} </if>
+			<if test="cj_t != null"> AND CJ_T =#{cj_t} </if>
+			<if test="e_dtFrom != null"> AND unix_timestamp(E_DT) &gt;=unix_timestamp(#{e_dtFrom}) </if>
+			<if test="e_dtTo != null"> AND unix_timestamp(E_DT) &lt;=unix_timestamp(#{e_dtTo}) </if>
+			<if test="e_dt != null"> AND E_DT =#{e_dt} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="fz_id != null"> AND FZ_ID =#{fz_id} </if>
+			<if test="jd_t != null"> AND JD_T =#{jd_t} </if>
+			<if test="gm_dtFrom != null"> AND unix_timestamp(GM_DT) &gt;=unix_timestamp(#{gm_dtFrom}) </if>
+			<if test="gm_dtTo != null"> AND unix_timestamp(GM_DT) &lt;=unix_timestamp(#{gm_dtTo}) </if>
+			<if test="gm_dt != null"> AND GM_DT =#{gm_dt} </if>
+			<if test="s_dt != null"> AND S_DT =#{s_dt} </if>
+			<if test="sc_dt != null"> AND SC_DT =#{sc_dt} </if>
+			<if test="zq_n != null"> AND ZQ_N =#{zq_n} </if>
+			<if test="yh_dt != null"> AND YH_DT =#{yh_dt} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountassetByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM asset 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="xh_t != null"> AND XH_T =#{xh_t} </if>
+			<if test="cj_t != null"> AND CJ_T =#{cj_t} </if>
+			<if test="e_dtFrom != null"> AND unix_timestamp(E_DT) &gt;=unix_timestamp(#{e_dtFrom}) </if>
+			<if test="e_dtTo != null"> AND unix_timestamp(E_DT) &lt;=unix_timestamp(#{e_dtTo}) </if>
+			<if test="e_dt != null"> AND E_DT =#{e_dt} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="fz_id != null"> AND FZ_ID =#{fz_id} </if>
+			<if test="jd_t != null"> AND JD_T =#{jd_t} </if>
+			<if test="gm_dtFrom != null"> AND unix_timestamp(GM_DT) &gt;=unix_timestamp(#{gm_dtFrom}) </if>
+			<if test="gm_dtTo != null"> AND unix_timestamp(GM_DT) &lt;=unix_timestamp(#{gm_dtTo}) </if>
+			<if test="gm_dt != null"> AND GM_DT =#{gm_dt} </if>
+			<if test="s_dt != null"> AND S_DT =#{s_dt} </if>
+			<if test="sc_dt != null"> AND SC_DT =#{sc_dt} </if>
+			<if test="zq_n != null"> AND ZQ_N =#{zq_n} </if>
+			<if test="yh_dt != null"> AND YH_DT =#{yh_dt} </if>
+		</trim>  
+	</select>
+
+	<update id="updateasset" parameterType="Asset">
+		UPDATE asset 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="code != null">CODE=#{code}, </if>
+			<if test="xh_t != null">XH_T=#{xh_t}, </if>
+			<if test="cj_t != null">CJ_T=#{cj_t}, </if>
+			<if test="e_dt != null">E_DT=#{e_dt}, </if>
+			<if test="st_lv != null">ST_LV=#{st_lv}, </if>
+			<if test="fz_id != null">FZ_ID=#{fz_id}, </if>
+			<if test="jd_t != null">JD_T=#{jd_t}, </if>
+			<if test="gm_dt != null">GM_DT=#{gm_dt}, </if>
+			<if test="s_dt != null">S_DT=#{s_dt}, </if>
+			<if test="sc_dt != null">SC_DT=#{sc_dt}, </if>
+			<if test="zq_n != null">ZQ_N=#{zq_n}, </if>
+			<if test="yh_dt != null">YH_DT=#{yh_dt}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addasset" parameterType="Asset">
+		INSERT INTO asset 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="code != null">CODE, </if>
+			<if test="xh_t != null">XH_T, </if>
+			<if test="cj_t != null">CJ_T, </if>
+			<if test="e_dt != null">E_DT, </if>
+			<if test="st_lv != null">ST_LV, </if>
+			<if test="fz_id != null">FZ_ID, </if>
+			<if test="jd_t != null">JD_T, </if>
+			<if test="gm_dt != null">GM_DT, </if>
+			<if test="s_dt != null">S_DT, </if>
+			<if test="sc_dt != null">SC_DT, </if>
+			<if test="zq_n != null">ZQ_N, </if>
+			<if test="yh_dt != null">YH_DT, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="code != null">#{code}, </if>
+			<if test="xh_t != null">#{xh_t}, </if>
+			<if test="cj_t != null">#{cj_t}, </if>
+			<if test="e_dt != null">#{e_dt}, </if>
+			<if test="st_lv != null">#{st_lv}, </if>
+			<if test="fz_id != null">#{fz_id}, </if>
+			<if test="jd_t != null">#{jd_t}, </if>
+			<if test="gm_dt != null">#{gm_dt}, </if>
+			<if test="s_dt != null">#{s_dt}, </if>
+			<if test="sc_dt != null">#{sc_dt}, </if>
+			<if test="zq_n != null">#{zq_n}, </if>
+			<if test="yh_dt != null">#{yh_dt}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

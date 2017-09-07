@@ -1,0 +1,69 @@
+package com.check.service.entrust;
+import java.util.List;
+import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.check.dao.entrust.IEntrustMapper;
+import com.check.model.entrust.Entrust;
+public class EntrustServiceImpl  implements IEntrustService {
+
+	@Autowired
+	private IEntrustMapper iEntrustMapper;
+	/**
+ * 通过id选取
+ * @return
+ */
+ @Transactional
+	public Entrust selectentrustById(String id){
+		return iEntrustMapper.selectentrustById(id);
+	}
+
+	/**
+ * 通过查询参数获取信息
+ * @return
+ */ 
+ @SuppressWarnings("rawtypes")
+ @Transactional
+	public List<Entrust> selectentrustByParam(Map paramMap){ 
+		return iEntrustMapper.selectentrustByParam(paramMap);
+	}
+
+	/**
+	* 通过查询参数获取总条数
+	 * @return
+	 */ 
+ @SuppressWarnings("rawtypes")
+ @Transactional
+	public int selectCountentrustByParam(Map paramMap){ 
+		return iEntrustMapper.selectCountentrustByParam(paramMap);
+	}
+
+	/**
+ * 更新 
+ * @return 
+ */ 
+ @Transactional
+	public  int updateentrust(Entrust entrust){
+		return iEntrustMapper.updateentrust(entrust);
+	}
+
+	/**
+ * 添加 
+ * @return
+ */ 
+ @Transactional
+	public  Object addentrust(Entrust entrust){
+		return iEntrustMapper.addentrust(entrust);
+	}
+
+	/**
+ * 删除 
+ * @return 
+ */ 
+ @Transactional
+	public  int deleteentrust(String id){
+		return iEntrustMapper.deleteentrust(id);
+	}
+
+}
+

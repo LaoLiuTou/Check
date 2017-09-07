@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.atta.IAttaMapper"> 
+	<select id="selectattaById" parameterType="String" resultType="Atta">
+		SELECT * FROM atta WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteatta" parameterType="String"> 
+		DELETE FROM atta WHERE ID=#{id}
+	</delete>
+
+	<select id="selectattaByParam" parameterType="java.util.Map" resultType="Atta">
+		SELECT *
+		FROM atta
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="type != null"> AND TYPE =#{type} </if>
+			<if test="url != null"> AND URL =#{url} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountattaByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM atta 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="type != null"> AND TYPE =#{type} </if>
+			<if test="url != null"> AND URL =#{url} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+		</trim>  
+	</select>
+
+	<update id="updateatta" parameterType="Atta">
+		UPDATE atta 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="pid != null">PID=#{pid}, </if>
+			<if test="type != null">TYPE=#{type}, </if>
+			<if test="url != null">URL=#{url}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addatta" parameterType="Atta">
+		INSERT INTO atta 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="pid != null">PID, </if>
+			<if test="type != null">TYPE, </if>
+			<if test="url != null">URL, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="pid != null">#{pid}, </if>
+			<if test="type != null">#{type}, </if>
+			<if test="url != null">#{url}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

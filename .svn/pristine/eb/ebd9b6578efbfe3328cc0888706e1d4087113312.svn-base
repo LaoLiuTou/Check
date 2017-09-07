@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.lov.ILovMapper"> 
+	<select id="selectlovById" parameterType="String" resultType="Lov">
+		SELECT * FROM lov WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletelov" parameterType="String"> 
+		DELETE FROM lov WHERE ID=#{id}
+	</delete>
+
+	<select id="selectlovByParam" parameterType="java.util.Map" resultType="Lov">
+		SELECT *
+		FROM lov
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="sort != null"> AND SORT =#{sort} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountlovByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM lov 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="sort != null"> AND SORT =#{sort} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+		</trim>  
+	</select>
+
+	<update id="updatelov" parameterType="Lov">
+		UPDATE lov 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="sort != null">SORT=#{sort}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addlov" parameterType="Lov">
+		INSERT INTO lov 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="sort != null">SORT, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="sort != null">#{sort}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

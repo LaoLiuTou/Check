@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.accnt.IAccntMapper"> 
+	<select id="selectaccntById" parameterType="String" resultType="Accnt">
+		SELECT * FROM accnt WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deleteaccnt" parameterType="String"> 
+		DELETE FROM accnt WHERE ID=#{id}
+	</delete>
+
+	<select id="selectaccntByParam" parameterType="java.util.Map" resultType="Accnt">
+		SELECT *
+		FROM accnt
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="xz_lv != null"> AND XZ_LV =#{xz_lv} </if>
+			<if test="wz_t != null"> AND WZ_T =#{wz_t} </if>
+			<if test="hy_lv != null"> AND HY_LV =#{hy_lv} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="lv_lv != null"> AND LV_LV =#{lv_lv} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="work_p != null"> AND WORK_P =#{work_p} </if>
+			<if test="email != null"> AND EMAIL =#{email} </if>
+			<if test="state != null"> AND STATE =#{state} </if>
+			<if test="city != null"> AND CITY =#{city} </if>
+			<if test="county != null"> AND COUNTY =#{county} </if>
+			<if test="street != null"> AND STREET =#{street} </if>
+			<if test="postal != null"> AND POSTAL =#{postal} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountaccntByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM accnt 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="xz_lv != null"> AND XZ_LV =#{xz_lv} </if>
+			<if test="wz_t != null"> AND WZ_T =#{wz_t} </if>
+			<if test="hy_lv != null"> AND HY_LV =#{hy_lv} </if>
+			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
+			<if test="lv_lv != null"> AND LV_LV =#{lv_lv} </if>
+			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="work_p != null"> AND WORK_P =#{work_p} </if>
+			<if test="email != null"> AND EMAIL =#{email} </if>
+			<if test="state != null"> AND STATE =#{state} </if>
+			<if test="city != null"> AND CITY =#{city} </if>
+			<if test="county != null"> AND COUNTY =#{county} </if>
+			<if test="street != null"> AND STREET =#{street} </if>
+			<if test="postal != null"> AND POSTAL =#{postal} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updateaccnt" parameterType="Accnt">
+		UPDATE accnt 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="nm_t != null">NM_T=#{nm_t}, </if>
+			<if test="xz_lv != null">XZ_LV=#{xz_lv}, </if>
+			<if test="wz_t != null">WZ_T=#{wz_t}, </if>
+			<if test="hy_lv != null">HY_LV=#{hy_lv}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="lv_lv != null">LV_LV=#{lv_lv}, </if>
+			<if test="st_lv != null">ST_LV=#{st_lv}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="work_p != null">WORK_P=#{work_p}, </if>
+			<if test="email != null">EMAIL=#{email}, </if>
+			<if test="state != null">STATE=#{state}, </if>
+			<if test="city != null">CITY=#{city}, </if>
+			<if test="county != null">COUNTY=#{county}, </if>
+			<if test="street != null">STREET=#{street}, </if>
+			<if test="postal != null">POSTAL=#{postal}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="cont_id != null">CONT_ID=#{cont_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addaccnt" parameterType="Accnt">
+		INSERT INTO accnt 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="nm_t != null">NM_T, </if>
+			<if test="xz_lv != null">XZ_LV, </if>
+			<if test="wz_t != null">WZ_T, </if>
+			<if test="hy_lv != null">HY_LV, </if>
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="lv_lv != null">LV_LV, </if>
+			<if test="st_lv != null">ST_LV, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="work_p != null">WORK_P, </if>
+			<if test="email != null">EMAIL, </if>
+			<if test="state != null">STATE, </if>
+			<if test="city != null">CITY, </if>
+			<if test="county != null">COUNTY, </if>
+			<if test="street != null">STREET, </if>
+			<if test="postal != null">POSTAL, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="cont_id != null">CONT_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="nm_t != null">#{nm_t}, </if>
+			<if test="xz_lv != null">#{xz_lv}, </if>
+			<if test="wz_t != null">#{wz_t}, </if>
+			<if test="hy_lv != null">#{hy_lv}, </if>
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="lv_lv != null">#{lv_lv}, </if>
+			<if test="st_lv != null">#{st_lv}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="work_p != null">#{work_p}, </if>
+			<if test="email != null">#{email}, </if>
+			<if test="state != null">#{state}, </if>
+			<if test="city != null">#{city}, </if>
+			<if test="county != null">#{county}, </if>
+			<if test="street != null">#{street}, </if>
+			<if test="postal != null">#{postal}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="cont_id != null">#{cont_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

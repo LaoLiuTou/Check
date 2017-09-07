@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.test.ITestMapper"> 
+	<select id="selecttestById" parameterType="String" resultType="Test">
+		SELECT * FROM test WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletetest" parameterType="String"> 
+		DELETE FROM test WHERE ID=#{id}
+	</delete>
+
+	<select id="selecttestByParam" parameterType="java.util.Map" resultType="Test">
+		SELECT *
+		FROM test
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="dd_t != null"> AND DD_T =#{dd_t} </if>
+			<if test="sample_id != null"> AND SAMPLE_ID =#{sample_id} </if>
+			<if test="jl_t != null"> AND JL_T =#{jl_t} </if>
+			<if test="sy_id != null"> AND SY_ID =#{sy_id} </if>
+			<if test="syqz_id != null"> AND SYQZ_ID =#{syqz_id} </if>
+			<if test="sh_id != null"> AND SH_ID =#{sh_id} </if>
+			<if test="shyj_t != null"> AND SHYJ_T =#{shyj_t} </if>
+			<if test="shqz_id != null"> AND SHQZ_ID =#{shqz_id} </if>
+			<if test="spqz_id != null"> AND SPQZ_ID =#{spqz_id} </if>
+			<if test="bg_f != null"> AND BG_F =#{bg_f} </if>
+			<if test="sh_dt != null"> AND SH_DT =#{sh_dt} </if>
+			<if test="bg_dt != null"> AND BG_DT =#{bg_dt} </if>
+			<if test="e_dt != null"> AND E_DT =#{e_dt} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="status != null"> AND STATUS =#{status} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="a != null"> AND A =#{a} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCounttestByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM test 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="pid != null"> AND PID =#{pid} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="code != null"> AND CODE =#{code} </if>
+			<if test="sy_dt != null"> AND SY_DT =#{sy_dt} </if>
+			<if test="dd_t != null"> AND DD_T =#{dd_t} </if>
+			<if test="sample_id != null"> AND SAMPLE_ID =#{sample_id} </if>
+			<if test="jl_t != null"> AND JL_T =#{jl_t} </if>
+			<if test="sy_id != null"> AND SY_ID =#{sy_id} </if>
+			<if test="syqz_id != null"> AND SYQZ_ID =#{syqz_id} </if>
+			<if test="sh_id != null"> AND SH_ID =#{sh_id} </if>
+			<if test="shyj_t != null"> AND SHYJ_T =#{shyj_t} </if>
+			<if test="shqz_id != null"> AND SHQZ_ID =#{shqz_id} </if>
+			<if test="spqz_id != null"> AND SPQZ_ID =#{spqz_id} </if>
+			<if test="bg_f != null"> AND BG_F =#{bg_f} </if>
+			<if test="sh_dt != null"> AND SH_DT =#{sh_dt} </if>
+			<if test="bg_dt != null"> AND BG_DT =#{bg_dt} </if>
+			<if test="e_dt != null"> AND E_DT =#{e_dt} </if>
+			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
+			<if test="status != null"> AND STATUS =#{status} </if>
+			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
+			<if test="ewm != null"> AND EWM =#{ewm} </if>
+			<if test="a != null"> AND A =#{a} </if>
+		</trim>  
+	</select>
+
+	<update id="updatetest" parameterType="Test">
+		UPDATE test 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="row_id != null">ROW_ID=#{row_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="pid != null">PID=#{pid}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="code != null">CODE=#{code}, </if>
+			<if test="sy_dt != null">SY_DT=#{sy_dt}, </if>
+			<if test="dd_t != null">DD_T=#{dd_t}, </if>
+			<if test="sample_id != null">SAMPLE_ID=#{sample_id}, </if>
+			<if test="jl_t != null">JL_T=#{jl_t}, </if>
+			<if test="sy_id != null">SY_ID=#{sy_id}, </if>
+			<if test="syqz_id != null">SYQZ_ID=#{syqz_id}, </if>
+			<if test="sh_id != null">SH_ID=#{sh_id}, </if>
+			<if test="shyj_t != null">SHYJ_T=#{shyj_t}, </if>
+			<if test="shqz_id != null">SHQZ_ID=#{shqz_id}, </if>
+			<if test="spqz_id != null">SPQZ_ID=#{spqz_id}, </if>
+			<if test="bg_f != null">BG_F=#{bg_f}, </if>
+			<if test="sh_dt != null">SH_DT=#{sh_dt}, </if>
+			<if test="bg_dt != null">BG_DT=#{bg_dt}, </if>
+			<if test="e_dt != null">E_DT=#{e_dt}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+			<if test="status != null">STATUS=#{status}, </if>
+			<if test="fq_flg != null">FQ_FLG=#{fq_flg}, </if>
+			<if test="ewm != null">EWM=#{ewm}, </if>
+			<if test="a != null">A=#{a}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addtest" parameterType="Test">
+		INSERT INTO test 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">ROW_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="pid != null">PID, </if>
+			<if test="bu_id != null">BU_ID, </if>
+			<if test="code != null">CODE, </if>
+			<if test="sy_dt != null">SY_DT, </if>
+			<if test="dd_t != null">DD_T, </if>
+			<if test="sample_id != null">SAMPLE_ID, </if>
+			<if test="jl_t != null">JL_T, </if>
+			<if test="sy_id != null">SY_ID, </if>
+			<if test="syqz_id != null">SYQZ_ID, </if>
+			<if test="sh_id != null">SH_ID, </if>
+			<if test="shyj_t != null">SHYJ_T, </if>
+			<if test="shqz_id != null">SHQZ_ID, </if>
+			<if test="spqz_id != null">SPQZ_ID, </if>
+			<if test="bg_f != null">BG_F, </if>
+			<if test="sh_dt != null">SH_DT, </if>
+			<if test="bg_dt != null">BG_DT, </if>
+			<if test="e_dt != null">E_DT, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+			<if test="status != null">STATUS, </if>
+			<if test="fq_flg != null">FQ_FLG, </if>
+			<if test="ewm != null">EWM, </if>
+			<if test="a != null">A, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="row_id != null">#{row_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="pid != null">#{pid}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="code != null">#{code}, </if>
+			<if test="sy_dt != null">#{sy_dt}, </if>
+			<if test="dd_t != null">#{dd_t}, </if>
+			<if test="sample_id != null">#{sample_id}, </if>
+			<if test="jl_t != null">#{jl_t}, </if>
+			<if test="sy_id != null">#{sy_id}, </if>
+			<if test="syqz_id != null">#{syqz_id}, </if>
+			<if test="sh_id != null">#{sh_id}, </if>
+			<if test="shyj_t != null">#{shyj_t}, </if>
+			<if test="shqz_id != null">#{shqz_id}, </if>
+			<if test="spqz_id != null">#{spqz_id}, </if>
+			<if test="bg_f != null">#{bg_f}, </if>
+			<if test="sh_dt != null">#{sh_dt}, </if>
+			<if test="bg_dt != null">#{bg_dt}, </if>
+			<if test="e_dt != null">#{e_dt}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+			<if test="status != null">#{status}, </if>
+			<if test="fq_flg != null">#{fq_flg}, </if>
+			<if test="ewm != null">#{ewm}, </if>
+			<if test="a != null">#{a}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>
