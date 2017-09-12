@@ -497,6 +497,15 @@ public class SampleAction implements Action {
 	public void setPid_no(String pid_no) {
 		this.pid_no = pid_no;
 	}
+	private String jd_lv_state;
+	public String getJd_lv_state() {
+		return jd_lv_state;
+	}
+	public void setJd_lv_state(String jd_lv_state) {
+		this.jd_lv_state = jd_lv_state;
+	}
+
+	
 	
 	//委托组数
 	private String entrustnum;
@@ -571,9 +580,8 @@ public class SampleAction implements Action {
 		try {
 			
 			
-			
 			//委托组数
-			if(entrustnum!=null&&!entrustnum.equals("")){
+			if(entrustnum!=null&&!entrustnum.equals("")&& StringUtils.isNumeric(entrustnum)){
 				int ennum= Integer.parseInt(entrustnum);
 				List<String> idList= new ArrayList<String>();
 				for(int i=0;i<ennum;i++){
@@ -606,7 +614,7 @@ public class SampleAction implements Action {
 			}
 			else{
 				msg.append("\"failure\",\"msg\":");
-				msg.append("\"委托组数不能为空\"");
+				msg.append("\"委托组数不能为空且必需是数字\"");
 			}
 		 
 		} catch (Exception e) {
@@ -749,7 +757,7 @@ public class SampleAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			paramMap.put("row_id", row_id);
 			if(c_dtFrom!=null&&!c_dtFrom.equals(""))
@@ -1054,6 +1062,8 @@ public class SampleAction implements Action {
 			paramMap.put("txm", txm);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("copy_id", copy_id);
+			paramMap.put("jd_lv_state", jd_lv_state);
+			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iSampleService.selectCountsampleByParam(paramMap);

@@ -201,7 +201,7 @@ public class AreaAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			paramMap.put("name", name);
 			paramMap.put("code", code);

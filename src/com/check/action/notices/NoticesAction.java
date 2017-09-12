@@ -197,7 +197,7 @@ public class NoticesAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			if(c_dtFrom!=null&&!c_dtFrom.equals(""))
 			paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));

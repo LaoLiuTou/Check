@@ -74,6 +74,9 @@
 			<if test="txm != null"> AND TXM =#{txm} </if>
 			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
 			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+			
+			
+			<if test="jd_lv_state != null"> AND JD_LV IN ${jd_lv_state} </if>
 		</trim>  
 		ORDER BY ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -140,6 +143,8 @@
 			<if test="txm != null"> AND TXM =#{txm} </if>
 			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
 			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+			
+			<if test="jd_lv_state != null"> AND JD_LV IN ${jd_lv_state} </if>
 		</trim>  
 	</select>
 

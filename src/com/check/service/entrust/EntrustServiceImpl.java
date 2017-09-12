@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -395,6 +396,7 @@ public class EntrustServiceImpl  implements IEntrustService {
     	}
 		catch (Exception e) {
 			// TODO: handle exception
+			
 			logger.info(e);
 			return "";
 		}
@@ -519,127 +521,225 @@ public class EntrustServiceImpl  implements IEntrustService {
 				for(int i=0;i<sampleJA.size();i++){
 					JSONObject  sampleJO = (JSONObject) sampleJA.get(i);
 					
+					//样品信息
+					Sample sample = new Sample();
+					if(sampleJO.containsKey("bu_id"))
+					sample.setBu_id(sampleJO.getString("bu_id"));
+					if(sampleJO.containsKey("bw_t"))
+					sample.setBw_t(sampleJO.getString("bw_t"));
+					if(sampleJO.containsKey("c_id"))
+					sample.setC_id(sampleJO.getString("c_id"));
+					if(sampleJO.containsKey("cd_t"))
+					sample.setCd_t(sampleJO.getString("cd_t"));
+					if(sampleJO.containsKey("ch_t"))
+					sample.setCh_t(sampleJO.getString("ch_t"));
+					if(sampleJO.containsKey("cj_lv"))
+					sample.setCj_lv(sampleJO.getString("cj_lv"));
+					if(sampleJO.containsKey("cm_tx"))
+					sample.setCm_tx(sampleJO.getString("cm_tx"));
+					if(sampleJO.containsKey("copy_id"))
+					sample.setCopy_id(Long.parseLong(sampleJO.getString("copy_id")));
+					if(sampleJO.containsKey("db_n"))
+					sample.setDb_n(sampleJO.getString("db_n"));
+					if(sampleJO.containsKey("dw_lv"))
+					sample.setDw_lv(sampleJO.getString("dw_lv"));
+					//sample.setEwm(pactId);
+					if(sampleJO.containsKey("flg"))
+					sample.setFlg(sampleJO.getString("flg"));
+					if(sampleJO.containsKey("fq_flg"))
+					sample.setFq_flg(sampleJO.getString("fq_flg"));
+					if(sampleJO.containsKey("fz_id"))
+					sample.setFz_id(sampleJO.getString("fz_id"));
+					if(sampleJO.containsKey("gc_t"))
+					sample.setGc_t(sampleJO.getString("gc_t"));
+					if(sampleJO.containsKey("gg_t"))
+					sample.setGg_t(sampleJO.getString("gg_t"));
+					if(sampleJO.containsKey("hi_t"))
+					sample.setHi_t(sampleJO.getString("hi_t"));
+					if(sampleJO.containsKey("jc_f"))
+					sample.setJc_f(sampleJO.getString("jc_f"));
+					if(sampleJO.containsKey("jd_lv"))
+					sample.setJd_lv(sampleJO.getString("jd_lv"));
+					if(sampleJO.containsKey("jl_t"))
+					sample.setJl_t(sampleJO.getString("jl_t"));
+					if(sampleJO.containsKey("kd_t"))
+					sample.setKd_t(sampleJO.getString("kd_t"));
+					if(sampleJO.containsKey("la_t"))
+					sample.setLa_t(sampleJO.getString("la_t"));
+					if(sampleJO.containsKey("lo_t"))
+					sample.setLo_t(sampleJO.getString("lo_t"));
+					//if(sampleJO.containsKey("lot"))
+					
+					
+					if(sampleJO.containsKey("ly_lv"))
+					sample.setLy_lv(sampleJO.getString("ly_lv"));
+					if(sampleJO.containsKey("nm_t"))
+					sample.setNm_t(sampleJO.getString("nm_t"));
+					//if(sampleJO.containsKey("part"))
+					
+					sample.setPid(pactId);
+					if(sampleJO.containsKey("pp_t"))
+					sample.setPp_t(sampleJO.getString("pp_t"));
+					if(sampleJO.containsKey("prod_id"))
+					sample.setProd_id(sampleJO.getString("prod_id"));
+					if(sampleJO.containsKey("qd_t"))
+					sample.setQd_t(sampleJO.getString("qd_t"));
+					if(sampleJO.containsKey("row_id"))
+					sample.setRow_id(sampleJO.getString("row_id"));
+					if(sampleJO.containsKey("sc_id"))
+					sample.setSc_id(sampleJO.getString("sc_id"));
+					if(sampleJO.containsKey("sh_t"))
+					sample.setSh_t(sampleJO.getString("sh_t"));
+					if(sampleJO.containsKey("sn_t"))
+					sample.setSn_t(sampleJO.getString("sn_t"));
+					if(sampleJO.containsKey("snl_t"))
+					sample.setSnl_t(sampleJO.getString("snl_t"));
+					if(sampleJO.containsKey("st_lv"))
+					sample.setSt_lv(sampleJO.getString("st_lv"));
+					if(sampleJO.containsKey("st_t"))
+					sample.setSt_t(sampleJO.getString("st_t"));
+					if(sampleJO.containsKey("sy_dt"))
+					sample.setSy_dt(sampleJO.getString("sy_dt"));
+					if(sampleJO.containsKey("sz_t"))
+					sample.setSz_t(sampleJO.getString("sz_t"));
+					if(sampleJO.containsKey("test_dt"))
+					sample.setTest_dt(sampleJO.getString("test_dt"));
+					if(sampleJO.containsKey("txm"))
+					sample.setTxm(sampleJO.getString("txm"));
+					if(sampleJO.containsKey("ty_lv"))
+					sample.setTy_lv(sampleJO.getString("ty_lv"));
+					if(sampleJO.containsKey("wa_t"))
+					sample.setWa_t(sampleJO.getString("wa_t"));
+					if(sampleJO.containsKey("wj_t"))
+					sample.setWj_t(sampleJO.getString("wj_t"));
+					if(sampleJO.containsKey("zz_dt"))
+					sample.setZz_dt(sampleJO.getString("zz_dt"));
+					
+					
+					//存在web_id说明为新建字段 否则都要修改（这段不是我本意，无奈）
 					if(sampleJO.containsKey("web_id")){
-						Sample sample = new Sample();
-						if(sampleJO.containsKey("bu_id"))
-						sample.setBu_id(sampleJO.getString("bu_id"));
-						if(sampleJO.containsKey("bw_t"))
-						sample.setBw_t(sampleJO.getString("bw_t"));
-						if(sampleJO.containsKey("c_id"))
-						sample.setC_id(sampleJO.getString("c_id"));
-						if(sampleJO.containsKey("cd_t"))
-						sample.setCd_t(sampleJO.getString("cd_t"));
-						if(sampleJO.containsKey("ch_t"))
-						sample.setCh_t(sampleJO.getString("ch_t"));
-						if(sampleJO.containsKey("cj_lv"))
-						sample.setCj_lv(sampleJO.getString("cj_lv"));
-						if(sampleJO.containsKey("cm_tx"))
-						sample.setCm_tx(sampleJO.getString("cm_tx"));
-						if(sampleJO.containsKey("copy_id"))
-						sample.setCopy_id(Long.parseLong(sampleJO.getString("copy_id")));
-						if(sampleJO.containsKey("db_n"))
-						sample.setDb_n(sampleJO.getString("db_n"));
-						if(sampleJO.containsKey("dw_lv"))
-						sample.setDw_lv(sampleJO.getString("dw_lv"));
-						//sample.setEwm(pactId);
-						if(sampleJO.containsKey("flg"))
-						sample.setFlg(sampleJO.getString("flg"));
-						if(sampleJO.containsKey("fq_flg"))
-						sample.setFq_flg(sampleJO.getString("fq_flg"));
-						if(sampleJO.containsKey("fz_id"))
-						sample.setFz_id(sampleJO.getString("fz_id"));
-						if(sampleJO.containsKey("gc_t"))
-						sample.setGc_t(sampleJO.getString("gc_t"));
-						if(sampleJO.containsKey("gg_t"))
-						sample.setGg_t(sampleJO.getString("gg_t"));
-						if(sampleJO.containsKey("hi_t"))
-						sample.setHi_t(sampleJO.getString("hi_t"));
-						if(sampleJO.containsKey("jc_f"))
-						sample.setJc_f(sampleJO.getString("jc_f"));
-						if(sampleJO.containsKey("jd_lv"))
-						sample.setJd_lv(sampleJO.getString("jd_lv"));
-						if(sampleJO.containsKey("jl_t"))
-						sample.setJl_t(sampleJO.getString("jl_t"));
-						if(sampleJO.containsKey("kd_t"))
-						sample.setKd_t(sampleJO.getString("kd_t"));
-						if(sampleJO.containsKey("la_t"))
-						sample.setLa_t(sampleJO.getString("la_t"));
-						if(sampleJO.containsKey("lo_t"))
-						sample.setLo_t(sampleJO.getString("lo_t"));
-						//if(sampleJO.containsKey("lot"))
-						//批号
-						if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("sy_dt")&&
-								sampleJO.containsKey("prod_id")&&sampleJO.containsKey("c_id")){
-							sample.setLot(createSampleLot(sampleJO.getString("bu_id"),sampleJO.getString("sy_dt"),
-									pactId,sampleJO.getString("prod_id"),sampleJO.getString("c_id")));
-						}
 						
-						if(sampleJO.containsKey("ly_lv"))
-						sample.setLy_lv(sampleJO.getString("ly_lv"));
-						if(sampleJO.containsKey("nm_t"))
-						sample.setNm_t(sampleJO.getString("nm_t"));
-						//if(sampleJO.containsKey("part"))
-						//编号
-						if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("prod_id"))
-						sample.setPart(createSampleCode(sampleJO.getString("bu_id"),sampleJO.getString("prod_id")));
-						 
-						sample.setPid(pactId);
-						if(sampleJO.containsKey("pp_t"))
-						sample.setPp_t(sampleJO.getString("pp_t"));
-						if(sampleJO.containsKey("prod_id"))
-						sample.setProd_id(sampleJO.getString("prod_id"));
-						if(sampleJO.containsKey("qd_t"))
-						sample.setQd_t(sampleJO.getString("qd_t"));
-						if(sampleJO.containsKey("row_id"))
-						sample.setRow_id(sampleJO.getString("row_id"));
-						if(sampleJO.containsKey("sc_id"))
-						sample.setSc_id(sampleJO.getString("sc_id"));
-						if(sampleJO.containsKey("sh_t"))
-						sample.setSh_t(sampleJO.getString("sh_t"));
-						if(sampleJO.containsKey("sn_t"))
-						sample.setSn_t(sampleJO.getString("sn_t"));
-						if(sampleJO.containsKey("snl_t"))
-						sample.setSnl_t(sampleJO.getString("snl_t"));
-						if(sampleJO.containsKey("st_lv"))
-						sample.setSt_lv(sampleJO.getString("st_lv"));
-						if(sampleJO.containsKey("st_t"))
-						sample.setSt_t(sampleJO.getString("st_t"));
-						if(sampleJO.containsKey("sy_dt"))
-						sample.setSy_dt(sampleJO.getString("sy_dt"));
-						if(sampleJO.containsKey("sz_t"))
-						sample.setSz_t(sampleJO.getString("sz_t"));
-						if(sampleJO.containsKey("test_dt"))
-						sample.setTest_dt(sampleJO.getString("test_dt"));
-						if(sampleJO.containsKey("txm"))
-						sample.setTxm(sampleJO.getString("txm"));
-						if(sampleJO.containsKey("ty_lv"))
-						sample.setTy_lv(sampleJO.getString("ty_lv"));
-						if(sampleJO.containsKey("wa_t"))
-						sample.setWa_t(sampleJO.getString("wa_t"));
-						if(sampleJO.containsKey("wj_t"))
-						sample.setWj_t(sampleJO.getString("wj_t"));
-						if(sampleJO.containsKey("zz_dt"))
-						sample.setZz_dt(sampleJO.getString("zz_dt"));
-						
-						int result = Integer.parseInt(iSampleService.addsample(sample).toString());
-						if(result>0){
-							String qrResult = MatrixToImageWriter.createQrImage("PS_"+sample.getId());
-							if(qrResult.length()>0){
-								HttpServletRequest request = ServletActionContext.getRequest();
-								String path = request.getScheme() + "://"
-										+ request.getServerName() + ":" + request.getServerPort()
-										+ request.getContextPath();
-								Sample upsample = new Sample();
-								upsample.setId(sample.getId());
-								upsample.setEwm(path+"/QRImages/"+qrResult);
-								iSampleService.updatesample(upsample);
+						//不包含委托组数字段不会新建记录
+						if(sampleJO.containsKey("entrustnum")){
+							String entrustnum =sampleJO.getString("entrustnum");
+							if(entrustnum!=null&&!entrustnum.equals("")&& StringUtils.isNumeric(entrustnum)){
+								int ennum= Integer.parseInt(entrustnum);
+								for(int index=0;index<ennum;index++){
+									////////////////////////////
+									sample.setId(null);
+									//批号
+									if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("sy_dt")&&
+											sampleJO.containsKey("prod_id")&&sampleJO.containsKey("c_id")){
+										sample.setLot(createSampleLot(sampleJO.getString("bu_id"),sampleJO.getString("sy_dt"),
+												pactId,sampleJO.getString("prod_id"),sampleJO.getString("c_id")));
+									}
+									//编号
+									if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("prod_id")){
+										sample.setPart(createSampleCode(sampleJO.getString("bu_id"),sampleJO.getString("prod_id")));
+									}
+									/////////////////////////////////
+									int result = Integer.parseInt(iSampleService.addsample(sample).toString());
+									if(result>0){
+										String qrResult = MatrixToImageWriter.createQrImage("PS_"+sample.getId());
+										if(qrResult.length()>0){
+											HttpServletRequest request = ServletActionContext.getRequest();
+											String path = request.getScheme() + "://"
+													+ request.getServerName() + ":" + request.getServerPort()
+													+ request.getContextPath();
+											Sample upsample = new Sample();
+											upsample.setId(sample.getId());
+											upsample.setEwm(path+"/QRImages/"+qrResult);
+											iSampleService.updatesample(upsample);
+										}
+										
+									}
+									sampleIds.add(sample.getId()+""); 
+									
+								}
+							}
+							else{
+								
+								logger.info("entrustnum不能为空且必须是数字！");
 							}
 							
 						}
-						sampleIds.add(sample.getId()+"");
+						else{
+							logger.info("entrustnum为必须字段！");
+						}
+						 
 					}
 					else{
-						sampleIds.add(sampleJO.getString("id"));
+						
+						//不包含委托组数字段不会新建记录
+						if(sampleJO.containsKey("entrustnum")){
+							String entrustnum =sampleJO.getString("entrustnum");
+							if(entrustnum!=null&&!entrustnum.equals("")&& StringUtils.isNumeric(entrustnum)){
+								int ennum= Integer.parseInt(entrustnum);
+								for(int index=0;index<ennum;index++){
+									
+									//第一条修改，其他的新建
+									if(index==0){
+										if(sampleJO.containsKey("id")){
+											sample.setId(Long.parseLong(sampleJO.getString("id")));
+										}
+										//批号
+										if(sampleJO.containsKey("lot")){
+											sample.setLot(sampleJO.getString("lot"));
+										}
+										//编号
+										if(sampleJO.containsKey("part")){
+											sample.setPart(sampleJO.getString("part"));
+										}
+										sampleIds.add(sampleJO.getString("id"));
+										
+										iSampleService.updatesample(sample);
+									}
+									else{
+										////////////////////////////
+										sample.setId(null);
+										//批号
+										if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("sy_dt")&&
+												sampleJO.containsKey("prod_id")&&sampleJO.containsKey("c_id")){
+											sample.setLot(createSampleLot(sampleJO.getString("bu_id"),sampleJO.getString("sy_dt"),
+													pactId,sampleJO.getString("prod_id"),sampleJO.getString("c_id")));
+										}
+										//编号
+										if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("prod_id")){
+											sample.setPart(createSampleCode(sampleJO.getString("bu_id"),sampleJO.getString("prod_id")));
+										}
+										/////////////////////////////////
+										int result = Integer.parseInt(iSampleService.addsample(sample).toString());
+										if(result>0){
+											String qrResult = MatrixToImageWriter.createQrImage("PS_"+sample.getId());
+											if(qrResult.length()>0){
+												HttpServletRequest request = ServletActionContext.getRequest();
+												String path = request.getScheme() + "://"
+														+ request.getServerName() + ":" + request.getServerPort()
+														+ request.getContextPath();
+												Sample upsample = new Sample();
+												upsample.setId(sample.getId());
+												upsample.setEwm(path+"/QRImages/"+qrResult);
+												iSampleService.updatesample(upsample);
+											}
+											
+										}
+										sampleIds.add(sample.getId()+""); 
+									}
+									
+									
+								}
+							}
+							else{
+								
+								logger.info("entrustnum不能为空且必须是数字！");
+							}
+							
+						}
+						else{
+							logger.info("entrustnum为必须字段！");
+						}
+						
+						
 					}
 					
 				 }
@@ -648,6 +748,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 			// TODO Auto-generated catch block
 			logger.info(e);
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return sampleIds;
 	}
@@ -1018,12 +1119,9 @@ public class EntrustServiceImpl  implements IEntrustService {
     	Pact pact = iPactService.selectpactById(pact_id);
 		StringBuffer sb = new StringBuffer();
 		String sy_dtStr="";
-		try {
-			sy_dtStr = sy_dt.substring(0,10);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 
+		sy_dtStr = sy_dt.substring(0,10);
+	 
 		//送样日期_委托单位ID_检测项目ID
 		groupcode=sy_dtStr+"_"+pact.getPid()+"_"+prod_id;
 		sb.append(sy_dtStr.substring(2,10).replaceAll("-", ""));

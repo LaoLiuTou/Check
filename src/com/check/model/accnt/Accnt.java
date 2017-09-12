@@ -183,5 +183,20 @@ public class Accnt {
 	}
 
 
+	private String c_nm_t;
+	private String c_ph_p;
+	public String getC_nm_t() {
+		return c_nm_t;
+	}
+	public void setC_nm_t(String c_nm_t) {
+		this.c_nm_t = c_nm_t;
+	}
+	public String getC_ph_p() {
+		return c_ph_p;
+	}
+	public void setC_ph_p(String c_ph_p) {
+		this.c_ph_p = c_ph_p;
+	}
+	
 
 }

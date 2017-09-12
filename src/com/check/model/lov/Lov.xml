@@ -27,6 +27,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="column_type != null"> AND COLUMN_TYPE =#{column_type} </if>
 		</trim>  
 		ORDER BY ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -47,6 +48,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="column_type != null"> AND COLUMN_TYPE =#{column_type} </if>
 		</trim>  
 		<if test="order != null"> ${order} </if> 
 		LIMIT #{fromPage},#{toPage} 
@@ -68,6 +70,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="column_type != null"> AND COLUMN_TYPE =#{column_type} </if>
 		</trim>  
 	</select>
 
@@ -82,6 +85,7 @@
 			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
 			<if test="c_dt != null">C_DT=#{c_dt}, </if>
 			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="column_type != null">COLUMN_TYPE=#{column_type}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -96,6 +100,7 @@
 			<if test="bu_id != null">BU_ID, </if>
 			<if test="c_dt != null">C_DT, </if>
 			<if test="up_dt != null">UP_DT, </if>
+			<if test="column_type != null">COLUMN_TYPE, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="ty_lv != null">#{ty_lv}, </if>
@@ -105,6 +110,7 @@
 			<if test="bu_id != null">#{bu_id}, </if>
 			<if test="c_dt != null">#{c_dt}, </if>
 			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="column_type != null">#{column_type}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

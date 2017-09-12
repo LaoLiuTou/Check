@@ -171,6 +171,15 @@ public class LovAction implements Action {
 	public void setUp_dt(String up_dt) {
 		this.up_dt = up_dt;
 	}
+	
+	private String column_type;
+	
+	public String getColumn_type() {
+		return column_type;
+	}
+	public void setColumn_type(String column_type) {
+		this.column_type = column_type;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -186,6 +195,7 @@ public class LovAction implements Action {
 		lov.setC_dt(sdf.parse(c_dt));
 		if(up_dt!=null&&!up_dt.equals(""))
 		lov.setUp_dt(sdf.parse(up_dt));
+		lov.setColumn_type(column_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iLovService.addlov(lov).toString());
@@ -217,7 +227,7 @@ public class LovAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			paramMap.put("ty_lv", ty_lv);
 			paramMap.put("nm_t", nm_t);
@@ -232,6 +242,7 @@ public class LovAction implements Action {
 			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 			if(up_dtTo!=null&&!up_dtTo.equals(""))
 			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+			paramMap.put("column_type", column_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iLovService.selectlovByParam(paramMap); 
@@ -282,6 +293,7 @@ public class LovAction implements Action {
 		lov.setC_dt(sdf.parse(c_dt));
 		if(up_dt!=null&&!up_dt.equals(""))
 		lov.setUp_dt(sdf.parse(up_dt));
+		lov.setColumn_type(column_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iLovService.updatelov(lov);
@@ -390,6 +402,7 @@ public class LovAction implements Action {
 		paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 		if(up_dtTo!=null&&!up_dtTo.equals(""))
 		paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		paramMap.put("column_type", column_type);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

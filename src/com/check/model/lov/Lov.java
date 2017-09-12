@@ -71,5 +71,13 @@ public class Lov {
 	}
 
 
+	private String column_type;
+	public String getColumn_type() {
+		return column_type;
+	}
+	public void setColumn_type(String column_type) {
+		this.column_type = column_type;
+	}
+	
 
 }

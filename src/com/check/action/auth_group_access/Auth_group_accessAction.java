@@ -191,7 +191,7 @@ public class Auth_group_accessAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			paramMap.put("uid", uid);
 			paramMap.put("group_id", group_id);

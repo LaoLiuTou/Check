@@ -12,70 +12,74 @@
 	</delete>
 
 	<select id="selectaccntByParam" parameterType="java.util.Map" resultType="Accnt">
-		SELECT *
-		FROM accnt
+		SELECT a.*,c.NM_T as C_NM_T,c.PH_P as C_PH_P
+		FROM accnt a left join  cont c  on a.CONT_ID=c.ID
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
-			<if test="xz_lv != null"> AND XZ_LV =#{xz_lv} </if>
-			<if test="wz_t != null"> AND WZ_T =#{wz_t} </if>
-			<if test="hy_lv != null"> AND HY_LV =#{hy_lv} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="lv_lv != null"> AND LV_LV =#{lv_lv} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="work_p != null"> AND WORK_P =#{work_p} </if>
-			<if test="email != null"> AND EMAIL =#{email} </if>
-			<if test="state != null"> AND STATE =#{state} </if>
-			<if test="city != null"> AND CITY =#{city} </if>
-			<if test="county != null"> AND COUNTY =#{county} </if>
-			<if test="street != null"> AND STREET =#{street} </if>
-			<if test="postal != null"> AND POSTAL =#{postal} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND a.NM_T LIKE #{nm_t} </if>
+			<if test="xz_lv != null"> AND a.XZ_LV =#{xz_lv} </if>
+			<if test="wz_t != null"> AND a.WZ_T =#{wz_t} </if>
+			<if test="hy_lv != null"> AND a.HY_LV =#{hy_lv} </if>
+			<if test="ty_lv != null"> AND a.TY_LV LIKE #{ty_lv} </if>
+			<if test="lv_lv != null"> AND a.LV_LV =#{lv_lv} </if>
+			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="work_p != null"> AND a.WORK_P =#{work_p} </if>
+			<if test="email != null"> AND a.EMAIL =#{email} </if>
+			<if test="state != null"> AND a.STATE =#{state} </if>
+			<if test="city != null"> AND a.CITY =#{city} </if>
+			<if test="county != null"> AND a.COUNTY =#{county} </if>
+			<if test="street != null"> AND a.STREET =#{street} </if>
+			<if test="postal != null"> AND a.POSTAL =#{postal} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="cont_id != null"> AND a.CONT_ID =#{cont_id} </if>
+			<if test="c_nm_t != null"> AND c.NM_T LIKE #{c_nm_t} </if>
+			<if test="c_ph_p != null"> AND c.PH_P LIKE #{c_ph_p} </if>
 		</trim>  
 		ORDER BY ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountaccntByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM accnt 
+		SELECT COUNT(a.ID) 
+		FROM accnt a left join  cont c  on a.CONT_ID=c.ID
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
-			<if test="xz_lv != null"> AND XZ_LV =#{xz_lv} </if>
-			<if test="wz_t != null"> AND WZ_T =#{wz_t} </if>
-			<if test="hy_lv != null"> AND HY_LV =#{hy_lv} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="lv_lv != null"> AND LV_LV =#{lv_lv} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="work_p != null"> AND WORK_P =#{work_p} </if>
-			<if test="email != null"> AND EMAIL =#{email} </if>
-			<if test="state != null"> AND STATE =#{state} </if>
-			<if test="city != null"> AND CITY =#{city} </if>
-			<if test="county != null"> AND COUNTY =#{county} </if>
-			<if test="street != null"> AND STREET =#{street} </if>
-			<if test="postal != null"> AND POSTAL =#{postal} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="nm_t != null"> AND a.NM_T LIKE #{nm_t} </if>
+			<if test="xz_lv != null"> AND a.XZ_LV =#{xz_lv} </if>
+			<if test="wz_t != null"> AND a.WZ_T =#{wz_t} </if>
+			<if test="hy_lv != null"> AND a.HY_LV =#{hy_lv} </if>
+			<if test="ty_lv != null"> AND a.TY_LV LIKE #{ty_lv} </if>
+			<if test="lv_lv != null"> AND a.LV_LV =#{lv_lv} </if>
+			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="work_p != null"> AND a.WORK_P =#{work_p} </if>
+			<if test="email != null"> AND a.EMAIL =#{email} </if>
+			<if test="state != null"> AND a.STATE =#{state} </if>
+			<if test="city != null"> AND a.CITY =#{city} </if>
+			<if test="county != null"> AND a.COUNTY =#{county} </if>
+			<if test="street != null"> AND a.STREET =#{street} </if>
+			<if test="postal != null"> AND a.POSTAL =#{postal} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="cont_id != null"> AND a.CONT_ID =#{cont_id} </if>
+			<if test="c_nm_t != null"> AND c.NM_T LIKE #{c_nm_t} </if>
+			<if test="c_ph_p != null"> AND c.PH_P LIKE #{c_ph_p} </if>
 		</trim>  
 	</select>
 

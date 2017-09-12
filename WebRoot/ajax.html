@@ -30,17 +30,19 @@ alert(localStorage.getItem("test")); */
 	    }      
 	}  */
  
-	var  token = "5ee2b324-2d63-4ac4-b84a-3f69bd75e365";
+	var  token = "5b26fb1a-58d5-4840-b622-4a5a7a853b16";
 	var timestamp = Date.parse(new Date());
 	var hash = md5(token+timestamp+"!QAZXSW@"); 
 	console.log(timestamp);
 	console.log(hash);
     $.ajax({
-           url:'http://192.168.1.144/Check/appAddAccnt',
+           url:'http://192.168.1.144/Check/listAccnt?page=1&size=10',
            type:"POST",
            //dataType : "json",
-           //data : {'nm_t':'%吉林%水源水利%'},
-           data : {'bu_id':'11','nm_t':'客户名1','cont':'[{"nm_t":"联系人1","ph_p":"联系人电话1","flag":"Y"}]'},
+           data : {'nm_t':'%客%1%','c_nm_t':'%联系人%','c_ph_p':'%联系人电话%'},
+          // data : {"jd_lv_state":"('未委托','已发货','待发货','null','已提交','已接收')"},
+           //data : {'c_id':'5',"jd_lv_state":"('已取消','已委托','已检验')"},
+           //data : {'bu_id':'11','nm_t':'客户名1','cont':'[{"nm_t":"联系人1","ph_p":"联系人电话1","flag":"Y"}]'},
            //data : {'username':'GHJL001','userpwd':'000000'},
            headers: {
             "token" : token,

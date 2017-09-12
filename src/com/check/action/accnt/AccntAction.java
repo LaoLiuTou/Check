@@ -288,7 +288,24 @@ public class AccntAction implements Action {
 		this.atta = atta;
 	}
 	
+	//主要联系人
+	private String c_nm_t;
+	private String c_ph_p;
+	
+	
 	 
+	public String getC_nm_t() {
+		return c_nm_t;
+	}
+	public void setC_nm_t(String c_nm_t) {
+		this.c_nm_t = c_nm_t;
+	}
+	public String getC_ph_p() {
+		return c_ph_p;
+	}
+	public void setC_ph_p(String c_ph_p) {
+		this.c_ph_p = c_ph_p;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -472,7 +489,7 @@ public class AccntAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		Map  paramMap = new HashMap ();
 		paramMap.put("fromPage",(page-1)*size);
-		paramMap.put("toPage",page*size); 
+		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
 			paramMap.put("row_id", row_id);
 			if(c_dtFrom!=null&&!c_dtFrom.equals(""))
@@ -501,6 +518,9 @@ public class AccntAction implements Action {
 			paramMap.put("postal", postal);
 			paramMap.put("bu_id", bu_id);
 			paramMap.put("cont_id", cont_id);
+			paramMap.put("c_nm_t", c_nm_t);
+			paramMap.put("c_ph_p", c_ph_p);
+
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iAccntService.selectaccntByParam(paramMap); 
