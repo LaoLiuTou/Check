@@ -3,7 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.accnt.IAccntMapper"> 
 	<select id="selectaccntById" parameterType="String" resultType="Accnt">
-		SELECT * FROM accnt WHERE ID=#{id}
+		SELECT a.*,c.NM_T as C_NM_T,c.PH_P as C_PH_P
+		FROM accnt a left join  cont c  on a.CONT_ID=c.ID WHERE a.ID=#{id}
 	</select>
 
 
@@ -13,7 +14,7 @@
 
 	<select id="selectaccntByParam" parameterType="java.util.Map" resultType="Accnt">
 		SELECT a.*,c.NM_T as C_NM_T,c.PH_P as C_PH_P
-		FROM accnt a left join  cont c  on a.CONT_ID=c.ID
+		FROM accnt a left join  cont c  on a.CONT_ID=c.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
@@ -44,7 +45,7 @@
 			<if test="c_nm_t != null"> AND c.NM_T LIKE #{c_nm_t} </if>
 			<if test="c_ph_p != null"> AND c.PH_P LIKE #{c_ph_p} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 

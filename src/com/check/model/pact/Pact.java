@@ -254,6 +254,23 @@ public class Pact {
 		this.tj_f = tj_f;
 	}
 
-
+	/** 委托单位 */
+	private String a_e;
+	/** 监理单位 */
+	private String a_sv;
+	public String getA_e() {
+		return a_e;
+	}
+	public void setA_e(String a_e) {
+		this.a_e = a_e;
+	}
+	public String getA_sv() {
+		return a_sv;
+	}
+	public void setA_sv(String a_sv) {
+		this.a_sv = a_sv;
+	}
+	
+	
 
 }

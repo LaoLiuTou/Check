@@ -516,6 +516,29 @@ public class SampleAction implements Action {
 	public void setEntrustnum(String entrustnum) {
 		this.entrustnum = entrustnum;
 	}
+	
+	//
+	private String pact_nm_t;
+	private String a_nm_t;
+	private String prod_nm_t;
+	public String getPact_nm_t() {
+		return pact_nm_t;
+	}
+	public void setPact_nm_t(String pact_nm_t) {
+		this.pact_nm_t = pact_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	public String getProd_nm_t() {
+		return prod_nm_t;
+	}
+	public void setProd_nm_t(String prod_nm_t) {
+		this.prod_nm_t = prod_nm_t;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -813,6 +836,10 @@ public class SampleAction implements Action {
 			paramMap.put("txm", txm);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("copy_id", copy_id);
+			
+			paramMap.put("pact_nm_t", pact_nm_t);
+			paramMap.put("a_nm_t", a_nm_t);
+			paramMap.put("prod_nm_t", prod_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iSampleService.selectsampleByParam(paramMap); 
@@ -1064,6 +1091,10 @@ public class SampleAction implements Action {
 			paramMap.put("copy_id", copy_id);
 			paramMap.put("jd_lv_state", jd_lv_state);
 			
+			paramMap.put("pact_nm_t", pact_nm_t);
+			paramMap.put("a_nm_t", a_nm_t);
+			paramMap.put("prod_nm_t", prod_nm_t);
+			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iSampleService.selectCountsampleByParam(paramMap);
@@ -1164,6 +1195,9 @@ public class SampleAction implements Action {
 		paramMap.put("txm", txm);
 		paramMap.put("fq_flg", fq_flg);
 		paramMap.put("copy_id", copy_id);
+		paramMap.put("pact_nm_t", pact_nm_t);
+		paramMap.put("a_nm_t", a_nm_t);
+		paramMap.put("prod_nm_t", prod_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iSampleService.selectCountsampleByParam(paramMap);

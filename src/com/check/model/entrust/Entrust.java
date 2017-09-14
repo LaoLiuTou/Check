@@ -277,7 +277,28 @@ public class Entrust {
 	public void setCopy_id(Long copy_id) {
 		this.copy_id = copy_id;
 	}
-
+	
+	private String pact_nm_t;
+	private String a_nm_t;
+	private String prod_nm_t;
+	public String getPact_nm_t() {
+		return pact_nm_t;
+	}
+	public void setPact_nm_t(String pact_nm_t) {
+		this.pact_nm_t = pact_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	public String getProd_nm_t() {
+		return prod_nm_t;
+	}
+	public void setProd_nm_t(String prod_nm_t) {
+		this.prod_nm_t = prod_nm_t;
+	}
 
 
 }

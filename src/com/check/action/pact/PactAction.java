@@ -344,6 +344,25 @@ public class PactAction implements Action {
 	public void setTj_f(String tj_f) {
 		this.tj_f = tj_f;
 	}
+	
+	
+	/** 委托单位 */
+	private String a_e;
+	/** 监理单位 */
+	private String a_sv;
+	public String getA_e() {
+		return a_e;
+	}
+	public void setA_e(String a_e) {
+		this.a_e = a_e;
+	}
+	public String getA_sv() {
+		return a_sv;
+	}
+	public void setA_sv(String a_sv) {
+		this.a_sv = a_sv;
+	}
+	
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -568,6 +587,8 @@ public class PactAction implements Action {
 			paramMap.put("terms", terms);
 			paramMap.put("cm_tx", cm_tx);
 			paramMap.put("tj_f", tj_f);
+			paramMap.put("a_e", a_e);
+			paramMap.put("a_sv", a_sv);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iPactService.selectpactByParam(paramMap); 
@@ -772,6 +793,8 @@ public class PactAction implements Action {
 		paramMap.put("terms", terms);
 		paramMap.put("cm_tx", cm_tx);
 		paramMap.put("tj_f", tj_f);
+		paramMap.put("a_e", a_e);
+		paramMap.put("a_sv", a_sv);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

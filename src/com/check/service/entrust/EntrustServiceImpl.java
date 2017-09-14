@@ -232,12 +232,13 @@ public class EntrustServiceImpl  implements IEntrustService {
 		        //编号
 		        //String pid,String wt_dt,String bu_id,String c_id
 		        if(entrust.getFlg().equals("Y")){
-			    	entrust.setCode(createEntrustCode(entrust.getPid(),entrust.getWt_dt(),
-								entrust.getBu_id(),entrust.getC_id()));
+		        	entrust.setCode(createEntrustAppend(entrust.getPid(),entrust.getWt_dt(),
+							entrust.getBu_id(),entrust.getC_id()));
+			    	
 				}
 				else{
-					entrust.setCode(createEntrustAppend(entrust.getPid(),entrust.getWt_dt(),
-								entrust.getBu_id(),entrust.getC_id()));
+					entrust.setCode(createEntrustCode(entrust.getPid(),entrust.getWt_dt(),
+							entrust.getBu_id(),entrust.getC_id()));
 				}
 		        //流水号
 			    entrust.setLs_n(createEntrustLs_t(entrust.getBu_id()));

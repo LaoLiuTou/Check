@@ -3,7 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.pact.IPactMapper"> 
 	<select id="selectpactById" parameterType="String" resultType="Pact">
-		SELECT * FROM pact WHERE ID=#{id}
+	    SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV 
+		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
+		WHERE p.ID=#{id} 
 	</select>
 
 
@@ -12,88 +14,94 @@
 	</delete>
 
 	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
-		SELECT *
-		FROM pact
+		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV 
+		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="code != null"> AND CODE =#{code} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
-			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
-			<if test="jl_cont_id != null"> AND JL_CONT_ID =#{jl_cont_id} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="qd_dt != null"> AND QD_DT =#{qd_dt} </if>
-			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
-			<if test="sjks_dt != null"> AND SJKS_DT =#{sjks_dt} </if>
-			<if test="jhwc_dt != null"> AND JHWC_DT =#{jhwc_dt} </if>
-			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
-			<if test="wtfy != null"> AND WTFY =#{wtfy} </if>
-			<if test="db_id != null"> AND DB_ID =#{db_id} </if>
-			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="ls_t != null"> AND LS_T =#{ls_t} </if>
-			<if test="state != null"> AND STATE =#{state} </if>
-			<if test="city != null"> AND CITY =#{city} </if>
-			<if test="county != null"> AND COUNTY =#{county} </if>
-			<if test="street != null"> AND STREET =#{street} </if>
-			<if test="flg != null"> AND FLG =#{flg} </if>
-			<if test="ewm != null"> AND EWM =#{ewm} </if>
-			<if test="terms != null"> AND TERMS =#{terms} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="tj_f != null"> AND TJ_F =#{tj_f} </if>
+			<if test="id != null"> AND p.ID =#{id} </if>
+			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(p.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(p.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND p.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(p.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(p.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND p.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND p.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND p.PID =#{pid} </if>
+			<if test="code != null"> AND p.CODE LIKE #{code} </if>
+			<if test="ty_lv != null"> AND p.TY_LV LIKE #{ty_lv} </if>
+			<if test="nm_t != null"> AND p.NM_T LIKE #{nm_t} </if>
+			<if test="jl_id != null"> AND p.JL_ID =#{jl_id} </if>
+			<if test="jl_cont_id != null"> AND p.JL_CONT_ID =#{jl_cont_id} </if>
+			<if test="st_lv != null"> AND p.ST_LV LIKE #{st_lv} </if>
+			<if test="qd_dt != null"> AND p.QD_DT =#{qd_dt} </if>
+			<if test="sjwc_dt != null"> AND p.SJWC_DT =#{sjwc_dt} </if>
+			<if test="sjks_dt != null"> AND p.SJKS_DT =#{sjks_dt} </if>
+			<if test="jhwc_dt != null"> AND p.JHWC_DT =#{jhwc_dt} </if>
+			<if test="ff_dt != null"> AND p.FF_DT =#{ff_dt} </if>
+			<if test="wtfy != null"> AND p.WTFY =#{wtfy} </if>
+			<if test="db_id != null"> AND p.DB_ID =#{db_id} </if>
+			<if test="cont_id != null"> AND p.CONT_ID =#{cont_id} </if>
+			<if test="bu_id != null"> AND p.BU_ID =#{bu_id} </if>
+			<if test="ls_t != null"> AND p.LS_T =#{ls_t} </if>
+			<if test="state != null"> AND p.STATE =#{state} </if>
+			<if test="city != null"> AND p.CITY =#{city} </if>
+			<if test="county != null"> AND p.COUNTY =#{county} </if>
+			<if test="street != null"> AND p.STREET =#{street} </if>
+			<if test="flg != null"> AND p.FLG LIKE #{flg} </if>
+			<if test="ewm != null"> AND p.EWM =#{ewm} </if>
+			<if test="terms != null"> AND p.TERMS =#{terms} </if>
+			<if test="cm_tx != null"> AND p.CM_TX =#{cm_tx} </if>
+			<if test="tj_f != null"> AND p.TJ_F =#{tj_f} </if>
+			
+			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
+			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY p.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountpactByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM pact 
+		SELECT COUNT(p.ID) 
+		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="code != null"> AND CODE =#{code} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
-			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
-			<if test="jl_cont_id != null"> AND JL_CONT_ID =#{jl_cont_id} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="qd_dt != null"> AND QD_DT =#{qd_dt} </if>
-			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
-			<if test="sjks_dt != null"> AND SJKS_DT =#{sjks_dt} </if>
-			<if test="jhwc_dt != null"> AND JHWC_DT =#{jhwc_dt} </if>
-			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
-			<if test="wtfy != null"> AND WTFY =#{wtfy} </if>
-			<if test="db_id != null"> AND DB_ID =#{db_id} </if>
-			<if test="cont_id != null"> AND CONT_ID =#{cont_id} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="ls_t != null"> AND LS_T =#{ls_t} </if>
-			<if test="state != null"> AND STATE =#{state} </if>
-			<if test="city != null"> AND CITY =#{city} </if>
-			<if test="county != null"> AND COUNTY =#{county} </if>
-			<if test="street != null"> AND STREET =#{street} </if>
-			<if test="flg != null"> AND FLG =#{flg} </if>
-			<if test="ewm != null"> AND EWM =#{ewm} </if>
-			<if test="terms != null"> AND TERMS =#{terms} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="tj_f != null"> AND TJ_F =#{tj_f} </if>
+			<if test="id != null"> AND p.ID =#{id} </if>
+			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(p.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(p.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND p.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(p.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(p.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND p.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND p.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND p.PID =#{pid} </if>
+			<if test="code != null"> AND p.CODE LIKE #{code} </if>
+			<if test="ty_lv != null"> AND p.TY_LV LIKE #{ty_lv} </if>
+			<if test="nm_t != null"> AND p.NM_T LIKE #{nm_t} </if>
+			<if test="jl_id != null"> AND p.JL_ID =#{jl_id} </if>
+			<if test="jl_cont_id != null"> AND p.JL_CONT_ID =#{jl_cont_id} </if>
+			<if test="st_lv != null"> AND p.ST_LV LIKE  #{st_lv} </if>
+			<if test="qd_dt != null"> AND p.QD_DT =#{qd_dt} </if>
+			<if test="sjwc_dt != null"> AND p.SJWC_DT =#{sjwc_dt} </if>
+			<if test="sjks_dt != null"> AND p.SJKS_DT =#{sjks_dt} </if>
+			<if test="jhwc_dt != null"> AND p.JHWC_DT =#{jhwc_dt} </if>
+			<if test="ff_dt != null"> AND p.FF_DT =#{ff_dt} </if>
+			<if test="wtfy != null"> AND p.WTFY =#{wtfy} </if>
+			<if test="db_id != null"> AND p.DB_ID =#{db_id} </if>
+			<if test="cont_id != null"> AND p.CONT_ID =#{cont_id} </if>
+			<if test="bu_id != null"> AND p.BU_ID =#{bu_id} </if>
+			<if test="ls_t != null"> AND p.LS_T =#{ls_t} </if>
+			<if test="state != null"> AND p.STATE =#{state} </if>
+			<if test="city != null"> AND p.CITY =#{city} </if>
+			<if test="county != null"> AND p.COUNTY =#{county} </if>
+			<if test="street != null"> AND p.STREET =#{street} </if>
+			<if test="flg != null"> AND p.FLG LIKE #{flg} </if>
+			<if test="ewm != null"> AND p.EWM =#{ewm} </if>
+			<if test="terms != null"> AND p.TERMS =#{terms} </if>
+			<if test="cm_tx != null"> AND p.CM_TX =#{cm_tx} </if>
+			<if test="tj_f != null"> AND p.TJ_F =#{tj_f} </if>
+			
+			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
+			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
 		</trim>  
 	</select>
 

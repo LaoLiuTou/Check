@@ -3,7 +3,10 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.entrust.IEntrustMapper"> 
 	<select id="selectentrustById" parameterType="String" resultType="Entrust">
-		SELECT * FROM entrust WHERE ID=#{id}
+		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
+		FROM entrust a LEFT JOIN pact b ON a.PID=b.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		WHERE a.ID=#{id} 
 	</select>
 
 
@@ -12,94 +15,104 @@
 	</delete>
 
 	<select id="selectentrustByParam" parameterType="java.util.Map" resultType="Entrust">
-		SELECT *
-		FROM entrust
+		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
+		FROM entrust a LEFT JOIN pact b ON a.PID=b.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="code != null"> AND CODE =#{code} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="qy_lv != null"> AND QY_LV =#{qy_lv} </if>
-			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
-			<if test="sp_id != null"> AND SP_ID =#{sp_id} </if>
-			<if test="lq_id != null"> AND LQ_ID =#{lq_id} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="pay_lv != null"> AND PAY_LV =#{pay_lv} </if>
-			<if test="price != null"> AND PRICE =#{price} </if>
-			<if test="cs_n != null"> AND CS_N =#{cs_n} </if>
-			<if test="syr_id != null"> AND SYR_ID =#{syr_id} </if>
-			<if test="jh_dt != null"> AND JH_DT =#{jh_dt} </if>
-			<if test="cg_f != null"> AND CG_F =#{cg_f} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="flg != null"> AND FLG =#{flg} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="ls_n != null"> AND LS_N =#{ls_n} </if>
-			<if test="gg_code != null"> AND GG_CODE =#{gg_code} </if>
-			<if test="sy_code != null"> AND SY_CODE =#{sy_code} </if>
-			<if test="ewm != null"> AND EWM =#{ewm} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
-			<if test="submit != null"> AND SUBMIT =#{submit} </if>
-			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
-			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
-			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
-			<if test="spyj_t != null"> AND SPYJ_T =#{spyj_t} </if>
-			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="code != null"> AND a.CODE LIKE #{code} </if>
+			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="qy_lv != null"> AND a.QY_LV =#{qy_lv} </if>
+			<if test="jl_id != null"> AND a.JL_ID =#{jl_id} </if>
+			<if test="sp_id != null"> AND a.SP_ID =#{sp_id} </if>
+			<if test="lq_id != null"> AND a.LQ_ID =#{lq_id} </if>
+			<if test="st_lv != null"> AND a.ST_LV LIKE #{st_lv} </if>
+			<if test="pay_lv != null"> AND a.PAY_LV =#{pay_lv} </if>
+			<if test="price != null"> AND a.PRICE =#{price} </if>
+			<if test="cs_n != null"> AND a.CS_N =#{cs_n} </if>
+			<if test="syr_id != null"> AND a.SYR_ID =#{syr_id} </if>
+			<if test="jh_dt != null"> AND a.JH_DT =#{jh_dt} </if>
+			<if test="cg_f != null"> AND a.CG_F =#{cg_f} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="flg != null"> AND a.FLG LIKE #{flg} </if>
+			<if test="pid != null"> AND a.PID =#{pid} </if>
+			<if test="ls_n != null"> AND a.LS_N =#{ls_n} </if>
+			<if test="gg_code != null"> AND a.GG_CODE =#{gg_code} </if>
+			<if test="sy_code != null"> AND a.SY_CODE =#{sy_code} </if>
+			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="wt_dt != null"> AND a.WT_DT =#{wt_dt} </if>
+			<if test="submit != null"> AND a.SUBMIT =#{submit} </if>
+			<if test="sjwc_dt != null"> AND a.SJWC_DT =#{sjwc_dt} </if>
+			<if test="ff_dt != null"> AND a.FF_DT =#{ff_dt} </if>
+			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
+			<if test="spyj_t != null"> AND a.SPYJ_T =#{spyj_t} </if>
+			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			
+			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
+			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
+			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountentrustByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM entrust 
+		SELECT COUNT(a.ID) 
+		FROM entrust a LEFT JOIN pact b ON a.PID=b.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="code != null"> AND CODE =#{code} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="qy_lv != null"> AND QY_LV =#{qy_lv} </if>
-			<if test="jl_id != null"> AND JL_ID =#{jl_id} </if>
-			<if test="sp_id != null"> AND SP_ID =#{sp_id} </if>
-			<if test="lq_id != null"> AND LQ_ID =#{lq_id} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="pay_lv != null"> AND PAY_LV =#{pay_lv} </if>
-			<if test="price != null"> AND PRICE =#{price} </if>
-			<if test="cs_n != null"> AND CS_N =#{cs_n} </if>
-			<if test="syr_id != null"> AND SYR_ID =#{syr_id} </if>
-			<if test="jh_dt != null"> AND JH_DT =#{jh_dt} </if>
-			<if test="cg_f != null"> AND CG_F =#{cg_f} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="flg != null"> AND FLG =#{flg} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="ls_n != null"> AND LS_N =#{ls_n} </if>
-			<if test="gg_code != null"> AND GG_CODE =#{gg_code} </if>
-			<if test="sy_code != null"> AND SY_CODE =#{sy_code} </if>
-			<if test="ewm != null"> AND EWM =#{ewm} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="wt_dt != null"> AND WT_DT =#{wt_dt} </if>
-			<if test="submit != null"> AND SUBMIT =#{submit} </if>
-			<if test="sjwc_dt != null"> AND SJWC_DT =#{sjwc_dt} </if>
-			<if test="ff_dt != null"> AND FF_DT =#{ff_dt} </if>
-			<if test="fq_flg != null"> AND FQ_FLG =#{fq_flg} </if>
-			<if test="spyj_t != null"> AND SPYJ_T =#{spyj_t} </if>
-			<if test="copy_id != null"> AND COPY_ID =#{copy_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="code != null"> AND a.CODE LIKE #{code} </if>
+			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="qy_lv != null"> AND a.QY_LV =#{qy_lv} </if>
+			<if test="jl_id != null"> AND a.JL_ID =#{jl_id} </if>
+			<if test="sp_id != null"> AND a.SP_ID =#{sp_id} </if>
+			<if test="lq_id != null"> AND a.LQ_ID =#{lq_id} </if>
+			<if test="st_lv != null"> AND a.ST_LV LIKE #{st_lv} </if>
+			<if test="pay_lv != null"> AND a.PAY_LV =#{pay_lv} </if>
+			<if test="price != null"> AND a.PRICE =#{price} </if>
+			<if test="cs_n != null"> AND a.CS_N =#{cs_n} </if>
+			<if test="syr_id != null"> AND a.SYR_ID =#{syr_id} </if>
+			<if test="jh_dt != null"> AND a.JH_DT =#{jh_dt} </if>
+			<if test="cg_f != null"> AND a.CG_F =#{cg_f} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="flg != null"> AND a.FLG LIKE #{flg} </if>
+			<if test="pid != null"> AND a.PID =#{pid} </if>
+			<if test="ls_n != null"> AND a.LS_N =#{ls_n} </if>
+			<if test="gg_code != null"> AND a.GG_CODE =#{gg_code} </if>
+			<if test="sy_code != null"> AND a.SY_CODE =#{sy_code} </if>
+			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="wt_dt != null"> AND a.WT_DT =#{wt_dt} </if>
+			<if test="submit != null"> AND a.SUBMIT =#{submit} </if>
+			<if test="sjwc_dt != null"> AND a.SJWC_DT =#{sjwc_dt} </if>
+			<if test="ff_dt != null"> AND a.FF_DT =#{ff_dt} </if>
+			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
+			<if test="spyj_t != null"> AND a.SPYJ_T =#{spyj_t} </if>
+			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			
+			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
+			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
+			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 		</trim>  
 	</select>
 
