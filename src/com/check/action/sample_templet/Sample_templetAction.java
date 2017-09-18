@@ -1,5 +1,6 @@
 package com.check.action.sample_templet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -283,6 +284,125 @@ public class Sample_templetAction implements Action {
 			msg.append("\"更新失败！\"");
 			e.printStackTrace();
 		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	private String mulupdate;
+	private String muladd;
+	public String getMulupdate() {
+		return mulupdate;
+	}
+	public void setMulupdate(String mulupdate) {
+		this.mulupdate = mulupdate;
+	}
+	public String getMuladd() {
+		return muladd;
+	}
+	public void setMuladd(String muladd) {
+		this.muladd = muladd;
+	}
+	public String mulAdd() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		
+		JSONArray addJA=JSONArray.fromObject(muladd);
+		if(addJA!=null){
+			List<Sample_templet> tempList= new ArrayList<Sample_templet>();
+			for(int i=0;i<addJA.size();i++){
+				JSONObject  addJO = (JSONObject) addJA.get(i);
+				Sample_templet sample_templet =new Sample_templet(); 
+				 
+				if(addJO.containsKey("show_flg"))
+					sample_templet.setShow_flg(addJO.getString("show_flg"));
+				if(addJO.containsKey("sort"))
+					sample_templet.setSort(Long.parseLong(addJO.getString("sort")));
+				if(addJO.containsKey("lov_id"))
+					sample_templet.setLov_id(Long.parseLong(addJO.getString("lov_id")));
+				if(addJO.containsKey("prod_id"))
+					sample_templet.setProd_id(Long.parseLong(addJO.getString("prod_id")));
+				tempList.add(sample_templet);
+			}
+			
+			try {
+				iSample_templetService.muladdsample_templet(tempList);
+				
+				//iSample_templetService.muladdsample_templet(tempList);
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"添加成功！\"");
+				logger.info("批量添加成功！");
+			} catch (Exception e) {
+				logger.info("批量添加失败！"+e);
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"添加失败！\"");
+				e.printStackTrace();
+			}
+		}
+		else{
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"参数不能为空！\"");
+		}
+		
+		
+		
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String mulUpdate() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		
+		JSONArray updateJA=JSONArray.fromObject(mulupdate);
+		if(updateJA!=null){
+			List<Sample_templet> tempList= new ArrayList<Sample_templet>();
+			for(int i=0;i<updateJA.size();i++){
+				JSONObject  updateJO = (JSONObject) updateJA.get(i);
+				Sample_templet sample_templet =new Sample_templet(); 
+				if(updateJO.containsKey("id"))
+					sample_templet.setId(Long.parseLong(updateJO.getString("id")));
+				if(updateJO.containsKey("show_flg"))
+					sample_templet.setShow_flg(updateJO.getString("show_flg"));
+				if(updateJO.containsKey("sort"))
+					sample_templet.setSort(Long.parseLong(updateJO.getString("sort")));
+				if(updateJO.containsKey("lov_id"))
+					sample_templet.setLov_id(Long.parseLong(updateJO.getString("lov_id")));
+				if(updateJO.containsKey("prod_id"))
+					sample_templet.setProd_id(Long.parseLong(updateJO.getString("prod_id")));
+				tempList.add(sample_templet);
+			}
+			
+			try {
+				iSample_templetService.mulupdatesample_templet(tempList);
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"更新成功！\"");
+				logger.info("批量成功！");
+			} catch (Exception e) {
+				logger.info("更新失败！"+e);
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"批量失败！\"");
+				e.printStackTrace();
+			}
+		}
+		else{
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"参数不能为空！\"");
+		}
+		
+		
+
 		msg.append("}");
 		if(callback==null){
 			response.getWriter().write(msg.toString());

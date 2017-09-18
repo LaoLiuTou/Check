@@ -29,7 +29,7 @@
 			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
 			<if test="code != null"> AND a.CODE LIKE #{code} </if>
-			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="prod_id != null"> AND a.PROD_ID LIKE #{prod_id} </if>
 			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
 			<if test="qy_lv != null"> AND a.QY_LV =#{qy_lv} </if>
 			<if test="jl_id != null"> AND a.JL_ID =#{jl_id} </if>
@@ -81,7 +81,7 @@
 			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
 			<if test="code != null"> AND a.CODE LIKE #{code} </if>
-			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="prod_id != null"> AND a.PROD_ID LIKE #{prod_id} </if>
 			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
 			<if test="qy_lv != null"> AND a.QY_LV =#{qy_lv} </if>
 			<if test="jl_id != null"> AND a.JL_ID =#{jl_id} </if>

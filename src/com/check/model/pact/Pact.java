@@ -258,6 +258,8 @@ public class Pact {
 	private String a_e;
 	/** 监理单位 */
 	private String a_sv;
+	/** 待办单位 */
+	private String a_db;
 	public String getA_e() {
 		return a_e;
 	}
@@ -269,6 +271,12 @@ public class Pact {
 	}
 	public void setA_sv(String a_sv) {
 		this.a_sv = a_sv;
+	}
+	public String getA_db() {
+		return a_db;
+	}
+	public void setA_db(String a_db) {
+		this.a_db = a_db;
 	}
 	
 	

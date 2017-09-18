@@ -1,6 +1,9 @@
 package com.check.service.pact;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import com.check.model.pact.Pact;
 public interface IPactService {
 	/**
@@ -30,6 +33,12 @@ public interface IPactService {
  * @return
  */ 
 	public  Object addpact(Pact pact);
+	
+	/**
+	* 添加 
+	* @return
+	*/ 
+	public  int addPactAndAtta(Pact pact,String attastr);
 	/**
  * 删除 
  * @return 

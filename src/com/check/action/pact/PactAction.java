@@ -362,7 +362,14 @@ public class PactAction implements Action {
 	public void setA_sv(String a_sv) {
 		this.a_sv = a_sv;
 	}
-	
+	//附件
+	private String atta;
+	public String getAtta() {
+		return atta;
+	}
+	public void setAtta(String atta) {
+		this.atta = atta;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -384,7 +391,6 @@ public class PactAction implements Action {
 		else{ 
 			pact.setCode(createCode());
 		}
-		
 		
 		
 		pact.setTy_lv(ty_lv);
@@ -417,7 +423,8 @@ public class PactAction implements Action {
 		pact.setTj_f(tj_f);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			int result = Integer.parseInt(iPactService.addpact(pact).toString());
+			//int result = Integer.parseInt(iPactService.addpact(pact).toString());
+			int result = iPactService.addPactAndAtta(pact,atta);
 			if(result>0){
 				String qrResult = MatrixToImageWriter.createQrImage("AR_"+pact.getId());
 				if(qrResult.length()>0){

@@ -64,6 +64,18 @@ public class Prod_termServiceImpl  implements IProd_termService {
 	public  int deleteprod_term(String id){
 		return iProd_termMapper.deleteprod_term(id);
 	}
+ /**
+  * 删除 
+  * @return 
+  */ 
+ @Transactional
+ public  int deleteprod_termbyprod(String prod_id,List<Prod_term> list){
+	 int result= 0;
+	 iProd_termMapper.deleteprod_termbyprod(prod_id);
+	 result = iProd_termMapper.muladdprod_term(list);
+	 return result;
+	 
+ }
 
 }
 

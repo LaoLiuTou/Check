@@ -57,12 +57,22 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
 	}
 
 	/**
- * 删除 
- * @return 
- */ 
- @Transactional
+	 * 删除 
+	 * @return 
+	 */ 
+	 @Transactional
 	public  int deletesample_templet(String id){
 		return iSample_templetMapper.deletesample_templet(id);
+	}
+
+	 @Transactional
+	public int mulupdatesample_templet(List<Sample_templet> sample_templetList) {
+		 return iSample_templetMapper.mulupdatesample_templet(sample_templetList);
+	}
+
+	 @Transactional
+	public int muladdsample_templet(List<Sample_templet> sample_templetList) {
+		 return iSample_templetMapper.muladdsample_templet(sample_templetList);
 	}
 
 }

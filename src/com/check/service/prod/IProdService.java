@@ -1,6 +1,9 @@
 package com.check.service.prod;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import com.check.model.prod.Prod;
 public interface IProdService {
 	/**
@@ -35,6 +38,10 @@ public interface IProdService {
  * @return 
  */ 
 	public  int deleteprod(String id);
-
+	/**
+	  * 添加流程 
+	  * @return
+	  */ 
+	 public  Object flowprod(Prod prod,String muladd,String termids);
 }
 

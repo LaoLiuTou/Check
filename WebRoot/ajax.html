@@ -36,14 +36,18 @@ alert(localStorage.getItem("test")); */
 	console.log(timestamp);
 	console.log(hash);
     $.ajax({
-           url:'http://192.168.1.144/Check/listEntrust?page=1&size=10',
+           url:'http://192.168.1.144/Check/flowProd',
            type:"POST",
            //dataType : "json",
-          data : {'pact_nm_t':'%东辽县渭津%'},
+          //data : {'testid':'1'},
           // data : {'nm_t':'%敦化市牡丹江%','code':'%GHJC%','a_e':'%吉林珂海水利水%','a_sv':'%吉林%'},
           // data : {"jd_lv_state":"('未委托','已发货','待发货','null','已提交','已接收')"},
            //data : {'c_id':'5',"jd_lv_state":"('已取消','已委托','已检验')"},
            //data : {'bu_id':'11','nm_t':'客户名1','cont':'[{"nm_t":"联系人1","ph_p":"联系人电话1","flag":"Y"}]'},
+           //data : {'mulupdate':'[{"id":"1","show_flg":"N","sort":"111","lov_id":"1242","prod_id":"111"},{"id":"2","show_flg":"N","sort":"112","lov_id":"1243","prod_id":"111"}]'},
+           data : {'nm_t':'1000','c_id':'1000','pid':'1000',
+                  'termids':'1000|1002|1001|1005|1006',
+                  'muladd':'[{"id":"1","show_flg":"N","sort":"111","lov_id":"1242"},{"id":"2","show_flg":"N","sort":"112","lov_id":"1243"}]'},
            //data : {'sampleids':'{"1":"3","2":"2","3":"2","4":"3"}'},
            headers: {
             "token" : token,

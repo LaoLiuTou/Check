@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.prod_term.IProd_termMapper"> 
 	<select id="selectprod_termById" parameterType="String" resultType="Prod_term">
-		SELECT * FROM prod_term WHERE ID=#{id}
+		SELECT p.*,t.NM_T as T_NM_T FROM prod_term p LEFT JOIN terms t on p.TERM_ID=t.ID WHERE p.ID=#{id}
 	</select>
 
 
@@ -11,39 +11,42 @@
 		DELETE FROM prod_term WHERE ID=#{id}
 	</delete>
 
+	<delete id="deleteprod_termbyprod" parameterType="String"> 
+		DELETE FROM prod_term WHERE PROD_ID=#{prod_id}
+	</delete>
+
 	<select id="selectprod_termByParam" parameterType="java.util.Map" resultType="Prod_term">
-		SELECT *
-		FROM prod_term
+		SELECT p.*,t.NM_T as T_NM_T FROM prod_term p LEFT JOIN terms t on p.TERM_ID=t.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="term_id != null"> AND TERM_ID =#{term_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="id != null"> AND p.ID =#{id} </if>
+			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
+			<if test="prod_id != null"> AND p.PROD_ID =#{prod_id} </if>
+			<if test="term_id != null"> AND p.TERM_ID =#{term_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(p.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(p.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND p.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(p.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(p.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND p.UP_DT =#{up_dt} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY p.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountprod_termByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM prod_term 
+		SELECT COUNT(p.ID) 
+		FROM prod_term p LEFT JOIN terms t on p.TERM_ID=t.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="term_id != null"> AND TERM_ID =#{term_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="id != null"> AND p.ID =#{id} </if>
+			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
+			<if test="prod_id != null"> AND p.PROD_ID =#{prod_id} </if>
+			<if test="term_id != null"> AND p.TERM_ID =#{term_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(p.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(p.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND p.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(p.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(p.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND p.UP_DT =#{up_dt} </if>
 		</trim>  
 	</select>
 
@@ -80,4 +83,15 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>
+	
+		<!-- 批量增加操作 -->  
+    <insert id="muladdprod_term" parameterType="java.util.List" >  
+	 	
+        INSERT INTO PROD_TERM(PROD_ID,TERM_ID) VALUES  
+        <foreach collection="list" item="item" index="index" separator=",">  
+            (#{item.prod_id},#{item.term_id})  
+        </foreach> 
+       
+    </insert>
+    
 </mapper>

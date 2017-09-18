@@ -1,6 +1,9 @@
 package com.check.service.prod_term;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import com.check.model.prod_term.Prod_term;
 public interface IProd_termService {
 	/**
@@ -36,5 +39,12 @@ public interface IProd_termService {
  */ 
 	public  int deleteprod_term(String id);
 
+	 /**
+	  * 删除 
+	  * @return 
+	  */ 
+	 public  int deleteprod_termbyprod(String prod_id,List<Prod_term> list);
+	
+	
 }
 

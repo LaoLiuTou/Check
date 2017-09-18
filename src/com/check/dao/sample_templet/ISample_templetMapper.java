@@ -23,18 +23,28 @@ import com.check.model.sample_templet.Sample_templet;
 	/**
  	* 更新 
  	* @return 
- */ 
+ 	*/ 
 	public  int updatesample_templet(Sample_templet sample_templet);
 	/**
  	* 添加 
  	* @return
- */ 
+ 	*/ 
 	public  int addsample_templet(Sample_templet sample_templet);
+	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdatesample_templet(List<Sample_templet> sample_templet);
+	/**
+	 * 添加 
+	 * @return
+	 */ 
+	public  int muladdsample_templet(List<Sample_templet> sample_templet);
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deletesample_templet(String id);
+ 	*/ 
+	public  int deletesample_templet(String id);
 
 }
 

@@ -54,6 +54,15 @@ public class Prod_term {
 		this.up_dt = up_dt;
 	}
 
+	
+	private String t_nm_t;
+	public String getT_nm_t() {
+		return t_nm_t;
+	}
+	public void setT_nm_t(String t_nm_t) {
+		this.t_nm_t = t_nm_t;
+	}
+	
 
 
 }

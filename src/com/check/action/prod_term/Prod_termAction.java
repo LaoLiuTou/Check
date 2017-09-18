@@ -1,5 +1,6 @@
 package com.check.action.prod_term;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -173,6 +174,48 @@ public class Prod_termAction implements Action {
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(prod_term.getId()+"\"");
 			logger.info(result+"添加成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	private String termids;
+	
+	public String getTermids() {
+		return termids;
+	}
+	public void setTermids(String termids) {
+		this.termids = termids;
+	}
+	public String redo() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8");
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			
+			List<Prod_term> tempList = new ArrayList<Prod_term>();
+			String[] terms=termids.split("\\|");
+			for(int i=0;i<terms.length;i++){
+				Prod_term prod_term =new Prod_term(); 
+				prod_term.setProd_id(prod_id);
+				prod_term.setTerm_id(terms[i]);
+				tempList.add(prod_term);
+			}
+			iProd_termService.deleteprod_termbyprod(prod_id,tempList);
+			msg.append("\"success\",\"msg\":\"");
+			msg.append("更新成功。"+"\"");
+			logger.info("添加成功！");
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
 			msg.append("\"添加失败！\"");

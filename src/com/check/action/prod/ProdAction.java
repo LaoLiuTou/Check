@@ -18,8 +18,12 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.check.model.prod.Prod;
+import com.check.model.sample.Sample;
+import com.check.model.test.Test;
 import com.check.service.accnt.IAccntService;
 import com.check.service.prod.IProdService;
+import com.check.service.sample.ISampleService;
+import com.check.service.test.ITestService;
 import com.check.utils.CacheToRedis;
 import com.check.utils.RedisUtil;
 import com.opensymphony.xwork2.Action;
@@ -276,6 +280,86 @@ public class ProdAction implements Action {
 	public void setFjj(String fjj) {
 		this.fjj = fjj;
 	}
+	
+	private String mulupdate;
+	private String muladd;
+	public String getMulupdate() {
+		return mulupdate;
+	}
+	public void setMulupdate(String mulupdate) {
+		this.mulupdate = mulupdate;
+	}
+	public String getMuladd() {
+		return muladd;
+	}
+	public void setMuladd(String muladd) {
+		this.muladd = muladd;
+	}
+	private String termids;
+	public String getTermids() {
+		return termids;
+	}
+	public void setTermids(String termids) {
+		this.termids = termids;
+	}
+	
+	public String flow() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Prod prod =new Prod(); 
+		if(id!=null&&!id.equals(""))
+			prod.setId(Long.parseLong(id));
+		prod.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			prod.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			prod.setUp_dt(sdf.parse(up_dt));
+		prod.setC_id(c_id);
+		prod.setPid(pid);
+		prod.setBu_id(bu_id);
+		prod.setNm_t(nm_t);
+		prod.setTy_lv(ty_lv);
+		prod.setDh_lv(dh_lv);
+		if(zq_n!=null&&!zq_n.equals(""))
+			prod.setZq_n(Long.parseLong(zq_n));
+		prod.setQz_n(qz_n);
+		prod.setLb_lv(lb_lv);
+		prod.setSy_id(sy_id);
+		prod.setSt_lv(st_lv);
+		prod.setCm_tx(cm_tx);
+		prod.setFj_f(fj_f);
+		prod.setGzty_lv(gzty_lv);
+		prod.setRule_lv(rule_lv);
+		prod.setBz_t(bz_t);
+		prod.setJy_f(jy_f);
+		prod.setCgj(cgj);
+		prod.setFjj(fjj);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			int result = Integer.parseInt(iProdService.flowprod(prod,muladd,termids).toString());
+			msg.append("\"success\",\"msg\":\"");
+			msg.append(prod.getId()+"\"");
+			logger.info(result+"添加成功！");
+			
+			//缓存
+			List<String> tableList = new ArrayList<String>(); 
+			tableList.add("prod");
+			CacheToRedis.cache(tableList);
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -313,6 +397,7 @@ public class ProdAction implements Action {
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(prod.getId()+"\"");
 			logger.info(result+"添加成功！");
+			
 			//缓存
 			List<String> tableList = new ArrayList<String>(); 
 	        tableList.add("prod");
@@ -332,6 +417,8 @@ public class ProdAction implements Action {
 		}
 		return null;
 	}
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String list() throws Exception {
 
@@ -387,6 +474,265 @@ public class ProdAction implements Action {
 			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
 			msg.append(JSONArray.fromObject(list, jsonConfig));
 			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	
+	private String testid;
+	public String getTestid() {
+		return testid;
+	}
+	public void setTestid(String testid) {
+		this.testid = testid;
+	}
+	private String prodids;
+	
+	public String getProdids() {
+		return prodids;
+	}
+	public void setProdids(String prodids) {
+		this.prodids = prodids;
+	}
+	@Autowired
+	private ITestService iTestService;
+	@Autowired
+	private ISampleService iSampleService;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String appTree() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			
+			if(prodids!=null&&!prodids.equals("")&&testid!=null&&!testid.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"查询条件重复.\"");
+			}
+			else if(testid!=null&&!testid.equals("")){
+				Test test = iTestService.selecttestById(testid);
+				if(test!=null){
+					Sample sample=iSampleService.selectsampleById(test.getSample_id());
+					
+					if(sample!=null){
+						Map  paramMap = new HashMap (); 
+						paramMap.put("pid", sample.getProd_id());
+						paramMap.put("ty_lv", "检测项目");
+						int num = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",num); 
+						List<Prod> prodList=iProdService.selectprodByParam(paramMap);
+						if(prodList.size()>0){
+							//所有结果
+							JSONArray allJA= new JSONArray();
+							for(Prod temp:prodList){
+								//parent
+								JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+								paramMap = new HashMap (); 
+								paramMap.put("pid", temp.getId());
+								paramMap.put("ty_lv", "检验属性");
+								int tempnum = iProdService.selectCountprodByParam(paramMap);
+								paramMap.put("fromPage",0);
+								paramMap.put("toPage",tempnum); 
+								//sub
+								List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+								prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+								allJA.add(prodJO);
+								
+							}
+							msg.append("\"success\",\"msg\":");
+							msg.append(allJA);
+							logger.info("获取列表成功！");
+						}
+						else{
+							msg.append("\"failure\",\"msg\":");
+							msg.append("\"检测项目不存在.\"");
+						}
+						
+					}
+					else{
+						msg.append("\"failure\",\"msg\":");
+						msg.append("\"样品不存在.\"");
+					}
+				}
+				else{
+					msg.append("\"failure\",\"msg\":");
+					msg.append("\"试验单不存在.\"");
+				}
+				
+			}
+			else if(prodids!=null&&!prodids.equals("")){
+				String[] allProd= prodids.split("\\|"); 
+				//所有结果
+				JSONArray allJA= new JSONArray();
+				for(String prodid :allProd){
+					Prod temp = iProdService.selectprodById(prodid);
+					//parent
+					JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+					Map  paramMap = new HashMap (); 
+					paramMap.put("pid", temp.getId());
+					paramMap.put("ty_lv", "检验属性");
+					int tempnum = iProdService.selectCountprodByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",tempnum); 
+					//sub
+					List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+					prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+					allJA.add(prodJO);
+					 
+				}
+				msg.append("\"success\",\"msg\":");
+				msg.append(allJA);
+				logger.info("获取列表成功！");
+				
+			}
+			 
+		
+		
+			 
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String tree() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			
+			if(prodids!=null&&!prodids.equals("")&&testid!=null&&!testid.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"查询条件重复.\"");
+			}
+			else if(testid!=null&&!testid.equals("")){
+				Test test = iTestService.selecttestById(testid);
+				if(test!=null){
+					Sample sample=iSampleService.selectsampleById(test.getSample_id());
+					
+					if(sample!=null){
+						Map  paramMap = new HashMap (); 
+						paramMap.put("pid", sample.getProd_id());
+						paramMap.put("ty_lv", "检测项目");
+						int num = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",num); 
+						List<Prod> prodList=iProdService.selectprodByParam(paramMap);
+						if(prodList.size()>0){
+							//所有结果
+							JSONArray allJA= new JSONArray();
+							for(Prod temp:prodList){
+								//parent
+								JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+								paramMap = new HashMap (); 
+								paramMap.put("pid", temp.getId());
+								paramMap.put("ty_lv", "检验属性");
+								int tempnum = iProdService.selectCountprodByParam(paramMap);
+								paramMap.put("fromPage",0);
+								paramMap.put("toPage",tempnum); 
+								//sub
+								List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+								prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+								allJA.add(prodJO);
+								
+							}
+							msg.append("\"success\",\"msg\":");
+							msg.append(allJA);
+							logger.info("获取列表成功！");
+						}
+						else{
+							msg.append("\"failure\",\"msg\":");
+							msg.append("\"检测项目不存在.\"");
+						}
+						
+					}
+					else{
+						msg.append("\"failure\",\"msg\":");
+						msg.append("\"样品不存在.\"");
+					}
+				}
+				else{
+					msg.append("\"failure\",\"msg\":");
+					msg.append("\"试验单不存在.\"");
+				}
+				
+			}
+			else if(prodids!=null&&!prodids.equals("")){
+				String[] allProd= prodids.split("\\|"); 
+				//所有结果
+				JSONArray allJA= new JSONArray();
+				for(String prodid :allProd){
+					Prod temp = iProdService.selectprodById(prodid);
+					//parent
+					JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+					Map  paramMap = new HashMap (); 
+					paramMap.put("pid", temp.getId());
+					paramMap.put("ty_lv", "检验属性");
+					int tempnum = iProdService.selectCountprodByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",tempnum); 
+					//sub
+					List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+					prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+					allJA.add(prodJO);
+					
+				}
+				msg.append("\"success\",\"msg\":");
+				msg.append(allJA);
+				logger.info("获取列表成功！");
+				
+			}
+			
+			
+			
+			
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
 			msg.append("\"查询失败.\"");

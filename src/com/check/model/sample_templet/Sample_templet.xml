@@ -64,6 +64,8 @@
 		WHERE ID=#{id}
 	</update>
 
+
+
 	<insert id="addsample_templet" parameterType="Sample_templet">
 		INSERT INTO sample_templet 
 		<trim prefix="(" suffix=")" suffixOverrides="," >
@@ -86,4 +88,29 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>
+	
+	<!-- 批量增加操作 -->  
+    <insert id="muladdsample_templet" parameterType="java.util.List" >  
+	 	
+        INSERT INTO SAMPLE_TEMPLET(SHOW_FLG,SORT,LOV_ID,PROD_ID) VALUES  
+        <foreach collection="list" item="item" index="index" separator=",">  
+            (#{item.show_flg},#{item.sort},#{item.lov_id},#{item.prod_id})  
+        </foreach> 
+       
+    </insert>
+    
+    <update id="mulupdatesample_templet" parameterType="java.util.List">  
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        UPDATE SAMPLE_TEMPLET   
+        <trim prefix="SET" suffixOverrides=",">
+			<if test="item.c_dt != null">C_DT=#{item.c_dt}, </if>
+			<if test="item.up_dt != null">UP_DT=#{item.up_dt}, </if>
+			<if test="item.show_flg != null">SHOW_FLG=#{item.show_flg}, </if>
+			<if test="item.sort != null">SORT=#{item.sort}, </if>
+			<if test="item.lov_id != null">LOV_ID=#{item.lov_id}, </if>
+			<if test="item.prod_id != null">PROD_ID=#{item.prod_id}, </if>
+		</trim> 
+        where id = #{item.id}  
+        </foreach>  
+    </update> 
 </mapper>

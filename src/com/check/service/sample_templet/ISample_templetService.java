@@ -31,6 +31,16 @@ public interface ISample_templetService {
  */ 
 	public  Object addsample_templet(Sample_templet sample_templet);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdatesample_templet(List<Sample_templet> sample_templetList);
+	/**
+	 * 添加 
+	 * @return
+	 */ 
+	public  int muladdsample_templet(List<Sample_templet> sample_templetList);
+	/**
  * 删除 
  * @return 
  */ 

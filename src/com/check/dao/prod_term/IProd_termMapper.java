@@ -33,8 +33,19 @@ import com.check.model.prod_term.Prod_term;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deleteprod_term(String id);
+ 	*/ 
+	public  int deleteprod_term(String id);
+	/**
+	 * 删除 
+	 * @return 
+	 */ 
+	public  int deleteprod_termbyprod(String prod_id);
+	
+	/**
+ 	* 添加 
+ 	* @return
+ 	*/ 
+	public  int muladdprod_term(List<Prod_term> prod_term);
 
 }
 

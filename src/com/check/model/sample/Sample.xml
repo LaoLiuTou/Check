@@ -5,7 +5,7 @@
 	<select id="selectsampleById" parameterType="String" resultType="Sample">
 		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
-		LEFT JOIN accnt as c ON a.FZ_ID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
 		WHERE a.ID=#{id} 
 	</select>
 
@@ -17,7 +17,7 @@
 	<select id="selectsampleByParam" parameterType="java.util.Map" resultType="Sample">
 		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
-		LEFT JOIN accnt as c ON a.FZ_ID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
@@ -41,7 +41,7 @@
 			<if test="lot != null"> AND a.LOT =#{lot} </if>
 			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
 			<if test="jd_lv != null"> AND a.JD_LV LIKE #{jd_lv} </if>
-			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="prod_id != null"> AND a.PROD_ID LIKE #{prod_id} </if>
 			<if test="cd_t != null"> AND a.CD_T =#{cd_t} </if>
 			<if test="sy_dt != null"> AND a.SY_DT =#{sy_dt} </if>
 			<if test="gg_t != null"> AND a.GG_T =#{gg_t} </if>
@@ -95,7 +95,7 @@
 	<select id="selectCountsampleByParam" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(a.ID) 
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
-		LEFT JOIN accnt as c ON a.FZ_ID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
@@ -119,7 +119,7 @@
 			<if test="lot != null"> AND a.LOT =#{lot} </if>
 			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
 			<if test="jd_lv != null"> AND a.JD_LV LIKE #{jd_lv} </if>
-			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="prod_id != null"> AND a.PROD_ID LIKE #{prod_id} </if>
 			<if test="cd_t != null"> AND a.CD_T =#{cd_t} </if>
 			<if test="sy_dt != null"> AND a.SY_DT =#{sy_dt} </if>
 			<if test="gg_t != null"> AND a.GG_T =#{gg_t} </if>
