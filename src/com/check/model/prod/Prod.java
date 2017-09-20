@@ -199,4 +199,12 @@ public class Prod {
 		this.m_name = m_name;
 	}
 
+	private String flg;
+	public String getFlg() {
+		return flg;
+	}
+	public void setFlg(String flg) {
+		this.flg = flg;
+	}
+	
 }

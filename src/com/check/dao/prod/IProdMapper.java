@@ -2,6 +2,7 @@ package com.check.dao.prod;
 import java.util.List;
 import java.util.Map;
 import com.check.model.prod.Prod;
+import com.check.model.sample_templet.Sample_templet;
 	public interface IProdMapper {
 	/**
  	* 通过id选取
@@ -33,8 +34,19 @@ import com.check.model.prod.Prod;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deleteprod(String id);
+	 */ 
+	public  int deleteprod(String id);
+	
+	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdateprod(List<Prod> list);
+	/**
+	 * 添加 
+	 * @return
+	 */ 
+	public  int muladdprod(List<Prod> list);
 
 }
 

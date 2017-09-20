@@ -42,6 +42,11 @@ public interface IProdService {
 	  * 添加流程 
 	  * @return
 	  */ 
-	 public  Object flowprod(Prod prod,String muladd,String termids);
+	 public  Object addflowprod(Prod prod,String muladd,String termids,String subprod);
+	 /**
+	  * 更新流程 
+	  * @return
+	  */ 
+	 public  Object updateflowprod(Prod prod,String mulupdate,String termids,String subprod);
 }
 

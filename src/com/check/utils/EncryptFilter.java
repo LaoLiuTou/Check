@@ -43,7 +43,7 @@ public class EncryptFilter extends StrutsPrepareAndExecuteFilter {
 				    
 				    //对请求的uri(即api)进行判断，如果是登录的uri则直接放行，如果是其他api则对sign进行验证操作
 				    if( !uri.startsWith("/loginMembers") && !uri.startsWith("/app") &&
-				    		!uri.startsWith("/QRImages") && !uri.startsWith("/config")&& !uri.startsWith("/flow")){
+				    		!uri.startsWith("/QRImages") && !uri.startsWith("/config")){
 				        //从请求的url中取出token、时间戳、sign
 				        String token = request.getHeader("token");
 				        String timesamp = request.getHeader("timesamp");

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
@@ -16,9 +18,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.check.model.prod.Prod;
 import com.check.model.results.Results;
+import com.check.model.test.Test;
 import com.check.service.accnt.IAccntService;
+import com.check.service.prod.IProdService;
 import com.check.service.results.IResultsService;
+import com.check.service.test.ITestService;
 import com.opensymphony.xwork2.Action;
 public class ResultsAction implements Action {
 	private int page;
@@ -31,6 +37,10 @@ public class ResultsAction implements Action {
 	private IResultsService iResultsService;
 	@Autowired
 	private IAccntService iAccntService;
+	@Autowired
+	private ITestService iTestService;
+	@Autowired
+	private IProdService iProdService;
 	private List<Results> list;
 	private Results results;
 	public int getPage() {
@@ -373,6 +383,7 @@ public class ResultsAction implements Action {
 		return null;
 	}
 
+	
 	public String update() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -408,6 +419,138 @@ public class ResultsAction implements Action {
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iResultsService.updateresults(results);
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"更新成功！\"");
+			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	
+	//test 试验结论
+	private String jl_t;
+	private String prod_id_sub;
+	
+	public String getProd_id_sub() {
+		return prod_id_sub;
+	}
+	public void setProd_id_sub(String prod_id_sub) {
+		this.prod_id_sub = prod_id_sub;
+	}
+	public String getJl_t() {
+		return jl_t;
+	}
+	public void setJl_t(String jl_t) {
+		this.jl_t = jl_t;
+	}
+	public String appupdate() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Results results =new Results(); 
+		if(id!=null&&!id.equals(""))
+			results.setId(Long.parseLong(id));
+		results.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			results.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			results.setUp_dt(sdf.parse(up_dt));
+		if(c_id!=null&&!c_id.equals(""))
+			results.setC_id(Long.parseLong(c_id));
+		if(pid!=null&&!pid.equals(""))
+			results.setPid(Long.parseLong(pid));
+		if(prod_id!=null&&!prod_id.equals(""))
+			results.setProd_id(Long.parseLong(prod_id));
+		results.setProd_name(prod_name);
+		results.setBool(bool);
+		results.setValue(value);
+		results.setFlg(flg);
+		results.setStatand_lv(statand_lv);
+		results.setStatand(statand);
+		results.setStatand_va(statand_va);
+		if(rel_id!=null&&!rel_id.equals(""))
+			results.setRel_id(Long.parseLong(rel_id));
+		results.setInbz_t(inbz_t);
+		results.setCm_t(cm_t);
+		results.setWd(wd);
+		results.setSd(sd);
+		if(bu_id!=null&&!bu_id.equals(""))
+			results.setBu_id(Long.parseLong(bu_id));
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			 
+			
+			Prod prod=iProdService.selectprodById(prod_id_sub);
+			results.setStatand_lv(prod.getGzty_lv());
+			results.setStatand(prod.getRule_lv());
+			results.setStatand_va(prod.getBz_t());
+			 
+			/////////bool
+			Results cresults=iResultsService.selectresultsById(id);
+			 
+			Results presults = iResultsService.selectresultsById(cresults.getRel_id()+"");
+			String inbz_t =null;
+			if(presults!=null){
+				inbz_t =presults.getInbz_t();
+			}
+			if(inbz_t!=null&&!inbz_t.equals("")){
+				if(cresults.getValue()!=null&&!cresults.getValue().equals("")){
+					if(Double.parseDouble(cresults.getValue())>Double.parseDouble(inbz_t)){
+						results.setBool("Y");
+					}
+					else{
+						results.setBool("N");
+					}
+				}
+				else{
+					results.setBool("N");
+				}
+				
+			}
+			else{
+				
+				String str = "("+cresults.getValue()+results.getStatand()+results.getStatand_va()+")";  
+		        ScriptEngineManager manager = new ScriptEngineManager();  
+		        ScriptEngine engine = manager.getEngineByName("js");  
+		        //engine.put("a", 4);  
+		        Object flag = engine.eval(str);  
+		        if(flag.toString().equals("true")){
+		        	results.setBool("Y");
+		        }
+		        else{
+		        	results.setBool("N");
+		        }
+				 
+			}
+			 /////////1
+			int result= iResultsService.updateresults(results);
+			if(result>0){
+				if(results.getBool().equals("Y")){
+					presults.setBool("Y");
+					///////////////////2
+					iResultsService.updateresults(presults);
+				}
+				cresults=iResultsService.selectresultsById(id);
+				///////////////3
+				if(cresults.getPid()!=null){
+					
+					Test tempTest = new Test();
+					tempTest.setId(cresults.getPid());
+					tempTest.setJl_t(jl_t);
+					iTestService.updatetest(tempTest);
+				}
+			}
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
@@ -470,6 +613,59 @@ public class ResultsAction implements Action {
 			msg.append("\"success\",\"msg\":");
 			msg.append(JSONObject.fromObject(results, jsonConfig));
 			logger.info(id+"查询成功！");
+		} catch (Exception e) {
+			logger.info(id+"查询失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	private String sampleid;
+	
+	public String getSampleid() {
+		return sampleid;
+	}
+	public void setSampleid(String sampleid) {
+		this.sampleid = sampleid;
+	}
+	///通过样品ID获取bool
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String appbool() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		String boolstr = "";
+		try {
+			Map  paramMap = new HashMap ();
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",1);
+			paramMap.put("sample_id",sampleid);
+			List<Test> tempList= iTestService.selecttestByParam(paramMap);
+			if(tempList.size()>0){
+				paramMap.put("pid",tempList.get(0).getId());
+				List<Results> resultList = iResultsService.selectresultsByParam(paramMap);
+				
+				boolstr= resultList.get(0).getBool();
+				
+			}
+		 
+			if(boolstr!=null&&!boolstr.equals("")){
+				msg.append("\"success\",\"msg\":\""+boolstr+"\"");
+				 
+				logger.info(id+"查询成功！");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"查询失败.\"");
+			}
+			
 		} catch (Exception e) {
 			logger.info(id+"查询失败！"+e);
 			msg.append("\"failure\",\"msg\":");

@@ -280,9 +280,17 @@ public class ProdAction implements Action {
 	public void setFjj(String fjj) {
 		this.fjj = fjj;
 	}
+	private String flg;
+	public String getFlg() {
+		return flg;
+	}
+	public void setFlg(String flg) {
+		this.flg = flg;
+	}
 	
 	private String mulupdate;
 	private String muladd;
+	private String subprod;
 	public String getMulupdate() {
 		return mulupdate;
 	}
@@ -303,7 +311,13 @@ public class ProdAction implements Action {
 		this.termids = termids;
 	}
 	
-	public String flow() throws Exception {
+	public String getSubprod() {
+		return subprod;
+	}
+	public void setSubprod(String subprod) {
+		this.subprod = subprod;
+	}
+	public String addflow() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
 		Prod prod =new Prod(); 
@@ -334,9 +348,68 @@ public class ProdAction implements Action {
 		prod.setJy_f(jy_f);
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
+		prod.setFlg(flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			int result = Integer.parseInt(iProdService.flowprod(prod,muladd,termids).toString());
+			int result = Integer.parseInt(iProdService.addflowprod(prod,muladd,termids,subprod).toString());
+			msg.append("\"success\",\"msg\":\"");
+			msg.append(prod.getId()+"\"");
+			logger.info(result+"添加成功！");
+			
+			//缓存
+			List<String> tableList = new ArrayList<String>(); 
+			tableList.add("prod");
+			CacheToRedis.cache(tableList);
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String updateflow() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Prod prod =new Prod(); 
+		if(id!=null&&!id.equals(""))
+			prod.setId(Long.parseLong(id));
+		prod.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			prod.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			prod.setUp_dt(sdf.parse(up_dt));
+		prod.setC_id(c_id);
+		prod.setPid(pid);
+		prod.setBu_id(bu_id);
+		prod.setNm_t(nm_t);
+		prod.setTy_lv(ty_lv);
+		prod.setDh_lv(dh_lv);
+		if(zq_n!=null&&!zq_n.equals(""))
+			prod.setZq_n(Long.parseLong(zq_n));
+		prod.setQz_n(qz_n);
+		prod.setLb_lv(lb_lv);
+		prod.setSy_id(sy_id);
+		prod.setSt_lv(st_lv);
+		prod.setCm_tx(cm_tx);
+		prod.setFj_f(fj_f);
+		prod.setGzty_lv(gzty_lv);
+		prod.setRule_lv(rule_lv);
+		prod.setBz_t(bz_t);
+		prod.setJy_f(jy_f);
+		prod.setCgj(cgj);
+		prod.setFjj(fjj);
+		prod.setFlg(flg);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			int result = Integer.parseInt(iProdService.updateflowprod(prod,mulupdate,termids,subprod).toString());
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(prod.getId()+"\"");
 			logger.info(result+"添加成功！");
@@ -391,6 +464,7 @@ public class ProdAction implements Action {
 		prod.setJy_f(jy_f);
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
+		prod.setFlg(flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iProdService.addprod(prod).toString());
@@ -455,6 +529,7 @@ public class ProdAction implements Action {
 			paramMap.put("jy_f", jy_f);
 			paramMap.put("cgj", cgj);
 			paramMap.put("fjj", fjj);
+			paramMap.put("flg", flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iProdService.selectprodByParam(paramMap); 
@@ -555,6 +630,7 @@ public class ProdAction implements Action {
 								paramMap = new HashMap (); 
 								paramMap.put("pid", temp.getId());
 								paramMap.put("ty_lv", "检验属性");
+								paramMap.put("jy_f", "Y");
 								int tempnum = iProdService.selectCountprodByParam(paramMap);
 								paramMap.put("fromPage",0);
 								paramMap.put("toPage",tempnum); 
@@ -596,6 +672,7 @@ public class ProdAction implements Action {
 					Map  paramMap = new HashMap (); 
 					paramMap.put("pid", temp.getId());
 					paramMap.put("ty_lv", "检验属性");
+					paramMap.put("jy_f", "Y");
 					int tempnum = iProdService.selectCountprodByParam(paramMap);
 					paramMap.put("fromPage",0);
 					paramMap.put("toPage",tempnum); 
@@ -648,73 +725,24 @@ public class ProdAction implements Action {
 				}
 			});
 			
-			if(prodids!=null&&!prodids.equals("")&&testid!=null&&!testid.equals("")){
-				msg.append("\"failure\",\"msg\":");
-				msg.append("\"查询条件重复.\"");
-			}
-			else if(testid!=null&&!testid.equals("")){
-				Test test = iTestService.selecttestById(testid);
-				if(test!=null){
-					Sample sample=iSampleService.selectsampleById(test.getSample_id());
-					
-					if(sample!=null){
-						Map  paramMap = new HashMap (); 
-						paramMap.put("pid", sample.getProd_id());
-						paramMap.put("ty_lv", "检测项目");
-						int num = iProdService.selectCountprodByParam(paramMap);
-						paramMap.put("fromPage",0);
-						paramMap.put("toPage",num); 
-						List<Prod> prodList=iProdService.selectprodByParam(paramMap);
-						if(prodList.size()>0){
-							//所有结果
-							JSONArray allJA= new JSONArray();
-							for(Prod temp:prodList){
-								//parent
-								JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
-								paramMap = new HashMap (); 
-								paramMap.put("pid", temp.getId());
-								paramMap.put("ty_lv", "检验属性");
-								int tempnum = iProdService.selectCountprodByParam(paramMap);
-								paramMap.put("fromPage",0);
-								paramMap.put("toPage",tempnum); 
-								//sub
-								List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
-								prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
-								allJA.add(prodJO);
-								
-							}
-							msg.append("\"success\",\"msg\":");
-							msg.append(allJA);
-							logger.info("获取列表成功！");
-						}
-						else{
-							msg.append("\"failure\",\"msg\":");
-							msg.append("\"检测项目不存在.\"");
-						}
-						
-					}
-					else{
-						msg.append("\"failure\",\"msg\":");
-						msg.append("\"样品不存在.\"");
-					}
-				}
-				else{
-					msg.append("\"failure\",\"msg\":");
-					msg.append("\"试验单不存在.\"");
-				}
-				
-			}
-			else if(prodids!=null&&!prodids.equals("")){
-				String[] allProd= prodids.split("\\|"); 
+			Map  paramMap = new HashMap (); 
+			paramMap.put("pid", pid);
+			paramMap.put("ty_lv", "检测项目");
+			paramMap.put("flg", "Y");
+			int num = iProdService.selectCountprodByParam(paramMap);
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",num); 
+			List<Prod> prodList=iProdService.selectprodByParam(paramMap);
+			if(prodList.size()>0){
 				//所有结果
 				JSONArray allJA= new JSONArray();
-				for(String prodid :allProd){
-					Prod temp = iProdService.selectprodById(prodid);
+				for(Prod temp:prodList){
 					//parent
 					JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
-					Map  paramMap = new HashMap (); 
+					paramMap = new HashMap (); 
 					paramMap.put("pid", temp.getId());
-					paramMap.put("ty_lv", "检验属性");
+					paramMap.put("ty_lv", "检验子项目");
+					paramMap.put("flg", "Y");
 					int tempnum = iProdService.selectCountprodByParam(paramMap);
 					paramMap.put("fromPage",0);
 					paramMap.put("toPage",tempnum); 
@@ -727,11 +755,13 @@ public class ProdAction implements Action {
 				msg.append("\"success\",\"msg\":");
 				msg.append(allJA);
 				logger.info("获取列表成功！");
-				
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"检测项目不存在.\"");
 			}
 			
-			
-			
+			 
 			
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
@@ -780,6 +810,7 @@ public class ProdAction implements Action {
 		prod.setJy_f(jy_f);
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
+		prod.setFlg(flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iProdService.updateprod(prod);
@@ -903,6 +934,7 @@ public class ProdAction implements Action {
 		paramMap.put("jy_f", jy_f);
 		paramMap.put("cgj", cgj);
 		paramMap.put("fjj", fjj);
+		paramMap.put("flg", flg);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

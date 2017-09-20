@@ -43,6 +43,7 @@
 			<if test="jy_f != null"> AND p.JY_F =#{jy_f} </if>
 			<if test="cgj != null"> AND p.CGJ =#{cgj} </if>
 			<if test="fjj != null"> AND p.FJJ =#{fjj} </if>
+			<if test="flg != null"> AND p.FLG =#{flg} </if>
 		</trim>  
 		ORDER BY p.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -80,6 +81,7 @@
 			<if test="jy_f != null"> AND p.JY_F =#{jy_f} </if>
 			<if test="cgj != null"> AND p.CGJ =#{cgj} </if>
 			<if test="fjj != null"> AND p.FJJ =#{fjj} </if>
+			<if test="flg != null"> AND p.FLG =#{flg} </if>
 		</trim>  
 	</select>
 
@@ -109,6 +111,7 @@
 			<if test="jy_f != null">JY_F=#{jy_f}, </if>
 			<if test="cgj != null">CGJ=#{cgj}, </if>
 			<if test="fjj != null">FJJ=#{fjj}, </if>
+			<if test="flg != null">FLG=#{flg}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -138,6 +141,7 @@
 			<if test="jy_f != null">JY_F, </if>
 			<if test="cgj != null">CGJ, </if>
 			<if test="fjj != null">FJJ, </if>
+			<if test="flg != null">FLG, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -162,9 +166,39 @@
 			<if test="jy_f != null">#{jy_f}, </if>
 			<if test="cgj != null">#{cgj}, </if>
 			<if test="fjj != null">#{fjj}, </if>
+			<if test="flg != null">#{flg}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>
+	
+	
+	
+	<!-- 批量增加操作 -->  
+    <insert id="muladdprod" parameterType="java.util.List" >  
+	 	
+        INSERT INTO PROD(FJ_F,NM_T,TY_LV,JY_F,PID) VALUES  
+        <foreach collection="list" item="item" index="index" separator=",">  
+            (#{item.fj_f},#{item.nm_t},#{item.ty_lv},#{item.jy_f},#{item.pid})  
+        </foreach> 
+       
+    </insert>
+    
+    <update id="mulupdateprod" parameterType="java.util.List">  
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        UPDATE PROD   
+        <trim prefix="SET" suffixOverrides=",">
+			<if test="item.id != null">ID=#{item.id}, </if>
+			<if test="item.nm_t != null">NM_T=#{item.nm_t}, </if> 
+			<if test="item.fj_f != null">FJ_F=#{item.fj_f}, </if> 
+			<if test="item.ty_lv != null">TY_LV=#{item.ty_lv}, </if>
+			<if test="item.jy_f != null">JY_F=#{item.jy_f}, </if> 
+			<if test="item.flg != null">FLG=#{item.flg}, </if>
+		</trim> 
+        where id = #{item.id}  
+        </foreach>  
+    </update> 
+    
+    
 </mapper>
