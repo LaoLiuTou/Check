@@ -3,10 +3,17 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.pact.IPactMapper"> 
 	<select id="selectpactById" parameterType="String" resultType="Pact">
-	    SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB  
+	    
+		
+		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
+		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment, 
+		convert((SELECT SUM(cs_n* price) FROM entrust  WHERE pid = p.id),decimal(10,2)) AS A_PRICE 
 		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
-		left join accnt a3 on p.DB_ID=a3.ID 
+		left join accnt a3 on p.DB_ID=a3.ID left join  cont a4 on p.JL_CONT_ID = a4.ID left join
+		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID 
+		
 		WHERE p.ID=#{id} 
+		
 	</select>
 
 
@@ -15,8 +22,13 @@
 	</delete>
 
 	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
-		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV 
+		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
+		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment 
+		 
 		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
+		left join accnt a3 on p.DB_ID=a3.ID left join  cont a4 on p.JL_CONT_ID = a4.ID left join
+		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID 
+		
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND p.ID =#{id} </if>
 			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
@@ -57,6 +69,7 @@
 			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
 			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
 		</trim>  
+		GROUP BY p.ID 
 		ORDER BY p.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>

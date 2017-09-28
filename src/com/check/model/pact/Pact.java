@@ -279,6 +279,43 @@ public class Pact {
 		this.a_db = a_db;
 	}
 	
+	private String jl_nm_t;
+	private String cont_nm_t;
+	private String sum_zk_n;
+	private String sum_payment;
+	public String getJl_nm_t() {
+		return jl_nm_t;
+	}
+	public void setJl_nm_t(String jl_nm_t) {
+		this.jl_nm_t = jl_nm_t;
+	}
+	public String getCont_nm_t() {
+		return cont_nm_t;
+	}
+	public void setCont_nm_t(String cont_nm_t) {
+		this.cont_nm_t = cont_nm_t;
+	}
+	public String getSum_zk_n() {
+		return sum_zk_n;
+	}
+	public void setSum_zk_n(String sum_zk_n) {
+		this.sum_zk_n = sum_zk_n;
+	}
+	public String getSum_payment() {
+		return sum_payment;
+	}
+	public void setSum_payment(String sum_payment) {
+		this.sum_payment = sum_payment;
+	}
+	
+
+	private String a_price;
+	public String getA_price() {
+		return a_price;
+	}
+	public void setA_price(String a_price) {
+		this.a_price = a_price;
+	}
 	
 
 }

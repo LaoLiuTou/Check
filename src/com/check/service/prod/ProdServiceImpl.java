@@ -77,59 +77,72 @@ public class ProdServiceImpl  implements IProdService {
  public  Object addflowprod(Prod prod,String muladd,String termids,String subprod){
 	 int result = 0;
 	 result=iProdMapper.addprod(prod);
-	 ///1111111111
-     JSONArray addJA=JSONArray.fromObject(muladd);
-	 List<Sample_templet> tempList= new ArrayList<Sample_templet>();
-	 for(int i=0;i<addJA.size();i++){
-		JSONObject  addJO = (JSONObject) addJA.get(i);
-		Sample_templet sample_templet =new Sample_templet(); 
-		 
-		if(addJO.containsKey("show_flg"))
-			sample_templet.setShow_flg(addJO.getString("show_flg"));
-		if(addJO.containsKey("sort"))
-			sample_templet.setSort(Long.parseLong(addJO.getString("sort")));
-		if(addJO.containsKey("lov_id"))
-			sample_templet.setLov_id(Long.parseLong(addJO.getString("lov_id")));
-		//if(addJO.containsKey("prod_id"))
-			sample_templet.setProd_id(prod.getId());
-		tempList.add(sample_templet);
-	 }
-	 iSample_templetService.muladdsample_templet(tempList);
-		
-	 ////////////222222
-	 List<Prod_term> ptList = new ArrayList<Prod_term>();
-	 if(termids!=null&&!termids.equals("")){
-		String[] terms=termids.split("\\|");
-		for(int i=0;i<terms.length;i++){
-			Prod_term prod_term =new Prod_term(); 
-			prod_term.setProd_id(prod.getId()+"");
-			prod_term.setTerm_id(terms[i]);
-			ptList.add(prod_term);
-		 }
-	 }
-	 iProd_termService.deleteprod_termbyprod(prod.getId()+"",ptList);
-	
 	 
-	 //////////3333333
-	 JSONArray subprodJA=JSONArray.fromObject(subprod);
-	 List<Prod> tempprod= new ArrayList<Prod>();
-	 for(int i=0;i<subprodJA.size();i++){
-		JSONObject  addJO = (JSONObject) subprodJA.get(i);
-		Prod prodTemp =new Prod(); 
+	 if(subprod!=null&&!subprod.equals("")){
+		 //////////3333333
+		 JSONArray subprodJA=JSONArray.fromObject(subprod);
+		 List<Prod> tempprod= new ArrayList<Prod>();
+		 for(int i=0;i<subprodJA.size();i++){
+			JSONObject  addJO = (JSONObject) subprodJA.get(i);
+			Prod prodTemp =new Prod(); 
+			
+			if(addJO.containsKey("fj_f"))
+				prodTemp.setFj_f(addJO.getString("fj_f"));
+			if(addJO.containsKey("nm_t"))
+				prodTemp.setNm_t(addJO.getString("nm_t"));
+			if(addJO.containsKey("ty_lv"))
+				prodTemp.setTy_lv(addJO.getString("ty_lv"));
+			if(addJO.containsKey("jy_f"))
+				prodTemp.setJy_f(addJO.getString("jy_f"));
+			if(addJO.containsKey("bu_id"))
+				prodTemp.setBu_id(addJO.getString("bu_id"));
+			if(addJO.containsKey("c_id"))
+				prodTemp.setC_id(addJO.getString("c_id"));
+			//if(addJO.containsKey("prod_id"))
+			prodTemp.setPid(prod.getId()+"");
+			tempprod.add(prodTemp);
+		 } 
+		 if(tempprod.size()>0)
+		 iProdMapper.muladdprod(tempprod);
+	 }
+	 else{
+		 ///1111111111
+	     JSONArray addJA=JSONArray.fromObject(muladd);
+		 List<Sample_templet> tempList= new ArrayList<Sample_templet>();
+		 for(int i=0;i<addJA.size();i++){
+			JSONObject  addJO = (JSONObject) addJA.get(i);
+			Sample_templet sample_templet =new Sample_templet(); 
+			 
+			if(addJO.containsKey("show_flg"))
+				sample_templet.setShow_flg(addJO.getString("show_flg"));
+			if(addJO.containsKey("sort"))
+				sample_templet.setSort(Long.parseLong(addJO.getString("sort")));
+			if(addJO.containsKey("lov_id"))
+				sample_templet.setLov_id(Long.parseLong(addJO.getString("lov_id")));
+			//if(addJO.containsKey("prod_id"))
+				sample_templet.setProd_id(prod.getId());
+			tempList.add(sample_templet);
+		 }
+		 if(tempList.size()>0)
+		 iSample_templetService.muladdsample_templet(tempList);
+			
+		 ////////////222222
+		 List<Prod_term> ptList = new ArrayList<Prod_term>();
+		 if(termids!=null&&!termids.equals("")){
+			String[] terms=termids.split("\\|");
+			for(int i=0;i<terms.length;i++){
+				Prod_term prod_term =new Prod_term(); 
+				prod_term.setProd_id(prod.getId()+"");
+				prod_term.setTerm_id(terms[i]);
+				ptList.add(prod_term);
+			 }
+		 }
+		 iProd_termService.deleteprod_termbyprod(prod.getId()+"",ptList);
+		
 		 
-		if(addJO.containsKey("fj_f"))
-			prodTemp.setFj_f(addJO.getString("fj_f"));
-		if(addJO.containsKey("nm_t"))
-			prodTemp.setNm_t(addJO.getString("nm_t"));
-		if(addJO.containsKey("ty_lv"))
-			prodTemp.setTy_lv(addJO.getString("ty_lv"));
-		if(addJO.containsKey("jy_f"))
-			prodTemp.setJy_f(addJO.getString("jy_f"));
-		//if(addJO.containsKey("prod_id"))
-		prodTemp.setPid(prod.getId()+"");
-		tempprod.add(prodTemp);
-	 } 
-	 iProdMapper.muladdprod(tempprod);
+
+	 }
+	
 		
 	 
 	 return result;
@@ -142,64 +155,87 @@ public class ProdServiceImpl  implements IProdService {
  public  Object updateflowprod(Prod prod,String muladd,String termids,String subprod){
 	 int result = 0;
 	 result=iProdMapper.updateprod(prod);
-	 ///1111111111
-	 JSONArray addJA=JSONArray.fromObject(muladd);
-	 List<Sample_templet> tempList= new ArrayList<Sample_templet>();
-	 for(int i=0;i<addJA.size();i++){
-		 JSONObject  updateJO = (JSONObject) addJA.get(i);
-		 Sample_templet sample_templet =new Sample_templet(); 
-		 
-		 if(updateJO.containsKey("id"))
-			sample_templet.setId(Long.parseLong(updateJO.getString("id")));
-		 if(updateJO.containsKey("show_flg"))
-			sample_templet.setShow_flg(updateJO.getString("show_flg"));
-		 if(updateJO.containsKey("sort"))
-			sample_templet.setSort(Long.parseLong(updateJO.getString("sort")));
-		 if(updateJO.containsKey("lov_id"))
-			sample_templet.setLov_id(Long.parseLong(updateJO.getString("lov_id")));
-		 //if(addJO.containsKey("prod_id"))
-		 sample_templet.setProd_id(prod.getId());
-		 tempList.add(sample_templet);
+	 prod = iProdMapper.selectprodById(prod.getId()+"");
+	 if(subprod!=null&&!subprod.equals("")){
+		 //////////3333333
+		 JSONArray subprodJA=JSONArray.fromObject(subprod);
+		 List<Prod> tempprod= new ArrayList<Prod>();
+		 List<Prod> addprod= new ArrayList<Prod>();
+		 for(int i=0;i<subprodJA.size();i++){
+			JSONObject  addJO = (JSONObject) subprodJA.get(i);
+			Prod prodTemp =new Prod(); 
+			 
+			if(addJO.containsKey("fj_f"))
+				prodTemp.setFj_f(addJO.getString("fj_f"));
+			if(addJO.containsKey("nm_t"))
+				prodTemp.setNm_t(addJO.getString("nm_t"));
+			if(addJO.containsKey("ty_lv"))
+				prodTemp.setTy_lv(addJO.getString("ty_lv"));
+			if(addJO.containsKey("jy_f"))
+				prodTemp.setJy_f(addJO.getString("jy_f"));
+			if(addJO.containsKey("id"))
+				prodTemp.setId(Long.parseLong(addJO.getString("id")));
+			if(addJO.containsKey("flg"))
+				prodTemp.setFlg(addJO.getString("flg"));
+			if(addJO.containsKey("bu_id"))
+				prodTemp.setBu_id(addJO.getString("bu_id"));
+			if(addJO.containsKey("c_id"))
+				prodTemp.setC_id(addJO.getString("c_id"));
+			//if(addJO.containsKey("prod_id"))
+			//prodTemp.setPid(prod.getId()+"");
+			if(addJO.containsKey("id")){
+				tempprod.add(prodTemp);
+			}
+			else{
+				prodTemp.setPid(prod.getId()+"");
+				addprod.add(prodTemp);
+			}
+			
+		 } 
+		 if(addprod.size()>0)
+		 iProdMapper.muladdprod(addprod);
+		 if(tempprod.size()>0)
+		 iProdMapper.mulupdateprod(tempprod);
 	 }
-	 iSample_templetService.mulupdatesample_templet(tempList);
-	 ////////////222222
-	 List<Prod_term> ptList = new ArrayList<Prod_term>();
-	 if(termids!=null&&!termids.equals("")){
-		 String[] terms=termids.split("\\|");
-		 for(int i=0;i<terms.length;i++){
-			 Prod_term prod_term =new Prod_term(); 
-			 prod_term.setProd_id(prod.getId()+"");
-			 prod_term.setTerm_id(terms[i]);
-			 ptList.add(prod_term);
+	 else{
+		///1111111111
+		 JSONArray addJA=JSONArray.fromObject(muladd);
+		 List<Sample_templet> tempList= new ArrayList<Sample_templet>();
+		 for(int i=0;i<addJA.size();i++){
+			 JSONObject  updateJO = (JSONObject) addJA.get(i);
+			 Sample_templet sample_templet =new Sample_templet(); 
+			 
+			 if(updateJO.containsKey("id"))
+				sample_templet.setId(Long.parseLong(updateJO.getString("id")));
+			 if(updateJO.containsKey("show_flg"))
+				sample_templet.setShow_flg(updateJO.getString("show_flg"));
+			 if(updateJO.containsKey("sort"))
+				sample_templet.setSort(Long.parseLong(updateJO.getString("sort")));
+			 if(updateJO.containsKey("lov_id"))
+				sample_templet.setLov_id(Long.parseLong(updateJO.getString("lov_id")));
+			 //if(addJO.containsKey("prod_id"))
+			 sample_templet.setProd_id(prod.getId());
+			 tempList.add(sample_templet);
 		 }
-	 }
-	 iProd_termService.deleteprod_termbyprod(prod.getId()+"",ptList);
-	 
-	 
-	 //////////3333333
-	 JSONArray subprodJA=JSONArray.fromObject(subprod);
-	 List<Prod> tempprod= new ArrayList<Prod>();
-	 for(int i=0;i<subprodJA.size();i++){
-		JSONObject  addJO = (JSONObject) subprodJA.get(i);
-		Prod prodTemp =new Prod(); 
+		 if(tempList.size()>0)
+		 iSample_templetService.mulupdatesample_templet(tempList);
+		 ////////////222222
+		 List<Prod_term> ptList = new ArrayList<Prod_term>();
+		 if(termids!=null&&!termids.equals("")){
+			 String[] terms=termids.split("\\|");
+			 for(int i=0;i<terms.length;i++){
+				 Prod_term prod_term =new Prod_term(); 
+				 prod_term.setProd_id(prod.getId()+"");
+				 prod_term.setTerm_id(terms[i]);
+				 ptList.add(prod_term);
+			 }
+		 }
+		 iProd_termService.deleteprod_termbyprod(prod.getId()+"",ptList);
 		 
-		if(addJO.containsKey("fj_f"))
-			prodTemp.setFj_f(addJO.getString("fj_f"));
-		if(addJO.containsKey("nm_t"))
-			prodTemp.setNm_t(addJO.getString("nm_t"));
-		if(addJO.containsKey("ty_lv"))
-			prodTemp.setTy_lv(addJO.getString("ty_lv"));
-		if(addJO.containsKey("jy_f"))
-			prodTemp.setJy_f(addJO.getString("jy_f"));
-		if(addJO.containsKey("id"))
-			prodTemp.setId(Long.parseLong(addJO.getString("id")));
-		if(addJO.containsKey("flg"))
-			prodTemp.setFlg(addJO.getString("flg"));
-		//if(addJO.containsKey("prod_id"))
-		//prodTemp.setPid(prod.getId()+"");
-		tempprod.add(prodTemp);
-	 } 
-	 iProdMapper.mulupdateprod(tempprod);
+	 }
+	 
+	 
+	 
 	  
 	 return result;
  }

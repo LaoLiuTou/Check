@@ -898,6 +898,55 @@ public class AccntAction implements Action {
 	}
     
     
+    private String accntids;
+    public String getAccntids() {
+		return accntids;
+	}
+	public void setAccntids(String accntids) {
+		this.accntids = accntids;
+	}
+	 
+	
+	public String appTree() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			String result="";
+			if(accntids!=null && !accntids.equals("")){
+				result=iAccntService.selectAppTreeAccnt(accntids,up_dtFrom);
+				
+				if(!result.equals("")){
+					msg.append("\"success\",\"msg\":");
+					msg.append(result);
+					logger.info(id+"查询成功！");
+				}
+				else{
+					msg.append("\"failure\",\"msg\":");
+					msg.append("\"查询失败.\"");
+				}
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"参数不能为空.\"");
+			}
+			 
+			
+			
+		} catch (Exception e) {
+			logger.info(id+"查询失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
     
     
 }

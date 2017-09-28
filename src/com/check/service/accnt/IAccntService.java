@@ -58,5 +58,11 @@ public interface IAccntService {
  	  */ 
  	 @Transactional
  	 public  int updateallaccnt(Accnt accnt,String contstr,String attastr);
+ 	 
+ 	/**
+ 	  * tree
+ 	  * @return 
+ 	  */ 
+ 	 public  String selectAppTreeAccnt(String ids,String updatetime);
 }
 

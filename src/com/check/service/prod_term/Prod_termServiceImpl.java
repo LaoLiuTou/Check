@@ -72,7 +72,10 @@ public class Prod_termServiceImpl  implements IProd_termService {
  public  int deleteprod_termbyprod(String prod_id,List<Prod_term> list){
 	 int result= 0;
 	 iProd_termMapper.deleteprod_termbyprod(prod_id);
-	 result = iProd_termMapper.muladdprod_term(list);
+	 if(list.size()>0){
+		 result = iProd_termMapper.muladdprod_term(list);
+		 
+	 }
 	 return result;
 	 
  }

@@ -442,7 +442,7 @@ public class ResultsAction implements Action {
 	//test 试验结论
 	private String jl_t;
 	private String prod_id_sub;
-	
+	private String dd_t;
 	public String getProd_id_sub() {
 		return prod_id_sub;
 	}
@@ -454,6 +454,13 @@ public class ResultsAction implements Action {
 	}
 	public void setJl_t(String jl_t) {
 		this.jl_t = jl_t;
+	}
+	
+	public String getDd_t() {
+		return dd_t;
+	}
+	public void setDd_t(String dd_t) {
+		this.dd_t = dd_t;
 	}
 	public String appupdate() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
@@ -490,23 +497,46 @@ public class ResultsAction implements Action {
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			 
-			
-			Prod prod=iProdService.selectprodById(prod_id_sub);
-			results.setStatand_lv(prod.getGzty_lv());
-			results.setStatand(prod.getRule_lv());
-			results.setStatand_va(prod.getBz_t());
+
 			 
 			/////////bool
 			Results cresults=iResultsService.selectresultsById(id);
-			 
-			Results presults = iResultsService.selectresultsById(cresults.getRel_id()+"");
-			String inbz_t =null;
-			if(presults!=null){
-				inbz_t =presults.getInbz_t();
+			if(value!=null&&!value.equals("")){
+				//更新value值
 			}
-			if(inbz_t!=null&&!inbz_t.equals("")){
+			else{
 				if(cresults.getValue()!=null&&!cresults.getValue().equals("")){
-					if(Double.parseDouble(cresults.getValue())>Double.parseDouble(inbz_t)){
+					results.setValue(cresults.getValue());
+				}
+			}
+			
+			
+			Results presults = iResultsService.selectresultsById(cresults.getRel_id()+"");
+			
+			if(prod_id_sub!=null&&!prod_id_sub.equals("")){
+				
+				Prod prod=iProdService.selectprodById(prod_id_sub);
+				results.setStatand_lv(prod.getGzty_lv());
+				results.setStatand(prod.getRule_lv());
+				results.setStatand_va(prod.getBz_t());
+			}
+			else{
+				if(presults!=null){
+					results.setStatand_lv(presults.getStatand_lv());
+					results.setStatand(presults.getStatand());
+					results.setStatand_va(presults.getStatand_va());
+				}
+			}
+
+			//rel_id为空
+			if(presults!=null&&results.getValue()!=null&&!results.getValue().equals("")){
+				String inbz_t =null;
+				if(presults!=null){
+					inbz_t =presults.getInbz_t();
+				}
+				 
+				if(inbz_t!=null&&!inbz_t.equals("")){
+					if(Double.parseDouble(results.getValue())>Double.parseDouble(inbz_t)){
 						results.setBool("Y");
 					}
 					else{
@@ -514,45 +544,59 @@ public class ResultsAction implements Action {
 					}
 				}
 				else{
-					results.setBool("N");
+					if(results.getStatand()!=null&&!results.getStatand().equals("")
+							&&results.getStatand_va()!=null&&!results.getStatand_va().equals("")){
+						String str = "("+results.getValue()+results.getStatand()+results.getStatand_va()+")";  
+				        ScriptEngineManager manager = new ScriptEngineManager();  
+				        ScriptEngine engine = manager.getEngineByName("js");  
+				        //engine.put("a", 4);  
+				        Object flag = engine.eval(str);  
+				        if(flag.toString().equals("true")){
+				        	results.setBool("Y");
+				        }
+				        else{
+				        	results.setBool("N");
+				        }
+					}
+					else{
+						results.setBool("N");
+					}
+					
+					
+					 
 				}
-				
 			}
-			else{
-				
-				String str = "("+cresults.getValue()+results.getStatand()+results.getStatand_va()+")";  
-		        ScriptEngineManager manager = new ScriptEngineManager();  
-		        ScriptEngine engine = manager.getEngineByName("js");  
-		        //engine.put("a", 4);  
-		        Object flag = engine.eval(str);  
-		        if(flag.toString().equals("true")){
-		        	results.setBool("Y");
-		        }
-		        else{
-		        	results.setBool("N");
-		        }
-				 
-			}
+			/*else{
+				results.setBool("N");
+			}*/
+			
+			
 			 /////////1
 			int result= iResultsService.updateresults(results);
 			if(result>0){
-				if(results.getBool().equals("Y")){
-					presults.setBool("Y");
-					///////////////////2
-					iResultsService.updateresults(presults);
-				}
 				cresults=iResultsService.selectresultsById(id);
+				if(cresults.getBool()!=null&&cresults.getBool().equals("Y")){
+					
+					if(presults!=null){
+						presults.setBool("Y");
+						///////////////////2
+						iResultsService.updateresults(presults);
+					}
+					
+				}
+				
 				///////////////3
 				if(cresults.getPid()!=null){
 					
 					Test tempTest = new Test();
 					tempTest.setId(cresults.getPid());
 					tempTest.setJl_t(jl_t);
+					tempTest.setDd_t(dd_t);
 					iTestService.updatetest(tempTest);
 				}
 			}
 			msg.append("\"success\",\"msg\":");
-			msg.append("\"更新成功！\"");
+			msg.append("\"更新成功\"");
 			logger.info(id+"更新成功！");
 		} catch (Exception e) {
 			logger.info(id+"更新失败！"+e);
@@ -662,8 +706,8 @@ public class ResultsAction implements Action {
 				logger.info(id+"查询成功！");
 			}
 			else{
-				msg.append("\"failure\",\"msg\":");
-				msg.append("\"查询失败.\"");
+				msg.append("\"success\",\"msg\":\""+"N"+"\"");
+				logger.info(id+"查询成功！");
 			}
 			
 		} catch (Exception e) {
