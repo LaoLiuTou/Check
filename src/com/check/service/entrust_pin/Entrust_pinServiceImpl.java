@@ -13,7 +13,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Entrust_pin selectentrust_pinById(String id){
 		return iEntrust_pinMapper.selectentrust_pinById(id);
 	}
@@ -23,7 +22,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Entrust_pin> selectentrust_pinByParam(Map paramMap){ 
 		return iEntrust_pinMapper.selectentrust_pinByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountentrust_pinByParam(Map paramMap){ 
 		return iEntrust_pinMapper.selectCountentrust_pinByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateentrust_pin(Entrust_pin entrust_pin){
 		return iEntrust_pinMapper.updateentrust_pin(entrust_pin);
 	}
@@ -51,7 +47,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addentrust_pin(Entrust_pin entrust_pin){
 		return iEntrust_pinMapper.addentrust_pin(entrust_pin);
 	}
@@ -60,7 +55,6 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteentrust_pin(String id){
 		return iEntrust_pinMapper.deleteentrust_pin(id);
 	}

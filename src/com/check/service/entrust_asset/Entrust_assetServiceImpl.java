@@ -13,7 +13,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Entrust_asset selectentrust_assetById(String id){
 		return iEntrust_assetMapper.selectentrust_assetById(id);
 	}
@@ -23,7 +22,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Entrust_asset> selectentrust_assetByParam(Map paramMap){ 
 		return iEntrust_assetMapper.selectentrust_assetByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountentrust_assetByParam(Map paramMap){ 
 		return iEntrust_assetMapper.selectCountentrust_assetByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateentrust_asset(Entrust_asset entrust_asset){
 		return iEntrust_assetMapper.updateentrust_asset(entrust_asset);
 	}
@@ -51,7 +47,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addentrust_asset(Entrust_asset entrust_asset){
 		return iEntrust_assetMapper.addentrust_asset(entrust_asset);
 	}
@@ -60,7 +55,6 @@ public class Entrust_assetServiceImpl  implements IEntrust_assetService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteentrust_asset(String id){
 		return iEntrust_assetMapper.deleteentrust_asset(id);
 	}

@@ -13,7 +13,6 @@ public class TestServiceImpl  implements ITestService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Test selecttestById(String id){
 		return iTestMapper.selecttestById(id);
 	}
@@ -23,7 +22,6 @@ public class TestServiceImpl  implements ITestService {
 	  * @return
 	  */ 
 	 @SuppressWarnings("rawtypes")
-	 @Transactional
 	 public List<Test> selectFirstTestCode(Map paramMap){ 
 		 return iTestMapper.selectFirstTestCode(paramMap);
 	 }
@@ -32,7 +30,6 @@ public class TestServiceImpl  implements ITestService {
 	  * @return
 	  */ 
 	 @SuppressWarnings("rawtypes")
-	 @Transactional
 	 public List<Test> selectSecondTestCode(Map paramMap){ 
 		 return iTestMapper.selectSecondTestCode(paramMap);
 	 }
@@ -41,7 +38,6 @@ public class TestServiceImpl  implements ITestService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Test> selecttestByParam(Map paramMap){ 
 		return iTestMapper.selecttestByParam(paramMap);
 	}
@@ -51,7 +47,6 @@ public class TestServiceImpl  implements ITestService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCounttestByParam(Map paramMap){ 
 		return iTestMapper.selectCounttestByParam(paramMap);
 	}
@@ -60,7 +55,6 @@ public class TestServiceImpl  implements ITestService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatetest(Test test){
 		return iTestMapper.updatetest(test);
 	}
@@ -69,7 +63,6 @@ public class TestServiceImpl  implements ITestService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addtest(Test test){
 		return iTestMapper.addtest(test);
 	}
@@ -78,7 +71,6 @@ public class TestServiceImpl  implements ITestService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletetest(String id){
 		return iTestMapper.deletetest(id);
 	}

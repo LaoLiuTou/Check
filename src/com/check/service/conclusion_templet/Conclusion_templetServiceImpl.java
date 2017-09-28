@@ -13,7 +13,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
  * 通过id选取
  * @return
  */
- @Transactional
 	public Conclusion_templet selectconclusion_templetById(String id){
 		return iConclusion_templetMapper.selectconclusion_templetById(id);
 	}
@@ -23,7 +22,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Conclusion_templet> selectconclusion_templetByParam(Map paramMap){ 
 		return iConclusion_templetMapper.selectconclusion_templetByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountconclusion_templetByParam(Map paramMap){ 
 		return iConclusion_templetMapper.selectCountconclusion_templetByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateconclusion_templet(Conclusion_templet conclusion_templet){
 		return iConclusion_templetMapper.updateconclusion_templet(conclusion_templet);
 	}
@@ -51,7 +47,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addconclusion_templet(Conclusion_templet conclusion_templet){
 		return iConclusion_templetMapper.addconclusion_templet(conclusion_templet);
 	}
@@ -60,7 +55,6 @@ public class Conclusion_templetServiceImpl  implements IConclusion_templetServic
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteconclusion_templet(String id){
 		return iConclusion_templetMapper.deleteconclusion_templet(id);
 	}

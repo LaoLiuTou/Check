@@ -13,7 +13,6 @@ public class ContServiceImpl  implements IContService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Cont selectcontById(String id){
 		return iContMapper.selectcontById(id);
 	}
@@ -23,7 +22,6 @@ public class ContServiceImpl  implements IContService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Cont> selectcontByParam(Map paramMap){ 
 		return iContMapper.selectcontByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class ContServiceImpl  implements IContService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountcontByParam(Map paramMap){ 
 		return iContMapper.selectCountcontByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class ContServiceImpl  implements IContService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatecont(Cont cont){
 		return iContMapper.updatecont(cont);
 	}
@@ -51,7 +47,6 @@ public class ContServiceImpl  implements IContService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addcont(Cont cont){
 		return iContMapper.addcont(cont);
 	}
@@ -60,7 +55,6 @@ public class ContServiceImpl  implements IContService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletecont(String id){
 		return iContMapper.deletecont(id);
 	}

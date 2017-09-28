@@ -13,7 +13,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Auth_group selectauth_groupById(String id){
 		return iAuth_groupMapper.selectauth_groupById(id);
 	}
@@ -23,7 +22,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Auth_group> selectauth_groupByParam(Map paramMap){ 
 		return iAuth_groupMapper.selectauth_groupByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountauth_groupByParam(Map paramMap){ 
 		return iAuth_groupMapper.selectCountauth_groupByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateauth_group(Auth_group auth_group){
 		return iAuth_groupMapper.updateauth_group(auth_group);
 	}
@@ -51,7 +47,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addauth_group(Auth_group auth_group){
 		return iAuth_groupMapper.addauth_group(auth_group);
 	}
@@ -60,7 +55,6 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteauth_group(String id){
 		return iAuth_groupMapper.deleteauth_group(id);
 	}

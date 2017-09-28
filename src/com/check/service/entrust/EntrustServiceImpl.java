@@ -89,7 +89,6 @@ public class EntrustServiceImpl  implements IEntrustService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Entrust selectentrustById(String id){
 		return iEntrustMapper.selectentrustById(id);
 	}
@@ -99,7 +98,6 @@ public class EntrustServiceImpl  implements IEntrustService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Entrust> selectentrustByParam(Map paramMap){ 
 		return iEntrustMapper.selectentrustByParam(paramMap);
 	}
@@ -109,7 +107,6 @@ public class EntrustServiceImpl  implements IEntrustService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountentrustByParam(Map paramMap){ 
 		return iEntrustMapper.selectCountentrustByParam(paramMap);
 	}
@@ -118,7 +115,6 @@ public class EntrustServiceImpl  implements IEntrustService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateentrust(Entrust entrust){
 		return iEntrustMapper.updateentrust(entrust);
 	}
@@ -127,7 +123,6 @@ public class EntrustServiceImpl  implements IEntrustService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addentrust(Entrust entrust){
 		return iEntrustMapper.addentrust(entrust);
 	}
@@ -136,7 +131,6 @@ public class EntrustServiceImpl  implements IEntrustService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteentrust(String id){
 		return iEntrustMapper.deleteentrust(id);
 	}
@@ -281,10 +275,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 				//检测项目id
 				entrust.setProd_id(key);
 				//常规价、复检价
-				if(entrust.getCg_f().equals("常规")){
+				if(entrust.getCg_f().equals("Y")){
 					entrust.setPrice(pProd.getCgj());
 				}
-				else if(entrust.getCg_f().equals("复检")){
+				else if(entrust.getCg_f().equals("N")){
 					entrust.setPrice(pProd.getFjj());
 				}
 				//试验次数
@@ -621,9 +615,6 @@ public class EntrustServiceImpl  implements IEntrustService {
 					sample.setGc_t(sampleJO.getString("gc_t"));
 					if(sampleJO.containsKey("gg_t")){
 						sample.setGg_t(sampleJO.getString("gg_t"));
-						if(sampleJO.getString("gg_t")!=null&&!sampleJO.getString("gg_t").equals("")){
-							gg_code.add(sampleJO.getString("gg_t"));
-						}
 					}
 					if(sampleJO.containsKey("hi_t"))
 					sample.setHi_t(sampleJO.getString("hi_t"));
@@ -698,6 +689,12 @@ public class EntrustServiceImpl  implements IEntrustService {
 								for(int index=0;index<ennum;index++){
 									////////////////////////////
 									sample.setId(null);
+									
+									
+									if(sample.getGg_t()!=null&&!sample.getGg_t().equals("")){
+										gg_code.add(sample.getGg_t());
+									}
+									
 									//批号
 									if(sampleJO.containsKey("bu_id")&&sampleJO.containsKey("sy_dt")&&
 											sampleJO.containsKey("prod_id")&&sampleJO.containsKey("c_id")){
@@ -832,6 +829,12 @@ public class EntrustServiceImpl  implements IEntrustService {
 								int ennum= Integer.parseInt(entrustnum);
 								for(int index=0;index<ennum;index++){
 									
+									
+									if(sample.getGg_t()!=null&&!sample.getGg_t().equals("")){
+										gg_code.add(sample.getGg_t());
+									}
+									
+									
 									//第一条修改，其他的新建
 									if(index==0){
 										if(sampleJO.containsKey("id")){
@@ -912,7 +915,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 					}
 					else{
 						if(partStr.length()>5){
-							sy_codeStr+=partStr.substring(5,partStr.length()-1)+"、";
+							sy_codeStr+=partStr.substring(5,partStr.length())+"、";
 						}
 					}
 					

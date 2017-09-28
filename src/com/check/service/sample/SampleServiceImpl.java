@@ -13,7 +13,6 @@ public class SampleServiceImpl  implements ISampleService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Sample selectsampleById(String id){
 		return iSampleMapper.selectsampleById(id);
 	}
@@ -23,7 +22,6 @@ public class SampleServiceImpl  implements ISampleService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Sample> selectsampleByParam(Map paramMap){ 
 		return iSampleMapper.selectsampleByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class SampleServiceImpl  implements ISampleService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountsampleByParam(Map paramMap){ 
 		return iSampleMapper.selectCountsampleByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class SampleServiceImpl  implements ISampleService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatesample(Sample sample){
 		return iSampleMapper.updatesample(sample);
 	}
@@ -51,7 +47,6 @@ public class SampleServiceImpl  implements ISampleService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addsample(Sample sample){
 		return iSampleMapper.addsample(sample);
 	}
@@ -60,7 +55,6 @@ public class SampleServiceImpl  implements ISampleService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletesample(String id){
 		return iSampleMapper.deletesample(id);
 	}

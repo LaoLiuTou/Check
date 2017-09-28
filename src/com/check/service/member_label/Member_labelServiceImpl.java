@@ -39,7 +39,6 @@ public class Member_labelServiceImpl  implements IMember_labelService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatemember_label(Member_label member_label){
 		return iMember_labelMapper.updatemember_label(member_label);
 	}
@@ -48,7 +47,6 @@ public class Member_labelServiceImpl  implements IMember_labelService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addmember_label(Member_label member_label){
 		return iMember_labelMapper.addmember_label(member_label);
 	}
@@ -57,7 +55,6 @@ public class Member_labelServiceImpl  implements IMember_labelService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletemember_label(String id){
 		return iMember_labelMapper.deletemember_label(id);
 	}

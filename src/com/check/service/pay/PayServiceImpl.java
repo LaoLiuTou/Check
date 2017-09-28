@@ -13,7 +13,6 @@ public class PayServiceImpl  implements IPayService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Pay selectpayById(String id){
 		return iPayMapper.selectpayById(id);
 	}
@@ -23,7 +22,6 @@ public class PayServiceImpl  implements IPayService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Pay> selectpayByParam(Map paramMap){ 
 		return iPayMapper.selectpayByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class PayServiceImpl  implements IPayService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountpayByParam(Map paramMap){ 
 		return iPayMapper.selectCountpayByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class PayServiceImpl  implements IPayService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatepay(Pay pay){
 		return iPayMapper.updatepay(pay);
 	}
@@ -51,7 +47,6 @@ public class PayServiceImpl  implements IPayService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addpay(Pay pay){
 		return iPayMapper.addpay(pay);
 	}
@@ -60,7 +55,6 @@ public class PayServiceImpl  implements IPayService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletepay(String id){
 		return iPayMapper.deletepay(id);
 	}

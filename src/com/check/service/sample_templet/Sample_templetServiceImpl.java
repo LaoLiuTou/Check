@@ -13,7 +13,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Sample_templet selectsample_templetById(String id){
 		return iSample_templetMapper.selectsample_templetById(id);
 	}
@@ -23,7 +22,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Sample_templet> selectsample_templetByParam(Map paramMap){ 
 		return iSample_templetMapper.selectsample_templetByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountsample_templetByParam(Map paramMap){ 
 		return iSample_templetMapper.selectCountsample_templetByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatesample_templet(Sample_templet sample_templet){
 		return iSample_templetMapper.updatesample_templet(sample_templet);
 	}
@@ -51,7 +47,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addsample_templet(Sample_templet sample_templet){
 		return iSample_templetMapper.addsample_templet(sample_templet);
 	}
@@ -60,7 +55,6 @@ public class Sample_templetServiceImpl  implements ISample_templetService {
 	 * 删除 
 	 * @return 
 	 */ 
-	 @Transactional
 	public  int deletesample_templet(String id){
 		return iSample_templetMapper.deletesample_templet(id);
 	}

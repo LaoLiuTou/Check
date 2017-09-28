@@ -21,7 +21,6 @@ public class PactServiceImpl  implements IPactService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Pact selectpactById(String id){
 		return iPactMapper.selectpactById(id);
 	}
@@ -31,7 +30,6 @@ public class PactServiceImpl  implements IPactService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Pact> selectpactByParam(Map paramMap){ 
 		return iPactMapper.selectpactByParam(paramMap);
 	}
@@ -41,7 +39,6 @@ public class PactServiceImpl  implements IPactService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountpactByParam(Map paramMap){ 
 		return iPactMapper.selectCountpactByParam(paramMap);
 	}
@@ -50,7 +47,6 @@ public class PactServiceImpl  implements IPactService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatepact(Pact pact){
 		return iPactMapper.updatepact(pact);
 	}
@@ -59,7 +55,6 @@ public class PactServiceImpl  implements IPactService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addpact(Pact pact){
 		return iPactMapper.addpact(pact);
 	}
@@ -99,7 +94,6 @@ public class PactServiceImpl  implements IPactService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletepact(String id){
 		return iPactMapper.deletepact(id);
 	}

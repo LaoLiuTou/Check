@@ -57,7 +57,6 @@ public class AccntServiceImpl  implements IAccntService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Accnt selectaccntById(String id){
 		return iAccntMapper.selectaccntById(id);
 	}
@@ -67,7 +66,6 @@ public class AccntServiceImpl  implements IAccntService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Accnt> selectaccntByParam(Map paramMap){ 
 		return iAccntMapper.selectaccntByParam(paramMap);
 	}
@@ -77,7 +75,6 @@ public class AccntServiceImpl  implements IAccntService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountaccntByParam(Map paramMap){ 
 		return iAccntMapper.selectCountaccntByParam(paramMap);
 	}
@@ -86,7 +83,6 @@ public class AccntServiceImpl  implements IAccntService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateaccnt(Accnt accnt){
 		return iAccntMapper.updateaccnt(accnt);
 	}
@@ -193,7 +189,6 @@ public class AccntServiceImpl  implements IAccntService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addaccnt(Accnt accnt){
 		return iAccntMapper.addaccnt(accnt);
 	}
@@ -279,7 +274,6 @@ public class AccntServiceImpl  implements IAccntService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteaccnt(String id){
 		return iAccntMapper.deleteaccnt(id);
 	}
@@ -390,6 +384,7 @@ public class AccntServiceImpl  implements IAccntService {
 								paramMap = new HashMap ();
 								paramMap.put("pid", tempsubprod.getId());
 								paramMap.put("ty_lv", "检验属性");
+								paramMap.put("jy_f", "Y");
 								//paramMap.put("up_dtFrom", sdf.parse(updatetime));
 								int gsubprodlenum = iProdMapper.selectCountprodByParam(paramMap);
 								paramMap.put("fromPage",0);

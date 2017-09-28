@@ -13,7 +13,6 @@ public class MembersServiceImpl  implements IMembersService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Members selectmembersById(String id){
 		return iMembersMapper.selectmembersById(id);
 	}
@@ -23,7 +22,6 @@ public class MembersServiceImpl  implements IMembersService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Members> selectmembersByParam(Map paramMap){ 
 		return iMembersMapper.selectmembersByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class MembersServiceImpl  implements IMembersService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountmembersByParam(Map paramMap){ 
 		return iMembersMapper.selectCountmembersByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class MembersServiceImpl  implements IMembersService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatemembers(Members members){
 		return iMembersMapper.updatemembers(members);
 	}
@@ -51,7 +47,6 @@ public class MembersServiceImpl  implements IMembersService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addmembers(Members members){
 		return iMembersMapper.addmembers(members);
 	}
@@ -60,7 +55,6 @@ public class MembersServiceImpl  implements IMembersService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletemembers(String id){
 		return iMembersMapper.deletemembers(id);
 	}

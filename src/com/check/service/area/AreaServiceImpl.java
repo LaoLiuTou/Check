@@ -13,7 +13,6 @@ public class AreaServiceImpl  implements IAreaService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Area selectareaById(String id){
 		return iAreaMapper.selectareaById(id);
 	}
@@ -23,7 +22,6 @@ public class AreaServiceImpl  implements IAreaService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Area> selectareaByParam(Map paramMap){ 
 		return iAreaMapper.selectareaByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class AreaServiceImpl  implements IAreaService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountareaByParam(Map paramMap){ 
 		return iAreaMapper.selectCountareaByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class AreaServiceImpl  implements IAreaService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatearea(Area area){
 		return iAreaMapper.updatearea(area);
 	}
@@ -51,7 +47,6 @@ public class AreaServiceImpl  implements IAreaService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addarea(Area area){
 		return iAreaMapper.addarea(area);
 	}
@@ -60,7 +55,6 @@ public class AreaServiceImpl  implements IAreaService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletearea(String id){
 		return iAreaMapper.deletearea(id);
 	}

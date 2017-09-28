@@ -39,7 +39,6 @@ public class LabelsServiceImpl  implements ILabelsService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatelabels(Labels labels){
 		return iLabelsMapper.updatelabels(labels);
 	}
@@ -48,7 +47,6 @@ public class LabelsServiceImpl  implements ILabelsService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addlabels(Labels labels){
 		return iLabelsMapper.addlabels(labels);
 	}
@@ -57,7 +55,6 @@ public class LabelsServiceImpl  implements ILabelsService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletelabels(String id){
 		return iLabelsMapper.deletelabels(id);
 	}

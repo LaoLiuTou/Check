@@ -13,7 +13,6 @@ public class PriceServiceImpl  implements IPriceService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Price selectpriceById(String id){
 		return iPriceMapper.selectpriceById(id);
 	}
@@ -23,7 +22,6 @@ public class PriceServiceImpl  implements IPriceService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Price> selectpriceByParam(Map paramMap){ 
 		return iPriceMapper.selectpriceByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class PriceServiceImpl  implements IPriceService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountpriceByParam(Map paramMap){ 
 		return iPriceMapper.selectCountpriceByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class PriceServiceImpl  implements IPriceService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateprice(Price price){
 		return iPriceMapper.updateprice(price);
 	}
@@ -51,7 +47,6 @@ public class PriceServiceImpl  implements IPriceService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addprice(Price price){
 		return iPriceMapper.addprice(price);
 	}
@@ -60,7 +55,6 @@ public class PriceServiceImpl  implements IPriceService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteprice(String id){
 		return iPriceMapper.deleteprice(id);
 	}

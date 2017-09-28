@@ -1,8 +1,2 @@
-/Configuration.xml
-/applicationContext.xml
-/com
-/jdbc
-/log4j.properties
-/redis
-/struts.xml
 /LT.class
+/com

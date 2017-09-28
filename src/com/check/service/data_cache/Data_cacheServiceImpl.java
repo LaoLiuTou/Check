@@ -13,7 +13,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Data_cache selectdata_cacheById(String id){
 		return iData_cacheMapper.selectdata_cacheById(id);
 	}
@@ -23,7 +22,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Data_cache> selectdata_cacheByParam(Map paramMap){ 
 		return iData_cacheMapper.selectdata_cacheByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountdata_cacheByParam(Map paramMap){ 
 		return iData_cacheMapper.selectCountdata_cacheByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatedata_cache(Data_cache data_cache){
 		return iData_cacheMapper.updatedata_cache(data_cache);
 	}
@@ -51,7 +47,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object adddata_cache(Data_cache data_cache){
 		return iData_cacheMapper.adddata_cache(data_cache);
 	}
@@ -60,7 +55,6 @@ public class Data_cacheServiceImpl  implements IData_cacheService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletedata_cache(String id){
 		return iData_cacheMapper.deletedata_cache(id);
 	}

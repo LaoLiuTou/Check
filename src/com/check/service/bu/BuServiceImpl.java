@@ -13,7 +13,6 @@ public class BuServiceImpl  implements IBuService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Bu selectbuById(String id){
 		return iBuMapper.selectbuById(id);
 	}
@@ -23,7 +22,6 @@ public class BuServiceImpl  implements IBuService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Bu> selectbuByParam(Map paramMap){ 
 		return iBuMapper.selectbuByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class BuServiceImpl  implements IBuService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountbuByParam(Map paramMap){ 
 		return iBuMapper.selectCountbuByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class BuServiceImpl  implements IBuService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatebu(Bu bu){
 		return iBuMapper.updatebu(bu);
 	}
@@ -51,7 +47,6 @@ public class BuServiceImpl  implements IBuService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addbu(Bu bu){
 		return iBuMapper.addbu(bu);
 	}
@@ -60,7 +55,6 @@ public class BuServiceImpl  implements IBuService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletebu(String id){
 		return iBuMapper.deletebu(id);
 	}

@@ -13,7 +13,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Auth_rule selectauth_ruleById(String id){
 		return iAuth_ruleMapper.selectauth_ruleById(id);
 	}
@@ -21,7 +20,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
   * 通过userid选取
   * @return
   */
- @Transactional
  public List<Auth_rule> selectauth_ruleByUserId(String id){
 	 return iAuth_ruleMapper.selectauth_ruleByUserId(id);
  }
@@ -31,7 +29,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Auth_rule> selectauth_ruleByParam(Map paramMap){ 
 		return iAuth_ruleMapper.selectauth_ruleByParam(paramMap);
 	}
@@ -41,7 +38,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountauth_ruleByParam(Map paramMap){ 
 		return iAuth_ruleMapper.selectCountauth_ruleByParam(paramMap);
 	}
@@ -50,7 +46,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateauth_rule(Auth_rule auth_rule){
 		return iAuth_ruleMapper.updateauth_rule(auth_rule);
 	}
@@ -59,7 +54,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addauth_rule(Auth_rule auth_rule){
 		return iAuth_ruleMapper.addauth_rule(auth_rule);
 	}
@@ -68,7 +62,6 @@ public class Auth_ruleServiceImpl  implements IAuth_ruleService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteauth_rule(String id){
 		return iAuth_ruleMapper.deleteauth_rule(id);
 	}

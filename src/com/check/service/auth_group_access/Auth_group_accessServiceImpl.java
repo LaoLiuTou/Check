@@ -13,7 +13,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
  * 通过id选取
  * @return
  */
- @Transactional
 	public Auth_group_access selectauth_group_accessById(String id){
 		return iAuth_group_accessMapper.selectauth_group_accessById(id);
 	}
@@ -23,7 +22,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Auth_group_access> selectauth_group_accessByParam(Map paramMap){ 
 		return iAuth_group_accessMapper.selectauth_group_accessByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountauth_group_accessByParam(Map paramMap){ 
 		return iAuth_group_accessMapper.selectCountauth_group_accessByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateauth_group_access(Auth_group_access auth_group_access){
 		return iAuth_group_accessMapper.updateauth_group_access(auth_group_access);
 	}
@@ -51,7 +47,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addauth_group_access(Auth_group_access auth_group_access){
 		return iAuth_group_accessMapper.addauth_group_access(auth_group_access);
 	}
@@ -60,7 +55,6 @@ public class Auth_group_accessServiceImpl  implements IAuth_group_accessService 
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteauth_group_access(String id){
 		return iAuth_group_accessMapper.deleteauth_group_access(id);
 	}

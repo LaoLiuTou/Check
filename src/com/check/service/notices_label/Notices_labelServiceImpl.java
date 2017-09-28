@@ -39,7 +39,6 @@ public class Notices_labelServiceImpl  implements INotices_labelService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatenotices_label(Notices_label notices_label){
 		return iNotices_labelMapper.updatenotices_label(notices_label);
 	}
@@ -48,7 +47,6 @@ public class Notices_labelServiceImpl  implements INotices_labelService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addnotices_label(Notices_label notices_label){
 		return iNotices_labelMapper.addnotices_label(notices_label);
 	}
@@ -57,7 +55,6 @@ public class Notices_labelServiceImpl  implements INotices_labelService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletenotices_label(String id){
 		return iNotices_labelMapper.deletenotices_label(id);
 	}

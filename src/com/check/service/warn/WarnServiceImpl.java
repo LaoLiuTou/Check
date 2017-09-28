@@ -13,7 +13,6 @@ public class WarnServiceImpl  implements IWarnService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Warn selectwarnById(String id){
 		return iWarnMapper.selectwarnById(id);
 	}
@@ -23,7 +22,6 @@ public class WarnServiceImpl  implements IWarnService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Warn> selectwarnByParam(Map paramMap){ 
 		return iWarnMapper.selectwarnByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class WarnServiceImpl  implements IWarnService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountwarnByParam(Map paramMap){ 
 		return iWarnMapper.selectCountwarnByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class WarnServiceImpl  implements IWarnService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatewarn(Warn warn){
 		return iWarnMapper.updatewarn(warn);
 	}
@@ -51,7 +47,6 @@ public class WarnServiceImpl  implements IWarnService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addwarn(Warn warn){
 		return iWarnMapper.addwarn(warn);
 	}
@@ -60,7 +55,6 @@ public class WarnServiceImpl  implements IWarnService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletewarn(String id){
 		return iWarnMapper.deletewarn(id);
 	}

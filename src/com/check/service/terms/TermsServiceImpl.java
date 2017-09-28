@@ -13,7 +13,6 @@ public class TermsServiceImpl  implements ITermsService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Terms selecttermsById(String id){
 		return iTermsMapper.selecttermsById(id);
 	}
@@ -23,7 +22,6 @@ public class TermsServiceImpl  implements ITermsService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Terms> selecttermsByParam(Map paramMap){ 
 		return iTermsMapper.selecttermsByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class TermsServiceImpl  implements ITermsService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCounttermsByParam(Map paramMap){ 
 		return iTermsMapper.selectCounttermsByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class TermsServiceImpl  implements ITermsService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateterms(Terms terms){
 		return iTermsMapper.updateterms(terms);
 	}
@@ -51,7 +47,6 @@ public class TermsServiceImpl  implements ITermsService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addterms(Terms terms){
 		return iTermsMapper.addterms(terms);
 	}
@@ -60,7 +55,6 @@ public class TermsServiceImpl  implements ITermsService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteterms(String id){
 		return iTermsMapper.deleteterms(id);
 	}

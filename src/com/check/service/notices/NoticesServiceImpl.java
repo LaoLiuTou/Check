@@ -39,7 +39,6 @@ public class NoticesServiceImpl  implements INoticesService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatenotices(Notices notices){
 		return iNoticesMapper.updatenotices(notices);
 	}
@@ -48,7 +47,6 @@ public class NoticesServiceImpl  implements INoticesService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addnotices(Notices notices){
 		return iNoticesMapper.addnotices(notices);
 	}
@@ -57,7 +55,6 @@ public class NoticesServiceImpl  implements INoticesService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletenotices(String id){
 		return iNoticesMapper.deletenotices(id);
 	}

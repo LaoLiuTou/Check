@@ -13,7 +13,6 @@ public class ResultsServiceImpl  implements IResultsService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Results selectresultsById(String id){
 		return iResultsMapper.selectresultsById(id);
 	}
@@ -23,7 +22,6 @@ public class ResultsServiceImpl  implements IResultsService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Results> selectresultsByParam(Map paramMap){ 
 		return iResultsMapper.selectresultsByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class ResultsServiceImpl  implements IResultsService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountresultsByParam(Map paramMap){ 
 		return iResultsMapper.selectCountresultsByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class ResultsServiceImpl  implements IResultsService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateresults(Results results){
 		return iResultsMapper.updateresults(results);
 	}
@@ -51,7 +47,6 @@ public class ResultsServiceImpl  implements IResultsService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addresults(Results results){
 		return iResultsMapper.addresults(results);
 	}
@@ -60,7 +55,6 @@ public class ResultsServiceImpl  implements IResultsService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteresults(String id){
 		return iResultsMapper.deleteresults(id);
 	}

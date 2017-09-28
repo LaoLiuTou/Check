@@ -13,7 +13,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Entrust_sample selectentrust_sampleById(String id){
 		return iEntrust_sampleMapper.selectentrust_sampleById(id);
 	}
@@ -23,7 +22,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Entrust_sample> selectentrust_sampleByParam(Map paramMap){ 
 		return iEntrust_sampleMapper.selectentrust_sampleByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountentrust_sampleByParam(Map paramMap){ 
 		return iEntrust_sampleMapper.selectCountentrust_sampleByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateentrust_sample(Entrust_sample entrust_sample){
 		return iEntrust_sampleMapper.updateentrust_sample(entrust_sample);
 	}
@@ -51,7 +47,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addentrust_sample(Entrust_sample entrust_sample){
 		return iEntrust_sampleMapper.addentrust_sample(entrust_sample);
 	}
@@ -60,7 +55,6 @@ public class Entrust_sampleServiceImpl  implements IEntrust_sampleService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteentrust_sample(String id){
 		return iEntrust_sampleMapper.deleteentrust_sample(id);
 	}

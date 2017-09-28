@@ -27,7 +27,6 @@ public class ProdServiceImpl  implements IProdService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Prod selectprodById(String id){
 		return iProdMapper.selectprodById(id);
 	}
@@ -37,7 +36,6 @@ public class ProdServiceImpl  implements IProdService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Prod> selectprodByParam(Map paramMap){ 
 		return iProdMapper.selectprodByParam(paramMap);
 	}
@@ -47,7 +45,6 @@ public class ProdServiceImpl  implements IProdService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountprodByParam(Map paramMap){ 
 		return iProdMapper.selectCountprodByParam(paramMap);
 	}
@@ -56,7 +53,6 @@ public class ProdServiceImpl  implements IProdService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateprod(Prod prod){
 		return iProdMapper.updateprod(prod);
 	}
@@ -65,7 +61,6 @@ public class ProdServiceImpl  implements IProdService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addprod(Prod prod){
 		return iProdMapper.addprod(prod);
 	}
@@ -244,7 +239,6 @@ public class ProdServiceImpl  implements IProdService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteprod(String id){
 		return iProdMapper.deleteprod(id);
 	}

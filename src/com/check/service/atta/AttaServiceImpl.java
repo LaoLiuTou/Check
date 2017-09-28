@@ -13,7 +13,6 @@ public class AttaServiceImpl  implements IAttaService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Atta selectattaById(String id){
 		return iAttaMapper.selectattaById(id);
 	}
@@ -23,7 +22,6 @@ public class AttaServiceImpl  implements IAttaService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Atta> selectattaByParam(Map paramMap){ 
 		return iAttaMapper.selectattaByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class AttaServiceImpl  implements IAttaService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountattaByParam(Map paramMap){ 
 		return iAttaMapper.selectCountattaByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class AttaServiceImpl  implements IAttaService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateatta(Atta atta){
 		return iAttaMapper.updateatta(atta);
 	}
@@ -51,7 +47,6 @@ public class AttaServiceImpl  implements IAttaService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addatta(Atta atta){
 		return iAttaMapper.addatta(atta);
 	}
@@ -60,7 +55,6 @@ public class AttaServiceImpl  implements IAttaService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteatta(String id){
 		return iAttaMapper.deleteatta(id);
 	}

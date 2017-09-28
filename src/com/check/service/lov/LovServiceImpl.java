@@ -13,7 +13,6 @@ public class LovServiceImpl  implements ILovService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Lov selectlovById(String id){
 		return iLovMapper.selectlovById(id);
 	}
@@ -23,7 +22,6 @@ public class LovServiceImpl  implements ILovService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Lov> selectlovByParam(Map paramMap){ 
 		return iLovMapper.selectlovByParam(paramMap);
 	}
@@ -32,7 +30,6 @@ public class LovServiceImpl  implements ILovService {
   * @return
   */ 
  @SuppressWarnings("rawtypes")
- @Transactional
  public List<Lov> selectlovByParamOrder(Map paramMap){ 
 	 return iLovMapper.selectlovByParamOrder(paramMap);
  }
@@ -42,7 +39,6 @@ public class LovServiceImpl  implements ILovService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountlovByParam(Map paramMap){ 
 		return iLovMapper.selectCountlovByParam(paramMap);
 	}
@@ -51,7 +47,6 @@ public class LovServiceImpl  implements ILovService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updatelov(Lov lov){
 		return iLovMapper.updatelov(lov);
 	}
@@ -60,7 +55,6 @@ public class LovServiceImpl  implements ILovService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addlov(Lov lov){
 		return iLovMapper.addlov(lov);
 	}
@@ -69,7 +63,6 @@ public class LovServiceImpl  implements ILovService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deletelov(String id){
 		return iLovMapper.deletelov(id);
 	}

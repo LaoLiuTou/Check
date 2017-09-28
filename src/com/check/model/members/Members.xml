@@ -3,7 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.members.IMembersMapper"> 
 	<select id="selectmembersById" parameterType="String" resultType="Members">
-		SELECT * FROM members WHERE ID=#{id}
+		SELECT m.*,aga.group_id as group_id FROM members m left join auth_group_access aga on
+		m.id=aga.uid  WHERE m.ID=#{id}
 	</select>
 
 
@@ -12,28 +13,28 @@
 	</delete>
 
 	<select id="selectmembersByParam" parameterType="java.util.Map" resultType="Members">
-		SELECT *
-		FROM members
+		SELECT m.*,aga.group_id as group_id FROM members m left join auth_group_access aga on
+		m.id=aga.uid 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="username != null"> AND USERNAME =#{username} </if>
-			<if test="userpwd != null"> AND USERPWD =#{userpwd} </if>
-			<if test="resp != null"> AND RESP =#{resp} </if>
-			<if test="status != null"> AND STATUS =#{status} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="type != null"> AND TYPE =#{type} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="img != null"> AND IMG =#{img} </if>
-			<if test="sign != null"> AND SIGN =#{sign} </if>
-			<if test="name != null"> AND NAME =#{name} </if>
+			<if test="id != null"> AND m.ID =#{id} </if>
+			<if test="row_id != null"> AND m.ROW_ID =#{row_id} </if>
+			<if test="username != null"> AND m.USERNAME =#{username} </if>
+			<if test="userpwd != null"> AND m.USERPWD =#{userpwd} </if>
+			<if test="resp != null"> AND m.RESP =#{resp} </if>
+			<if test="status != null"> AND m.STATUS =#{status} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(m.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(m.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND m.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(m.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(m.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND m.UP_DT =#{up_dt} </if>
+			<if test="type != null"> AND m.TYPE =#{type} </if>
+			<if test="bu_id != null"> AND m.BU_ID =#{bu_id} </if>
+			<if test="img != null"> AND m.IMG =#{img} </if>
+			<if test="sign != null"> AND m.SIGN =#{sign} </if>
+			<if test="name != null"> AND m.NAME =#{name} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 

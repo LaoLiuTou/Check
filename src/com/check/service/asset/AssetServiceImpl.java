@@ -13,7 +13,6 @@ public class AssetServiceImpl  implements IAssetService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Asset selectassetById(String id){
 		return iAssetMapper.selectassetById(id);
 	}
@@ -23,7 +22,6 @@ public class AssetServiceImpl  implements IAssetService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Asset> selectassetByParam(Map paramMap){ 
 		return iAssetMapper.selectassetByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class AssetServiceImpl  implements IAssetService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountassetByParam(Map paramMap){ 
 		return iAssetMapper.selectCountassetByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class AssetServiceImpl  implements IAssetService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateasset(Asset asset){
 		return iAssetMapper.updateasset(asset);
 	}
@@ -51,7 +47,6 @@ public class AssetServiceImpl  implements IAssetService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addasset(Asset asset){
 		return iAssetMapper.addasset(asset);
 	}
@@ -60,7 +55,6 @@ public class AssetServiceImpl  implements IAssetService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteasset(String id){
 		return iAssetMapper.deleteasset(id);
 	}

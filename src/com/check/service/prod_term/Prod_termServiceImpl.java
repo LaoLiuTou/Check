@@ -13,7 +13,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
  * 通过id选取
  * @return
  */
- @Transactional
 	public Prod_term selectprod_termById(String id){
 		return iProd_termMapper.selectprod_termById(id);
 	}
@@ -23,7 +22,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
  * @return
  */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public List<Prod_term> selectprod_termByParam(Map paramMap){ 
 		return iProd_termMapper.selectprod_termByParam(paramMap);
 	}
@@ -33,7 +31,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
 	 * @return
 	 */ 
  @SuppressWarnings("rawtypes")
- @Transactional
 	public int selectCountprod_termByParam(Map paramMap){ 
 		return iProd_termMapper.selectCountprod_termByParam(paramMap);
 	}
@@ -42,7 +39,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
  * 更新 
  * @return 
  */ 
- @Transactional
 	public  int updateprod_term(Prod_term prod_term){
 		return iProd_termMapper.updateprod_term(prod_term);
 	}
@@ -51,7 +47,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
  * 添加 
  * @return
  */ 
- @Transactional
 	public  Object addprod_term(Prod_term prod_term){
 		return iProd_termMapper.addprod_term(prod_term);
 	}
@@ -60,7 +55,6 @@ public class Prod_termServiceImpl  implements IProd_termService {
  * 删除 
  * @return 
  */ 
- @Transactional
 	public  int deleteprod_term(String id){
 		return iProd_termMapper.deleteprod_term(id);
 	}
