@@ -69,7 +69,14 @@ public class Entrust_pin {
 	public void setJc_f(String jc_f) {
 		this.jc_f = jc_f;
 	}
-
+	private String p_nm_t;
+	public String getP_nm_t() {
+		return p_nm_t;
+	}
+	public void setP_nm_t(String p_nm_t) {
+		this.p_nm_t = p_nm_t;
+	}
+	
 
 
 }

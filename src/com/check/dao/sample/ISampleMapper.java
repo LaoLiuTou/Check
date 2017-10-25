@@ -26,6 +26,11 @@ import com.check.model.sample.Sample;
  */ 
 	public  int updatesample(Sample sample);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdateSample(List<Sample> sampleList);
+	/**
  	* 添加 
  	* @return
  */ 

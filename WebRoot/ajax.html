@@ -30,13 +30,13 @@ alert(localStorage.getItem("test")); */
 	    }      
 	}  */
  
-	var  token = "27de08a6-60f3-41f5-a180-741b8296f80d";
+	var  token = "49db5ab6-f337-4847-b336-294a5b4438f2";
 	var timestamp = Date.parse(new Date());
 	var hash = md5(token+timestamp+"!QAZXSW@"); 
 	console.log(timestamp);
 	console.log(hash);
     $.ajax({
-           url:'http://192.168.1.144/Check/selectProd',
+           url:'http://192.168.1.144/Check/addPay',
            type:"POST",
            //dataType : "json",
            //data : {'id':'23578','inbz_t':'30','jl_t':'','prod_id_sub':'592'},
@@ -55,9 +55,10 @@ alert(localStorage.getItem("test")); */
                   'termids':'1000|1002|1001|1005|1006',
                   'mulupdate':'[{"id":"4367","show_flg":"Y","sort":"111","lov_id":"1242"},{"id":"4368","show_flg":"Y","sort":"112","lov_id":"1243"}]'},
             */
-          
-           data : {'id':'256'},
-           //data : {'accntids':'950'},
+          //'wt_dtFrom':'2017-10-11 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':10','bu_id':'1'
+  
+           data : {'bu_id':'11','flag':'Y'},
+           //data : {'wt_dtFrom':'2017-10-08 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':'10','bu_id':'1'},
            //data : {'sampleids':'{"1":"3","2":"2","3":"2","4":"3"}'},
            //data : {'jd_lv':'已分配','ty_lv':'样品','USER_ID':'64','PH_V':'AGS-W09','ly_lv':'取样','dw_lv':'JB_CG_10001','nm_t':'水晶','PH_OS':'ANDROID_7.0','pid':'2','prod_id':'2','sy_dt':'2017-09-27 00:00:00','c_id':'64','st_lv':'固定','entrustnum':'1','jc_f':''},
            headers: {

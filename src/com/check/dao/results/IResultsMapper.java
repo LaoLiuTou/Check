@@ -33,8 +33,13 @@ import com.check.model.results.Results;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deleteresults(String id);
+	 */ 
+	public  int deleteresults(String id);
+	/**
+	 * 删除 
+	 * @return 
+	 */ 
+	public  int deleteResultsByPid(String pid);
 
 }
 

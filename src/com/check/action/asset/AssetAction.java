@@ -171,12 +171,13 @@ public class AssetAction implements Action {
 	public void setXh_t(String xh_t) {
 		this.xh_t = xh_t;
 	}
-	private String cj_t;
-	public String getCj_t() {
-		return cj_t;
+	private String  cj_id;
+	 
+	public String getCj_id() {
+		return cj_id;
 	}
-	public void setCj_t(String cj_t) {
-		this.cj_t = cj_t;
+	public void setCj_id(String cj_id) {
+		this.cj_id = cj_id;
 	}
 	private String e_dtFrom;
 	public String getE_dtFrom() {
@@ -285,7 +286,8 @@ public class AssetAction implements Action {
 		asset.setNm_t(nm_t);
 		asset.setCode(code);
 		asset.setXh_t(xh_t);
-		asset.setCj_t(cj_t);
+		if(cj_id!=null&&!cj_id.equals(""))
+		asset.setCj_id(Long.parseLong(cj_id));
 		if(e_dt!=null&&!e_dt.equals(""))
 		asset.setE_dt(sdf.parse(e_dt));
 		asset.setSt_lv(st_lv);
@@ -341,7 +343,7 @@ public class AssetAction implements Action {
 			paramMap.put("nm_t", nm_t);
 			paramMap.put("code", code);
 			paramMap.put("xh_t", xh_t);
-			paramMap.put("cj_t", cj_t);
+			paramMap.put("cj_id", cj_id);
 			if(e_dtFrom!=null&&!e_dtFrom.equals(""))
 			paramMap.put("e_dtFrom", sdf.parse(e_dtFrom));
 			if(e_dtTo!=null&&!e_dtTo.equals(""))
@@ -408,7 +410,8 @@ public class AssetAction implements Action {
 		asset.setNm_t(nm_t);
 		asset.setCode(code);
 		asset.setXh_t(xh_t);
-		asset.setCj_t(cj_t);
+		if(cj_id!=null&&!cj_id.equals(""))
+		asset.setCj_id(Long.parseLong(cj_id));
 		if(e_dt!=null&&!e_dt.equals(""))
 		asset.setE_dt(sdf.parse(e_dt));
 		asset.setSt_lv(st_lv);
@@ -521,7 +524,7 @@ public class AssetAction implements Action {
 			paramMap.put("nm_t", nm_t);
 			paramMap.put("code", code);
 			paramMap.put("xh_t", xh_t);
-			paramMap.put("cj_t", cj_t);
+			paramMap.put("cj_id", cj_id);
 			if(e_dtFrom!=null&&!e_dtFrom.equals(""))
 			paramMap.put("e_dtFrom", sdf.parse(e_dtFrom));
 			if(e_dtTo!=null&&!e_dtTo.equals(""))

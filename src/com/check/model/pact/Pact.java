@@ -134,11 +134,12 @@ public class Pact {
 		this.jhwc_dt = jhwc_dt;
 	}
 	/** 发放报告时间 */
-	private  String ff_dt;
-	public String getFf_dt() {
+	private  Date ff_dt;
+	 
+	public Date getFf_dt() {
 		return ff_dt;
 	}
-	public void setFf_dt(String ff_dt) {
+	public void setFf_dt(Date ff_dt) {
 		this.ff_dt = ff_dt;
 	}
 	/** 委托费用 */

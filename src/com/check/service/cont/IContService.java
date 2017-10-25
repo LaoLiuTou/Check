@@ -24,7 +24,7 @@ public interface IContService {
  * 更新 
  * @return 
  */ 
-	public  int updatecont(Cont cont);
+	public  int updatecont(Cont cont,String username);
 	/**
  * 添加 
  * @return

@@ -167,5 +167,21 @@ public class Results {
 	}
 
 
+	private Long statand_id;
+	private String statand_nm_t;
+	 
+	public Long getStatand_id() {
+		return statand_id;
+	}
+	public void setStatand_id(Long statand_id) {
+		this.statand_id = statand_id;
+	}
+	public String getStatand_nm_t() {
+		return statand_nm_t;
+	}
+	public void setStatand_nm_t(String statand_nm_t) {
+		this.statand_nm_t = statand_nm_t;
+	}
+	
 
 }

@@ -20,12 +20,18 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
 import com.check.dao.entrust.IEntrustMapper;
+import com.check.dao.entrust_pin.IEntrust_pinMapper;
+import com.check.dao.entrust_sample.IEntrust_sampleMapper;
+import com.check.dao.results.IResultsMapper;
+import com.check.dao.test.ITestMapper;
 import com.check.model.accnt.Accnt;
 import com.check.model.atta.Atta;
 import com.check.model.bu.Bu;
 import com.check.model.cont.Cont;
 import com.check.model.entrust.Entrust;
+import com.check.model.entrust_pin.Entrust_pin;
 import com.check.model.entrust_sample.Entrust_sample;
 import com.check.model.lot.Lot;
 import com.check.model.lov.Lov;
@@ -38,6 +44,7 @@ import com.check.service.accnt.IAccntService;
 import com.check.service.atta.IAttaService;
 import com.check.service.bu.IBuService;
 import com.check.service.cont.IContService;
+import com.check.service.entrust_pin.IEntrust_pinService;
 import com.check.service.entrust_sample.IEntrust_sampleService;
 import com.check.service.lot.ILotService;
 import com.check.service.lov.ILovService;
@@ -75,6 +82,8 @@ public class EntrustServiceImpl  implements IEntrustService {
 	private IEntrust_sampleService iEntrust_sampleService;
 	@Autowired
 	private ITestService iTestService;
+	@Autowired
+	private IEntrust_pinService iEntrust_pinService;
 
 	@Autowired
 	private IBuService iBuService;
@@ -83,6 +92,18 @@ public class EntrustServiceImpl  implements IEntrustService {
 	private IProdService iProdService;
 	@Autowired
 	private IResultsService iResultsService;
+	
+	@Autowired
+	private IResultsMapper iResultsMapper;
+	@Autowired
+	private ITestMapper iTestMapper;
+	@Autowired
+	private IEntrust_sampleMapper iEntrust_sampleMapper;
+	@Autowired
+	private IEntrust_pinMapper iEntrust_pinMapper;
+	
+	
+	
 	
 	Logger logger = Logger.getLogger("CheckLogger");
 	/**
@@ -112,13 +133,139 @@ public class EntrustServiceImpl  implements IEntrustService {
 	}
 
 	/**
- * 更新 
- * @return 
- */ 
+	 * 更新 
+	 * @return 
+	 */ 
+	 @Transactional
 	public  int updateentrust(Entrust entrust){
-		return iEntrustMapper.updateentrust(entrust);
+		int result=0;
+		//st_lv--已完成   test  --STATUS  已完成
+		//st_lv--检验中   test  --STATUS  待审核
+		result = iEntrustMapper.updateentrust(entrust);
+		if(result>0){
+			if(entrust.getSt_lv()!=null){
+				Test test = new Test();
+				test.setPid(entrust.getId()+"");
+				if(entrust.getSt_lv().equals("已完成")){
+					test.setStatus("已完成");
+					iTestService.updatetestbypid(test);
+				}
+				else if(entrust.getSt_lv().equals("检验中")){
+					test.setStatus("待审核");
+					iTestService.updatetestbypid(test);
+				}
+				else{
+					//do nothing
+				}
+			}
+			
+			
+		}
+		return result;
 	}
+ 
+	 /**
+	  * 更新 流程
+	  * @return 
+	  */ 
+	 @Transactional
+	 public  int updateentrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins){
+		 int result=0;
+		 //st_lv--已完成   test  --STATUS  已完成
+		 //st_lv--检验中   test  --STATUS  待审核
+		 
+		 Prod pProd = iProdService.selectprodById(entrust.getProd_id());
+	 	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         if(entrust.getWt_dt()!=null&&pProd.getZq_n()!=null){
+        	
+	        GregorianCalendar gc=new GregorianCalendar();
+            gc.setTime(entrust.getWt_dt());
+            gc.add(5, Integer.parseInt(pProd.getZq_n()+""));
+            entrust.setJh_dt(sdf.format(gc.getTime()));
+         }
+        
+	     //常规价、复检价
+		 if(entrust.getCg_f().equals("Y")){
+			entrust.setPrice(pProd.getCgj());
+		 }
+		 else if(entrust.getCg_f().equals("N")){
+			entrust.setPrice(pProd.getFjj());
+		 }
+		 
+		 
 
+			
+		 result = iEntrustMapper.updateentrust(entrust);
+		 if(result>0){
+			 /*Test test = new Test();
+			 test.setPid(entrust.getId()+"");
+			 if(entrust.getSt_lv().equals("已完成")){
+				 test.setStatus("已完成");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("检验中")){
+				 test.setStatus("待审核");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else{
+				 //do nothing
+			 }*/
+			 entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
+			 if(p_status!=null&&p_status.equals("N")){
+				 //先删除 所有委托单相关信息然后新建
+				 //删除
+				 deleteFunction(entrust);
+				 //新建
+				 addFlowFunction(entrust, entrust_samples, entrust_pins);
+			 }
+			 else if(p_status!=null&&p_status.equals("Y")){
+				 //删除
+				 deleteFunction(entrust);
+				//新建
+				 addFlowFunction(entrust, entrust_samples, entrust_pins);
+			 }
+			 else{
+				 //do nothing
+			 }
+			 
+			 
+		 }
+		 return result;
+	 }
+
+	 
+	 
+	 /**
+	  * 删除相关
+	  * @return
+	  */ 
+	 public  void deleteFunction(Entrust entrust){
+			/*@Autowired
+			private IResultsMapper iResultsMapper;
+			@Autowired
+			private ITestMapper iTestMapper;
+			@Autowired
+			private IEntrust_sampleMapper iEntrust_sampleMapper;
+			@Autowired
+			private IEntrust_pinMapper iEntrust_pinMapper;*/
+		 //删除  Entrust_sample
+		 iEntrust_sampleMapper.deleteEntrust_sampleByPid(entrust.getId()+"");
+		
+		 //删除  entrust_pin
+		 iEntrust_pinMapper.deleteEntrust_pinByPid(entrust.getId()+"");
+		 //删除  Results
+		 Map paramMap = new HashMap();
+		 paramMap.put("pid", entrust.getId());
+		 int num = iTestMapper.selectCounttestByParam(paramMap);
+		 paramMap.put("fromPage",0);
+		 paramMap.put("toPage",num);
+		 List<Test> tempList= iTestMapper.selecttestByParam(paramMap);
+		 for(Test temp:tempList){
+			 iResultsMapper.deleteResultsByPid(temp.getId()+"");
+		 }
+		 //删除  Test
+		 iTestMapper.deleteTestByPid(entrust.getId()+"");
+	 }
 	/**
  * 添加 
  * @return
@@ -126,7 +273,214 @@ public class EntrustServiceImpl  implements IEntrustService {
 	public  Object addentrust(Entrust entrust){
 		return iEntrustMapper.addentrust(entrust);
 	}
+	/**
+	 * 添加 流程
+	 * @return
+	 */ 
+	@Transactional
+	public  int  addentrustFlow(Entrust entrust,String entrust_samples,String entrust_pins){
+		
+		 // 新增 Entrust_sample 关系
+		 //   修改  样品表jd_lv 修改成  已委托  
+		 //新建  test  
+		 //新建 results
+		 // 新建 e_pin
+		int result=0;
+		Prod pProd = iProdService.selectprodById(entrust.getProd_id());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(entrust.getWt_dt()!=null&&pProd.getZq_n()!=null){
+        	
+	        GregorianCalendar gc=new GregorianCalendar();
+            gc.setTime(entrust.getWt_dt());
+            gc.add(5, Integer.parseInt(pProd.getZq_n()+""));
+            entrust.setJh_dt(sdf.format(gc.getTime()));
+        }
+        
+	    //常规价、复检价
+		if(entrust.getCg_f().equals("Y")){
+			entrust.setPrice(pProd.getCgj());
+		}
+		else if(entrust.getCg_f().equals("N")){
+			entrust.setPrice(pProd.getFjj());
+		}
+		
+        /////////////////
+		result = iEntrustMapper.addentrust(entrust);
+		if(result>0){
+			//二维码
+			String qrResult = MatrixToImageWriter.createQrImage("TG_"+entrust.getId());
+			if(qrResult.length()>0){
+				HttpServletRequest request = ServletActionContext.getRequest();
+				String path = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ request.getContextPath();
+				Entrust upentrust = new Entrust();
+				upentrust.setId(entrust.getId());
+				upentrust.setEwm(path+"/QRImages/"+qrResult);
+				iEntrustMapper.updateentrust(upentrust);
+			}
+			entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
+			addFlowFunction(entrust, entrust_samples, entrust_pins);
+			
+			
+		}
+		 
+		
+		return result;
+	}
 
+	
+	
+	
+	/**
+	 * 新建Entrust_sample Test Results Entrust_pin
+	 * @return 
+	 */ 
+	public  void  addFlowFunction(Entrust entrust,String entrust_samples,String entrust_pins){
+		List<String> testidList= new ArrayList<String>();
+		//样品sampless
+		JSONArray sampleJA = JSONArray.fromObject(entrust_samples);
+		for(int index=0;index<sampleJA.size();index++){
+			JSONObject sampleJO = (JSONObject) sampleJA.get(index);
+			if(sampleJO.containsKey("id")){
+				//
+				Entrust_sample entrust_sample=iEntrust_sampleService.selectentrust_sampleById(sampleJO.getString("id"));
+				if(entrust_sample!=null){
+					Sample sample = new Sample();
+					sample.setId(Long.parseLong(entrust_sample.getSample_id()));
+					sample.setJd_lv("已接收");
+				}
+			}
+			else{
+				Entrust_sample entrust_sample= new Entrust_sample();
+				entrust_sample.setC_id(entrust.getC_id());
+				entrust_sample.setPid(entrust.getId()+"");
+				if(sampleJO.containsKey("sample_id"))
+				entrust_sample.setSample_id(sampleJO.getString("sample_id"));
+				iEntrust_sampleService.addentrust_sample(entrust_sample);	
+				 
+				//修改样品
+				Sample sample = new Sample();
+				sample.setId(Long.parseLong(sampleJO.getString("sample_id")));
+				sample.setJd_lv("已委托");
+				 if(entrust.getFlg()!=null&&entrust.getFlg().equals("N")){
+					 sample.setTy_lv("追加样品");
+				 }
+				iSampleService.updatesample(sample);
+				//试验单 test start
+				sample = iSampleService.selectsampleById(sampleJO.getString("sample_id"));
+				Test test = new Test();
+				test.setBu_id(entrust.getBu_id());
+				test.setC_id(entrust.getC_id());
+				test.setPid(entrust.getId()+"");
+				if(entrust.getSt_lv().equals("已完成")){
+					 test.setStatus("已完成");
+				}
+				else if(entrust.getSt_lv().equals("检验中")){
+					 test.setStatus("待审核");
+				}
+				
+				if(entrust.getFlg().equals("Y")){
+					test.setCode(createTestCode(sample,entrust));
+				}
+				else{
+					//追加
+					test.setCode(createTestAppend(sample,entrust));
+				}
+				test.setSample_id(sample.getId()+"");
+				int testresult = Integer.parseInt(iTestService.addtest(test).toString());
+				if(testresult>0){
+					String testqrResult = MatrixToImageWriter.createQrImage("EX_"+test.getId());
+					if(testqrResult.length()>0){
+						HttpServletRequest request = ServletActionContext.getRequest();
+						String path = request.getScheme() + "://"
+								+ request.getServerName() + ":" + request.getServerPort()
+								+ request.getContextPath();
+						Test uptest = new Test();
+						uptest.setId(test.getId());
+						uptest.setEwm(path+"/QRImages/"+testqrResult);
+						iTestService.updatetest(uptest);
+						
+					}
+					testidList.add(test.getId()+"");
+				}
+				//试验单 test  end
+			}
+			
+		}
+		
+		
+		JSONArray epinJA = JSONArray.fromObject(entrust_pins);
+		for(int index=0;index<epinJA.size();index++){
+			JSONObject epinJO = (JSONObject) epinJA.get(index);
+			Entrust_pin entrust_pin =new Entrust_pin();
+			entrust_pin.setC_id(entrust.getC_id());
+			if(epinJO.containsKey("jc_f"))
+			entrust_pin.setJc_f(epinJO.getString("epinJO"));
+			if(epinJO.containsKey("jcx_id"))
+			entrust_pin.setJcx_id(epinJO.getString("jcx_id"));
+			entrust_pin.setPid(entrust.getId()+"");
+			iEntrust_pinService.addentrust_pin(entrust_pin);
+			
+			
+			//结果表results start
+			 
+			
+			Map paramMap = new HashMap ();
+			paramMap.put("pid", epinJO.getString("jcx_id"));
+			paramMap.put("ty_lv", "检测项目");
+			//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+			int prodnum = iProdService.selectCountprodByParam(paramMap);
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",prodnum);
+			List<Prod> prodList=iProdService.selectprodByParam(paramMap); 
+			for(Prod temp : prodList){
+				
+				for(String tempStr :testidList){
+					
+					int resultnum = 0;
+					if(entrust.getCg_f()!=null&&entrust.getCg_f().equals("Y")){
+					 
+						//result
+						Results presults=new Results();
+						presults.setPid(Long.parseLong(tempStr));
+						presults.setBu_id(Long.parseLong(entrust.getBu_id()));
+						presults.setC_id(Long.parseLong(entrust.getC_id()));
+						presults.setProd_id(temp.getId());
+						presults.setProd_name(temp.getNm_t());
+						resultnum = Integer.parseInt(iResultsService.addresults(presults).toString());
+					}
+					 
+					if(resultnum>0){
+						paramMap = new HashMap ();
+						paramMap.put("pid", temp.getId());
+						paramMap.put("ty_lv", "检验属性");
+						//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+						int subprodnum = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",subprodnum);
+						List<Prod> subprodList=iProdService.selectprodByParam(paramMap); 
+						for(Prod subtemp : subprodList){
+							Results subresults=new Results();
+							subresults.setPid(Long.parseLong(tempStr));
+							subresults.setBu_id(Long.parseLong(entrust.getBu_id()));
+							subresults.setC_id(Long.parseLong(entrust.getC_id()));
+							subresults.setProd_id(subtemp.getId());
+							subresults.setProd_name(subtemp.getNm_t());
+							iResultsService.addresults(subresults);
+							
+						}
+					}
+					
+				}
+			 
+				
+			}
+			//结果表results start
+		
+		
+		}
+	}
 	/**
  * 删除 
  * @return 
@@ -229,8 +583,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 		     while(iterator.hasNext()){
 		        String key = (String) iterator.next();
 		        Prod pProd = iProdService.selectprodById(key);
-		        
-		        
+		         
 		        //新增默认值
 		        Bu bum = iBuService.selectbuById(entrust.getBu_id()+"");
 		        Pact pactm = iPactService.selectpactById(entrust.getPid());
@@ -247,11 +600,11 @@ public class EntrustServiceImpl  implements IEntrustService {
 		        if(pProd!=null){
 		        	entrust.setSyr_id(pProd.getSy_id());
 		        }
-		        
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		        if(entrust.getWt_dt()!=null&&pProd.getZq_n()!=null){
-		        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		        	
 			        GregorianCalendar gc=new GregorianCalendar();
-		            gc.setTime(sdf.parse(entrust.getWt_dt()));
+		            gc.setTime(entrust.getWt_dt());
 		            gc.add(5, Integer.parseInt(pProd.getZq_n()+""));
 		            entrust.setJh_dt(sdf.format(gc.getTime()));
 		        }
@@ -261,13 +614,18 @@ public class EntrustServiceImpl  implements IEntrustService {
 		        JSONArray sampleJA =sampleTree.getJSONArray(key);
 		        //编号
 		        //String pid,String wt_dt,String bu_id,String c_id
+		        String wt_dt_str="";
+		        if(entrust.getWt_dt()!=null){
+		        	wt_dt_str=sdf.format(entrust.getWt_dt());
+		        }
 		        if(entrust.getFlg().equals("Y")){
-		        	entrust.setCode(createEntrustAppend(entrust.getPid(),entrust.getWt_dt(),
+		        	
+		        	entrust.setCode(createEntrustAppend(entrust.getPid(),wt_dt_str,
 							entrust.getBu_id(),entrust.getC_id()));
 			    	
 				}
 				else{
-					entrust.setCode(createEntrustCode(entrust.getPid(),entrust.getWt_dt(),
+					entrust.setCode(createEntrustCode(entrust.getPid(),wt_dt_str,
 							entrust.getBu_id(),entrust.getC_id()));
 				}
 		        //流水号
@@ -281,6 +639,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 				else if(entrust.getCg_f().equals("N")){
 					entrust.setPrice(pProd.getFjj());
 				}
+				//实验人id
+				entrust.setSyr_id(pProd.getSy_id());
+				
+				
 				//试验次数
 				int totleNum=0;
 				for(int i=0;i<sampleJA.size();i++){
@@ -331,6 +693,8 @@ public class EntrustServiceImpl  implements IEntrustService {
 					
 					
 				}
+				
+				//
 		     }
 
 		} catch (Exception e) {
@@ -470,6 +834,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 		// TODO Auto-generated method stub
 		String pactId="";
 		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			//合同
 			JSONObject pactJO=JSONObject.fromObject(jsonStr);
 			if(pactJO!=null){
@@ -493,7 +858,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 					if(pactJO.containsKey("db_id"))
 					pact.setDb_id(pactJO.getString("db_id"));
 					if(pactJO.containsKey("ff_dt"))
-					pact.setFf_dt(pactJO.getString("ff_dt"));
+					pact.setFf_dt(sdf.parse(pactJO.getString("ff_dt")));
 					if(pactJO.containsKey("flg"))
 					pact.setFlg(pactJO.getString("flg"));
 					if(pactJO.containsKey("jhwc_dt"))
@@ -664,8 +1029,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 					sample.setSy_dt(sampleJO.getString("sy_dt"));
 					if(sampleJO.containsKey("sz_t"))
 					sample.setSz_t(sampleJO.getString("sz_t"));
-					if(sampleJO.containsKey("test_dt"))
-					sample.setTest_dt(sampleJO.getString("test_dt"));
+					if(sampleJO.containsKey("test_dt")){
+						if(sampleJO.getString("test_dt")!=null&&!sampleJO.getString("test_dt").equals(""))
+						sample.setTest_dt(sampleJO.getString("test_dt"));
+					}
 					if(sampleJO.containsKey("txm"))
 					sample.setTxm(sampleJO.getString("txm"));
 					if(sampleJO.containsKey("ty_lv"))
@@ -674,8 +1041,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 					sample.setWa_t(sampleJO.getString("wa_t"));
 					if(sampleJO.containsKey("wj_t"))
 					sample.setWj_t(sampleJO.getString("wj_t"));
-					if(sampleJO.containsKey("zz_dt"))
-					sample.setZz_dt(sampleJO.getString("zz_dt"));
+					if(sampleJO.containsKey("zz_dt")){
+						if(sampleJO.getString("zz_dt")!=null&&!sampleJO.getString("zz_dt").equals(""))
+						sample.setZz_dt(sampleJO.getString("zz_dt"));
+					}
 					
 					
 					//存在web_id说明为新建字段 否则都要修改（这段不是我本意，无奈）
@@ -724,85 +1093,9 @@ public class EntrustServiceImpl  implements IEntrustService {
 											iSampleService.updatesample(upsample);
 										}
 										
-										
-	
-										
-										
-										//试验单 test
-										Test test = new Test();
-										test.setBu_id(entrust.getBu_id());
-										test.setC_id(entrust.getC_id());
-										test.setPid(entrust.getId()+"");
-										if(entrust.getFlg().equals("Y")){
-											test.setCode(createTestCode(sample,entrust));
-										}
-										else{
-											//追加
-											test.setCode(createTestAppend(sample,entrust));
-										}
-										test.setSample_id(sample.getId()+"");
-										int testresult = Integer.parseInt(iTestService.addtest(test).toString());
-										if(testresult>0){
-											String testqrResult = MatrixToImageWriter.createQrImage("EX_"+test.getId());
-											if(testqrResult.length()>0){
-												HttpServletRequest request = ServletActionContext.getRequest();
-												String path = request.getScheme() + "://"
-														+ request.getServerName() + ":" + request.getServerPort()
-														+ request.getContextPath();
-												Test uptest = new Test();
-												uptest.setId(test.getId());
-												uptest.setEwm(path+"/QRImages/"+testqrResult);
-												iTestService.updatetest(uptest);
-												
-											}
-											
-											
-											//结果表results
-											Prod tempProd= iProdService.selectprodById(sample.getId()+"");
-											if(tempProd!=null){
-												
-												Map paramMap = new HashMap ();
-												paramMap.put("pid", tempProd.getId());
-												paramMap.put("ty_lv", "检测项目");
-												//paramMap.put("up_dtFrom", sdf.parse(updatetime));
-												int prodnum = iProdService.selectCountprodByParam(paramMap);
-												paramMap.put("fromPage",0);
-												paramMap.put("toPage",prodnum);
-												List<Prod> prodList=iProdService.selectprodByParam(paramMap); 
-												for(Prod temp : prodList){
-													Results presults=new Results();
-													presults.setPid(test.getId());
-													presults.setBu_id(Long.parseLong(entrust.getBu_id()));
-													presults.setC_id(Long.parseLong(entrust.getC_id()));
-													presults.setProd_id(temp.getId());
-													presults.setProd_name(temp.getNm_t());
-													
-													int resultnum = Integer.parseInt(iResultsService.addresults(presults).toString());
-													if(resultnum>0){
-														 
-														paramMap = new HashMap ();
-														paramMap.put("pid", temp.getId());
-														paramMap.put("ty_lv", "检验属性");
-														//paramMap.put("up_dtFrom", sdf.parse(updatetime));
-														int subprodnum = iProdService.selectCountprodByParam(paramMap);
-														paramMap.put("fromPage",0);
-														paramMap.put("toPage",subprodnum);
-														List<Prod> subprodList=iProdService.selectprodByParam(paramMap); 
-														for(Prod subtemp : subprodList){
-															Results subresults=new Results();
-															subresults.setPid(test.getId());
-															subresults.setBu_id(Long.parseLong(entrust.getBu_id()));
-															subresults.setC_id(Long.parseLong(entrust.getC_id()));
-															subresults.setProd_id(subtemp.getId());
-															subresults.setProd_name(subtemp.getNm_t());
-															iResultsService.addresults(subresults);
-															
-														}
-													}
-												}
-											}
-										}
-										 
+									    //test e_pin and result
+										addTestAndResults(entrust, sample);
+									
 										
 									}
 									sampleIds.add(sample.getId()+""); 
@@ -883,6 +1176,8 @@ public class EntrustServiceImpl  implements IEntrustService {
 												iSampleService.updatesample(upsample);
 											}
 											
+											//test e_pin and result
+											addTestAndResults(entrust, sample);
 										}
 										sampleIds.add(sample.getId()+""); 
 									}
@@ -936,15 +1231,111 @@ public class EntrustServiceImpl  implements IEntrustService {
 		}
 		return sampleIds;
 	}
-	
-	
-    
 	/**
-	 * 创建试验单
-	 * @param jsonStr
-	 * @param pactId
-	 * @return 样品ids
+	 * 创建试验单和results
+ 
 	 */
+	private void addTestAndResults(Entrust entrust,Sample sample){
+		 
+		//试验单 test
+		Test test = new Test();
+		test.setBu_id(entrust.getBu_id());
+		test.setC_id(entrust.getC_id());
+		test.setPid(entrust.getId()+"");
+		if(entrust.getFlg().equals("Y")){
+			test.setCode(createTestCode(sample,entrust));
+		}
+		else{
+			//追加
+			test.setCode(createTestAppend(sample,entrust));
+		}
+		test.setSample_id(sample.getId()+"");
+		int testresult = Integer.parseInt(iTestService.addtest(test).toString());
+		if(testresult>0){
+			String testqrResult = MatrixToImageWriter.createQrImage("EX_"+test.getId());
+			if(testqrResult.length()>0){
+				HttpServletRequest request = ServletActionContext.getRequest();
+				String path = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ request.getContextPath();
+				Test uptest = new Test();
+				uptest.setId(test.getId());
+				uptest.setEwm(path+"/QRImages/"+testqrResult);
+				iTestService.updatetest(uptest);
+				
+			}
+			
+			
+			//结果表results
+			Prod tempProd= iProdService.selectprodById(sample.getId()+"");
+			if(tempProd!=null){
+				
+				Map paramMap = new HashMap ();
+				paramMap.put("pid", tempProd.getId());
+				paramMap.put("ty_lv", "检测项目");
+				//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+				int prodnum = iProdService.selectCountprodByParam(paramMap);
+				paramMap.put("fromPage",0);
+				paramMap.put("toPage",prodnum);
+				List<Prod> prodList=iProdService.selectprodByParam(paramMap); 
+				for(Prod temp : prodList){
+					int resultnum = 0;
+					if(entrust.getCg_f()!=null&&entrust.getCg_f().equals("Y")){
+						//
+						Entrust_pin entrust_pin= new Entrust_pin();
+						entrust_pin.setC_id(entrust.getC_id());
+						entrust_pin.setJc_f("Y");
+						entrust_pin.setJcx_id(temp.getId()+"");
+						entrust_pin.setPid(entrust.getId()+"");
+						iEntrust_pinService.addentrust_pin(entrust_pin);
+						//result
+						Results presults=new Results();
+						presults.setPid(test.getId());
+						presults.setBu_id(Long.parseLong(entrust.getBu_id()));
+						presults.setC_id(Long.parseLong(entrust.getC_id()));
+						presults.setProd_id(temp.getId());
+						presults.setProd_name(temp.getNm_t());
+						resultnum = Integer.parseInt(iResultsService.addresults(presults).toString());
+					}
+					else{
+						Entrust_pin entrust_pin= new Entrust_pin();
+						entrust_pin.setC_id(entrust.getC_id());
+						entrust_pin.setJc_f(temp.getFj_f());
+						entrust_pin.setJcx_id(temp.getId()+"");
+						entrust_pin.setPid(entrust.getId()+"");
+						iEntrust_pinService.addentrust_pin(entrust_pin);
+						
+					}
+					
+					
+					if(resultnum>0){
+						 
+						paramMap = new HashMap ();
+						paramMap.put("pid", temp.getId());
+						paramMap.put("ty_lv", "检验属性");
+						//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+						int subprodnum = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",subprodnum);
+						List<Prod> subprodList=iProdService.selectprodByParam(paramMap); 
+						for(Prod subtemp : subprodList){
+							Results subresults=new Results();
+							subresults.setPid(test.getId());
+							subresults.setBu_id(Long.parseLong(entrust.getBu_id()));
+							subresults.setC_id(Long.parseLong(entrust.getC_id()));
+							subresults.setProd_id(subtemp.getId());
+							subresults.setProd_name(subtemp.getNm_t());
+							iResultsService.addresults(subresults);
+							
+						}
+					}
+				}
+			}
+		}
+		
+	}
+    
+	
 	private List<String> createTest(String jsonStr, List<String> sampleId,Entrust entrust) {
 		List<String> testIds= new ArrayList<String>();
 		try {
@@ -1946,7 +2337,10 @@ public class EntrustServiceImpl  implements IEntrustService {
     	return sb.toString();
     }
     
-  
+    @Transactional
+   	public int mulupdateEntrust(List<Entrust> entrustList) {
+   		 return iEntrustMapper.mulupdateEntrust(entrustList);
+   	}
 
 }
 

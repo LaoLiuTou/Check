@@ -118,6 +118,13 @@ public class Members {
 		this.group_id = group_id;
 	}
 	
+	private String  sign_flg;
+	public String getSign_flg() {
+		return sign_flg;
+	}
+	public void setSign_flg(String sign_flg) {
+		this.sign_flg = sign_flg;
+	}
 
 
 }

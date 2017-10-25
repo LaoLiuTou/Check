@@ -402,7 +402,8 @@ public class PactAction implements Action {
 		pact.setSjwc_dt(sjwc_dt);
 		pact.setSjks_dt(sjks_dt);
 		pact.setJhwc_dt(jhwc_dt);
-		pact.setFf_dt(ff_dt);
+		if(ff_dt!=null&&!ff_dt.equals(""))
+		pact.setFf_dt(sdf.parse(ff_dt));
 		pact.setWtfy(wtfy);
 		pact.setDb_id(db_id);
 		pact.setCont_id(cont_id);
@@ -493,7 +494,8 @@ public class PactAction implements Action {
 		pact.setSjwc_dt(sjwc_dt);
 		pact.setSjks_dt(sjks_dt);
 		pact.setJhwc_dt(jhwc_dt);
-		pact.setFf_dt(ff_dt);
+		if(ff_dt!=null&&!ff_dt.equals(""))
+		pact.setFf_dt(sdf.parse(ff_dt));
 		pact.setWtfy(wtfy);
 		pact.setDb_id(db_id);
 		pact.setCont_id(cont_id);
@@ -579,6 +581,7 @@ public class PactAction implements Action {
 			paramMap.put("sjwc_dt", sjwc_dt);
 			paramMap.put("sjks_dt", sjks_dt);
 			paramMap.put("jhwc_dt", jhwc_dt);
+			if(ff_dt!=null&&!ff_dt.equals(""))
 			paramMap.put("ff_dt", ff_dt);
 			paramMap.put("wtfy", wtfy);
 			paramMap.put("db_id", db_id);
@@ -654,7 +657,8 @@ public class PactAction implements Action {
 		pact.setSjwc_dt(sjwc_dt);
 		pact.setSjks_dt(sjks_dt);
 		pact.setJhwc_dt(jhwc_dt);
-		pact.setFf_dt(ff_dt);
+		if(ff_dt!=null&&!ff_dt.equals(""))
+		pact.setFf_dt(sdf.parse(ff_dt));
 		pact.setWtfy(wtfy);
 		pact.setDb_id(db_id);
 		pact.setCont_id(cont_id);
@@ -671,7 +675,7 @@ public class PactAction implements Action {
 		pact.setTj_f(tj_f);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			iPactService.updatepact(pact);
+			iPactService.updatepactAndAtta(pact,atta);
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
@@ -785,6 +789,7 @@ public class PactAction implements Action {
 		paramMap.put("sjwc_dt", sjwc_dt);
 		paramMap.put("sjks_dt", sjks_dt);
 		paramMap.put("jhwc_dt", jhwc_dt);
+		if(ff_dt!=null&&!ff_dt.equals(""))
 		paramMap.put("ff_dt", ff_dt);
 		paramMap.put("wtfy", wtfy);
 		paramMap.put("db_id", db_id);
@@ -1047,5 +1052,62 @@ public class PactAction implements Action {
     }
     
     
+    private String pactids;
+    private String test_status;
+    
+    
+    public String getPactids() {
+		return pactids;
+	}
+	public void setPactids(String pactids) {
+		this.pactids = pactids;
+	}
+	
+	public String getTest_status() {
+		return test_status;
+	}
+	public void setTest_status(String test_status) {
+		this.test_status = test_status;
+	}
+	public String appTree() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			String result="";
+			if(pactids!=null && !pactids.equals("")){
+				result=iPactService.selectAppTreePact(pactids,test_status);
+				
+				if(!result.equals("")){
+					msg.append("\"success\",\"msg\":");
+					msg.append(result);
+					logger.info(pactids+"查询成功！");
+				}
+				else{
+					msg.append("\"failure\",\"msg\":");
+					msg.append("\"查询失败.\"");
+				}
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"参数不能为空.\"");
+			}
+			 
+			
+			
+		} catch (Exception e) {
+			logger.info(id+"查询失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
     
 }

@@ -26,6 +26,11 @@ public interface IResultsService {
  */ 
 	public  int updateresults(Results results);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int updateRelatedResults(Results results,String jl_t,String dd_t);
+	/**
  * 添加 
  * @return
  */ 

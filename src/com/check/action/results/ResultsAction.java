@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
@@ -262,6 +263,14 @@ public class ResultsAction implements Action {
 	public void setBu_id(String bu_id) {
 		this.bu_id = bu_id;
 	}
+	private String statand_id;
+	 
+	public String getStatand_id() {
+		return statand_id;
+	}
+	public void setStatand_id(String statand_id) {
+		this.statand_id = statand_id;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -294,6 +303,8 @@ public class ResultsAction implements Action {
 		results.setSd(sd);
 		if(bu_id!=null&&!bu_id.equals(""))
 		results.setBu_id(Long.parseLong(bu_id));
+		if(statand_id!=null&&!statand_id.equals(""))
+			results.setStatand_id(Long.parseLong(statand_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iResultsService.addresults(results).toString());
@@ -348,6 +359,7 @@ public class ResultsAction implements Action {
 			paramMap.put("wd", wd);
 			paramMap.put("sd", sd);
 			paramMap.put("bu_id", bu_id);
+			paramMap.put("statand_id", statand_id);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iResultsService.selectresultsByParam(paramMap); 
@@ -366,6 +378,100 @@ public class ResultsAction implements Action {
 			});
 			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
 			msg.append(JSONArray.fromObject(list, jsonConfig));
+			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	private String rel_id_null;
+	
+	public String getRel_id_null() {
+		return rel_id_null;
+	}
+	public void setRel_id_null(String rel_id_null) {
+		this.rel_id_null = rel_id_null;
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String tree() throws Exception {
+		
+		response.setContentType("text/html;charset=UTF-8"); 
+		Map  paramMap = new HashMap ();
+		
+		paramMap.put("id", id);
+		paramMap.put("row_id", row_id);
+		if(c_dtFrom!=null&&!c_dtFrom.equals(""))
+			paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));
+		if(c_dtTo!=null&&!c_dtTo.equals(""))
+			paramMap.put("c_dtTo", sdf.parse(c_dtTo));
+		if(up_dtFrom!=null&&!up_dtFrom.equals(""))
+			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
+		if(up_dtTo!=null&&!up_dtTo.equals(""))
+			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		paramMap.put("c_id", c_id);
+		paramMap.put("pid", pid);
+		paramMap.put("prod_id", prod_id);
+		paramMap.put("prod_name", prod_name);
+		paramMap.put("bool", bool);
+		paramMap.put("value", value);
+		paramMap.put("flg", flg);
+		paramMap.put("statand_lv", statand_lv);
+		paramMap.put("statand", statand);
+		paramMap.put("statand_va", statand_va);
+		paramMap.put("rel_id", rel_id);
+		paramMap.put("rel_id_null", rel_id_null);
+		paramMap.put("inbz_t", inbz_t);
+		paramMap.put("cm_t", cm_t);
+		paramMap.put("wd", wd);
+		paramMap.put("sd", sd);
+		paramMap.put("bu_id", bu_id);
+		paramMap.put("statand_id", statand_id);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			totalnumber=iResultsService.selectCountresultsByParam(paramMap);
+			
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",totalnumber); 
+			list=iResultsService.selectresultsByParam(paramMap); 
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
+			
+			JSONArray resultJA = new JSONArray();
+			//////sub result
+			for(Results results:list){
+				JSONObject resultJO =  JSONObject.fromObject(results, jsonConfig);
+				paramMap = new HashMap ();
+				paramMap.put("pid", pid);
+				paramMap.put("rel_id", results.getId());
+				int total=iResultsService.selectCountresultsByParam(paramMap);
+				paramMap.put("fromPage",0);
+				paramMap.put("toPage",total); 
+				List<Results> sublist=iResultsService.selectresultsByParam(paramMap); 
+				resultJO.accumulate("sub_result", JSONArray.fromObject(sublist, jsonConfig));
+				resultJA.add(resultJO);
+			}
+			msg.append(resultJA);
 			logger.info("获取列表成功！");
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
@@ -416,6 +522,8 @@ public class ResultsAction implements Action {
 		results.setSd(sd);
 		if(bu_id!=null&&!bu_id.equals(""))
 		results.setBu_id(Long.parseLong(bu_id));
+		if(statand_id!=null&&!statand_id.equals(""))
+			results.setStatand_id(Long.parseLong(statand_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iResultsService.updateresults(results);
@@ -441,14 +549,8 @@ public class ResultsAction implements Action {
 	
 	//test 试验结论
 	private String jl_t;
-	private String prod_id_sub;
 	private String dd_t;
-	public String getProd_id_sub() {
-		return prod_id_sub;
-	}
-	public void setProd_id_sub(String prod_id_sub) {
-		this.prod_id_sub = prod_id_sub;
-	}
+	 
 	public String getJl_t() {
 		return jl_t;
 	}
@@ -462,6 +564,8 @@ public class ResultsAction implements Action {
 	public void setDd_t(String dd_t) {
 		this.dd_t = dd_t;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String appupdate() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -488,113 +592,22 @@ public class ResultsAction implements Action {
 		results.setStatand_va(statand_va);
 		if(rel_id!=null&&!rel_id.equals(""))
 			results.setRel_id(Long.parseLong(rel_id));
+		
 		results.setInbz_t(inbz_t);
 		results.setCm_t(cm_t);
 		results.setWd(wd);
 		results.setSd(sd);
 		if(bu_id!=null&&!bu_id.equals(""))
 			results.setBu_id(Long.parseLong(bu_id));
+		if(rel_id!=null&&!rel_id.equals(""))
+		results.setStatand_id(Long.parseLong(statand_id));
+		
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			 
-
-			 
-			/////////bool
-			Results cresults=iResultsService.selectresultsById(id);
-			if(value!=null&&!value.equals("")){
-				//更新value值
-			}
-			else{
-				if(cresults.getValue()!=null&&!cresults.getValue().equals("")){
-					results.setValue(cresults.getValue());
-				}
-			}
+			iResultsService.updateRelatedResults(results, jl_t, dd_t);
 			
-			
-			Results presults = iResultsService.selectresultsById(cresults.getRel_id()+"");
-			
-			if(prod_id_sub!=null&&!prod_id_sub.equals("")){
-				
-				Prod prod=iProdService.selectprodById(prod_id_sub);
-				results.setStatand_lv(prod.getGzty_lv());
-				results.setStatand(prod.getRule_lv());
-				results.setStatand_va(prod.getBz_t());
-			}
-			else{
-				if(presults!=null){
-					results.setStatand_lv(presults.getStatand_lv());
-					results.setStatand(presults.getStatand());
-					results.setStatand_va(presults.getStatand_va());
-				}
-			}
-
-			//rel_id为空
-			if(presults!=null&&results.getValue()!=null&&!results.getValue().equals("")){
-				String inbz_t =null;
-				if(presults!=null){
-					inbz_t =presults.getInbz_t();
-				}
-				 
-				if(inbz_t!=null&&!inbz_t.equals("")){
-					if(Double.parseDouble(results.getValue())>Double.parseDouble(inbz_t)){
-						results.setBool("Y");
-					}
-					else{
-						results.setBool("N");
-					}
-				}
-				else{
-					if(results.getStatand()!=null&&!results.getStatand().equals("")
-							&&results.getStatand_va()!=null&&!results.getStatand_va().equals("")){
-						String str = "("+results.getValue()+results.getStatand()+results.getStatand_va()+")";  
-				        ScriptEngineManager manager = new ScriptEngineManager();  
-				        ScriptEngine engine = manager.getEngineByName("js");  
-				        //engine.put("a", 4);  
-				        Object flag = engine.eval(str);  
-				        if(flag.toString().equals("true")){
-				        	results.setBool("Y");
-				        }
-				        else{
-				        	results.setBool("N");
-				        }
-					}
-					else{
-						results.setBool("N");
-					}
-					
-					
-					 
-				}
-			}
-			/*else{
-				results.setBool("N");
-			}*/
-			
-			
-			 /////////1
-			int result= iResultsService.updateresults(results);
-			if(result>0){
-				cresults=iResultsService.selectresultsById(id);
-				if(cresults.getBool()!=null&&cresults.getBool().equals("Y")){
-					
-					if(presults!=null){
-						presults.setBool("Y");
-						///////////////////2
-						iResultsService.updateresults(presults);
-					}
-					
-				}
-				
-				///////////////3
-				if(cresults.getPid()!=null){
-					
-					Test tempTest = new Test();
-					tempTest.setId(cresults.getPid());
-					tempTest.setJl_t(jl_t);
-					tempTest.setDd_t(dd_t);
-					iTestService.updatetest(tempTest);
-				}
-			}
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功\"");
 			logger.info(id+"更新成功！");
@@ -613,6 +626,69 @@ public class ResultsAction implements Action {
 		}
 		return null;
 	}
+	
+	public String updateSub() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Results results =new Results(); 
+		if(id!=null&&!id.equals(""))
+			results.setId(Long.parseLong(id));
+		results.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			results.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			results.setUp_dt(sdf.parse(up_dt));
+		if(c_id!=null&&!c_id.equals(""))
+			results.setC_id(Long.parseLong(c_id));
+		if(pid!=null&&!pid.equals(""))
+			results.setPid(Long.parseLong(pid));
+		if(prod_id!=null&&!prod_id.equals(""))
+			results.setProd_id(Long.parseLong(prod_id));
+		results.setProd_name(prod_name);
+		results.setBool(bool);
+		results.setValue(value);
+		results.setFlg(flg);
+		results.setStatand_lv(statand_lv);
+		results.setStatand(statand);
+		results.setStatand_va(statand_va);
+		if(rel_id!=null&&!rel_id.equals(""))
+			results.setRel_id(Long.parseLong(rel_id));
+		
+		results.setInbz_t(inbz_t);
+		results.setCm_t(cm_t);
+		results.setWd(wd);
+		results.setSd(sd);
+		if(bu_id!=null&&!bu_id.equals(""))
+			results.setBu_id(Long.parseLong(bu_id));
+		if(rel_id!=null&&!rel_id.equals(""))
+		results.setStatand_id(Long.parseLong(statand_id));
+		
+		
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			 
+			iResultsService.updateRelatedResults(results, jl_t, dd_t);
+			
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"更新成功\"");
+			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	 
+	
 	public String delete() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -672,43 +748,47 @@ public class ResultsAction implements Action {
 		}
 		return null;
 	}
-	private String sampleid;
+/*	private String sampleid;
 	
 	public String getSampleid() {
 		return sampleid;
 	}
 	public void setSampleid(String sampleid) {
 		this.sampleid = sampleid;
+	}*/
+	private String prod_ids;
+	
+	public String getProd_ids() {
+		return prod_ids;
+	}
+	public void setProd_ids(String prod_ids) {
+		this.prod_ids = prod_ids;
 	}
 	///通过样品ID获取bool
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String appbool() throws Exception {
 		response.setContentType("text/html;charset=UTF-8"); 
 		StringBuffer msg = new StringBuffer("{\"state\":");
-		String boolstr = "";
+		
 		try {
-			Map  paramMap = new HashMap ();
-			paramMap.put("fromPage",0);
-			paramMap.put("toPage",1);
-			paramMap.put("sample_id",sampleid);
-			List<Test> tempList= iTestService.selecttestByParam(paramMap);
-			if(tempList.size()>0){
-				paramMap.put("pid",tempList.get(0).getId());
+			String [] prod_idArray=prod_ids.split("\\|");
+			JSONObject resultObject = new JSONObject();
+			for(String prod_idStr :prod_idArray){
+				Map  paramMap = new HashMap ();
+				paramMap.put("fromPage",0);
+				paramMap.put("toPage",1);
+				paramMap.put("prod_id",prod_idStr);
+				paramMap.put("pid",pid);
 				List<Results> resultList = iResultsService.selectresultsByParam(paramMap);
-				
-				boolstr= resultList.get(0).getBool();
-				
+				String	boolstr="";
+				if(resultList.size()>0){
+				    boolstr= resultList.get(0).getBool();
+				}
+				resultObject.accumulate(prod_idStr, boolstr);
+				  
 			}
-		 
-			if(boolstr!=null&&!boolstr.equals("")){
-				msg.append("\"success\",\"msg\":\""+boolstr+"\"");
-				 
-				logger.info(id+"查询成功！");
-			}
-			else{
-				msg.append("\"success\",\"msg\":\""+"N"+"\"");
-				logger.info(id+"查询成功！");
-			}
+			msg.append("\"success\",\"msg\":"+resultObject+"");
+			logger.info(prod_ids+"查询成功！");
 			
 		} catch (Exception e) {
 			logger.info(id+"查询失败！"+e);
@@ -799,4 +879,8 @@ public class ResultsAction implements Action {
     public String execute() throws Exception {
 		return null;
 	}
+    
+    
+    
+
 }

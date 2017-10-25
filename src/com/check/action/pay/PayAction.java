@@ -1,6 +1,7 @@
 package com.check.action.pay;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -206,12 +207,53 @@ public class PayAction implements Action {
 	public void setFk_num(String fk_num) {
 		this.fk_num = fk_num;
 	}
+	private  String p_nm_t;  
+	private  String a_nm_t;
+	private  String bu_id;
+	
+	public String getP_nm_t() {
+		return p_nm_t;
+	}
+	public void setP_nm_t(String p_nm_t) {
+		this.p_nm_t = p_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	public String getBu_id() {
+		return bu_id;
+	}
+	public void setBu_id(String bu_id) {
+		this.bu_id = bu_id;
+	}
+	private String flag;
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	private String dx_pay;
+	public String getDx_pay() {
+		return dx_pay;
+	}
+	public void setDx_pay(String dx_pay) {
+		this.dx_pay = dx_pay;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
 		Pay pay =new Pay(); 
 		if(id!=null&&!id.equals(""))
 		pay.setId(Long.parseLong(id));
+		if(bu_id!=null&&!bu_id.equals(""))
+			pay.setBu_id(Long.parseLong(bu_id));
 		pay.setRow_id(row_id);
 		if(c_dt!=null&&!c_dt.equals(""))
 		pay.setC_dt(sdf.parse(c_dt));
@@ -219,13 +261,38 @@ public class PayAction implements Action {
 		pay.setUp_dt(sdf.parse(up_dt));
 		pay.setC_id(c_id);
 		pay.setPid(pid);
+		
+		
+		
 		pay.setPayment(payment);
 		pay.setZk_n(zk_n);
 		pay.setSt_lv(st_lv);
 		pay.setTy_lv(ty_lv);
 		pay.setDq_dt(dq_dt);
 		pay.setYy_t(yy_t);
-		pay.setFk_num(fk_num);
+		////FK年份0001 
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);	
+		String twoYear =(year+"").substring(2,4);
+		Map  paramMap = new HashMap ();
+		paramMap.put("fromPage",0);
+		paramMap.put("toPage",1); 
+		paramMap.put("fk_num","FK"+twoYear+"%"); 
+		list=iPayService.selectpayByParam(paramMap);
+		if(list.size()>0){
+			Pay temp =list.get(0);
+			String currentNum = temp.getFk_num().substring(4,8);
+			int newNum = Integer.parseInt(currentNum)+1;
+			pay.setFk_num("FK"+twoYear+newNum);
+		}
+		else{
+			pay.setFk_num("FK"+twoYear+"0001");
+		}
+		
+		
+		
+		pay.setFlag(flag);
+		pay.setDx_pay(dx_pay);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iPayService.addpay(pay).toString());
@@ -259,6 +326,7 @@ public class PayAction implements Action {
 		paramMap.put("fromPage",(page-1)*size);
 		paramMap.put("toPage",size); 
 			paramMap.put("id", id);
+			paramMap.put("bu_id", bu_id);
 			paramMap.put("row_id", row_id);
 			if(c_dtFrom!=null&&!c_dtFrom.equals(""))
 			paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));
@@ -276,7 +344,11 @@ public class PayAction implements Action {
 			paramMap.put("ty_lv", ty_lv);
 			paramMap.put("dq_dt", dq_dt);
 			paramMap.put("yy_t", yy_t);
+			paramMap.put("flag", flag);
+			paramMap.put("dx_pay", dx_pay);
 			paramMap.put("fk_num", fk_num);
+			paramMap.put("p_nm_t", p_nm_t);
+			paramMap.put("a_nm_t", a_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iPayService.selectpayByParam(paramMap); 
@@ -318,6 +390,8 @@ public class PayAction implements Action {
 		Pay pay =new Pay(); 
 		if(id!=null&&!id.equals(""))
 		pay.setId(Long.parseLong(id));
+		if(bu_id!=null&&!bu_id.equals(""))
+			pay.setBu_id(Long.parseLong(bu_id));
 		pay.setRow_id(row_id);
 		if(c_dt!=null&&!c_dt.equals(""))
 		pay.setC_dt(sdf.parse(c_dt));
@@ -332,6 +406,8 @@ public class PayAction implements Action {
 		pay.setDq_dt(dq_dt);
 		pay.setYy_t(yy_t);
 		pay.setFk_num(fk_num);
+		pay.setFlag(flag);
+		pay.setDx_pay(dx_pay);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iPayService.updatepay(pay);
@@ -427,6 +503,7 @@ public class PayAction implements Action {
 		StringBuffer msg = new StringBuffer();
 		Map  paramMap = new HashMap ();
 		paramMap.put("id", id);
+		paramMap.put("bu_id", bu_id);
 		paramMap.put("row_id", row_id);
 		if(c_dtFrom!=null&&!c_dtFrom.equals(""))
 		paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));
@@ -444,7 +521,11 @@ public class PayAction implements Action {
 		paramMap.put("ty_lv", ty_lv);
 		paramMap.put("dq_dt", dq_dt);
 		paramMap.put("yy_t", yy_t);
+		paramMap.put("flag", flag);
+		paramMap.put("dx_pay", dx_pay);
 		paramMap.put("fk_num", fk_num);
+		paramMap.put("p_nm_t", p_nm_t);
+		paramMap.put("a_nm_t", a_nm_t);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

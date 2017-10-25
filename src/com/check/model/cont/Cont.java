@@ -112,7 +112,13 @@ public class Cont {
 		this.bu_id = bu_id;
 	}
 	 
-
-
+	private String st_lv;
+	public String getSt_lv() {
+		return st_lv;
+	}
+	public void setSt_lv(String st_lv) {
+		this.st_lv = st_lv;
+	}
+	
 
 }

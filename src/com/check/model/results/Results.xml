@@ -3,44 +3,51 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.results.IResultsMapper"> 
 	<select id="selectresultsById" parameterType="String" resultType="Results">
-		SELECT * FROM results WHERE ID=#{id}
+		SELECT r.*,p.nm_t as statand_nm_t FROM results r left join prod p 
+		on r.statand_id=p.id 
+		WHERE r.ID=#{id}
 	</select>
 
 
 	<delete id="deleteresults" parameterType="String"> 
 		DELETE FROM results WHERE ID=#{id}
 	</delete>
+	<delete id="deleteResultsByPid" parameterType="String"> 
+		DELETE FROM results WHERE PID=#{pid}
+	</delete>
 
 	<select id="selectresultsByParam" parameterType="java.util.Map" resultType="Results">
-		SELECT *
-		FROM results
+		SELECT r.*,p.nm_t as statand_nm_t FROM results r left join prod p 
+		on r.statand_id=p.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="prod_name != null"> AND PROD_NAME =#{prod_name} </if>
-			<if test="bool != null"> AND BOOL =#{bool} </if>
-			<if test="value != null"> AND VALUE =#{value} </if>
-			<if test="flg != null"> AND FLG =#{flg} </if>
-			<if test="statand_lv != null"> AND STATAND_LV =#{statand_lv} </if>
-			<if test="statand != null"> AND STATAND =#{statand} </if>
-			<if test="statand_va != null"> AND STATAND_VA =#{statand_va} </if>
-			<if test="rel_id != null"> AND REL_ID =#{rel_id} </if>
-			<if test="inbz_t != null"> AND INBZ_T =#{inbz_t} </if>
-			<if test="cm_t != null"> AND CM_T =#{cm_t} </if>
-			<if test="wd != null"> AND WD =#{wd} </if>
-			<if test="sd != null"> AND SD =#{sd} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="id != null"> AND r.ID =#{id} </if>
+			<if test="row_id != null"> AND r.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(r.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(r.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND r.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(r.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(r.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND r.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND r.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND r.PID =#{pid} </if>
+			<if test="prod_id != null"> AND r.PROD_ID =#{prod_id} </if>
+			<if test="prod_name != null"> AND r.PROD_NAME =#{prod_name} </if>
+			<if test="bool != null"> AND r.BOOL =#{bool} </if>
+			<if test="value != null"> AND r.VALUE =#{value} </if>
+			<if test="flg != null"> AND r.FLG =#{flg} </if>
+			<if test="statand_lv != null"> AND r.STATAND_LV =#{statand_lv} </if>
+			<if test="statand != null"> AND r.STATAND =#{statand} </if>
+			<if test="statand_va != null"> AND r.STATAND_VA =#{statand_va} </if>
+			<if test="rel_id != null"> AND r.REL_ID =#{rel_id} </if>
+			<if test="rel_id_null != null"> AND r.REL_ID IS NULL </if>
+			<if test="inbz_t != null"> AND r.INBZ_T =#{inbz_t} </if>
+			<if test="cm_t != null"> AND r.CM_T =#{cm_t} </if>
+			<if test="wd != null"> AND r.WD =#{wd} </if>
+			<if test="sd != null"> AND r.SD =#{sd} </if>
+			<if test="bu_id != null"> AND r.BU_ID =#{bu_id} </if>
+			<if test="statand_id != null"> AND r.STATAND_ID =#{statand_id} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY r.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
@@ -67,11 +74,13 @@
 			<if test="statand != null"> AND STATAND =#{statand} </if>
 			<if test="statand_va != null"> AND STATAND_VA =#{statand_va} </if>
 			<if test="rel_id != null"> AND REL_ID =#{rel_id} </if>
+			<if test="rel_id_null != null"> AND REL_ID IS NULL </if>
 			<if test="inbz_t != null"> AND INBZ_T =#{inbz_t} </if>
 			<if test="cm_t != null"> AND CM_T =#{cm_t} </if>
 			<if test="wd != null"> AND WD =#{wd} </if>
 			<if test="sd != null"> AND SD =#{sd} </if>
 			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="statand_id != null"> AND STATAND_ID =#{statand_id} </if>
 		</trim>  
 	</select>
 
@@ -98,6 +107,7 @@
 			<if test="wd != null">WD=#{wd}, </if>
 			<if test="sd != null">SD=#{sd}, </if>
 			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+			<if test="statand_id != null">STATAND_ID=#{statand_id}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -124,6 +134,7 @@
 			<if test="wd != null">WD, </if>
 			<if test="sd != null">SD, </if>
 			<if test="bu_id != null">BU_ID, </if>
+			<if test="statand_id != null">STATAND_ID, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -145,6 +156,7 @@
 			<if test="wd != null">#{wd}, </if>
 			<if test="sd != null">#{sd}, </if>
 			<if test="bu_id != null">#{bu_id}, </if>
+			<if test="statand_id != null">#{statand_id}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

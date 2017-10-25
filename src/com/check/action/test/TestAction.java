@@ -321,6 +321,30 @@ public class TestAction implements Action {
 		this.ewm = ewm;
 	}
  
+	private String s_nm_t;
+	private String pact_nm_t;
+	private String a_nm_t;
+	
+	
+	
+	public String getS_nm_t() {
+		return s_nm_t;
+	}
+	public void setS_nm_t(String s_nm_t) {
+		this.s_nm_t = s_nm_t;
+	}
+	public String getPact_nm_t() {
+		return pact_nm_t;
+	}
+	public void setPact_nm_t(String pact_nm_t) {
+		this.pact_nm_t = pact_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -437,6 +461,9 @@ public class TestAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("ewm", ewm);
+			paramMap.put("s_nm_t", s_nm_t);
+			paramMap.put("pact_nm_t", pact_nm_t);
+			paramMap.put("a_nm_t", a_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iTestService.selecttestByParam(paramMap); 
@@ -501,7 +528,7 @@ public class TestAction implements Action {
 		test.setSh_dt(sh_dt);
 		test.setBg_dt(bg_dt);
 		test.setE_dt(e_dt);
-		test.setCm_tx(cm_tx);
+		test.setCm_tx(cm_tx); 
 		test.setStatus(status);
 		test.setFq_flg(fq_flg);
 		test.setEwm(ewm);
@@ -511,6 +538,122 @@ public class TestAction implements Action {
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String appUpdate() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Test test =new Test(); 
+		if(id!=null&&!id.equals(""))
+			test.setId(Long.parseLong(id));
+		test.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			test.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			test.setUp_dt(sdf.parse(up_dt));
+		test.setC_id(c_id);
+		test.setPid(pid);
+		test.setBu_id(bu_id);
+		test.setCode(code);
+		test.setSy_dt(sy_dt);
+		test.setDd_t(dd_t);
+		test.setSample_id(sample_id);
+		test.setJl_t(jl_t);
+		test.setSy_id(sy_id);
+		test.setSyqz_id(syqz_id);
+		test.setSh_id(sh_id);
+		test.setShyj_t(shyj_t);
+		test.setShqz_id(shqz_id);
+		test.setSpqz_id(spqz_id);
+		test.setBg_f(bg_f);
+		test.setSh_dt(sh_dt);
+		test.setBg_dt(bg_dt);
+		test.setE_dt(e_dt);
+		test.setCm_tx(cm_tx); 
+		test.setStatus(status);
+		test.setFq_flg(fq_flg);
+		test.setEwm(ewm);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			iTestService.updatetest(test);
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"更新成功！\"");
+			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	public String updatebypid() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		Test test =new Test(); 
+		if(id!=null&&!id.equals(""))
+			test.setId(Long.parseLong(id));
+		test.setRow_id(row_id);
+		if(c_dt!=null&&!c_dt.equals(""))
+			test.setC_dt(sdf.parse(c_dt));
+		if(up_dt!=null&&!up_dt.equals(""))
+			test.setUp_dt(sdf.parse(up_dt));
+		test.setC_id(c_id);
+		test.setPid(pid);
+		test.setBu_id(bu_id);
+		test.setCode(code);
+		test.setSy_dt(sy_dt);
+		test.setDd_t(dd_t);
+		test.setSample_id(sample_id);
+		test.setJl_t(jl_t);
+		test.setSy_id(sy_id);
+		test.setSyqz_id(syqz_id);
+		test.setSh_id(sh_id);
+		test.setShyj_t(shyj_t);
+		test.setShqz_id(shqz_id);
+		test.setSpqz_id(spqz_id);
+		test.setBg_f(bg_f);
+		test.setSh_dt(sh_dt);
+		test.setBg_dt(bg_dt);
+		test.setE_dt(e_dt);
+		test.setCm_tx(cm_tx); 
+		test.setStatus(status);
+		test.setFq_flg(fq_flg);
+		test.setEwm(ewm);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			if(pid!=null&&!pid.equals("")){
+				iTestService.updatetestbypid(test);
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"更新成功！\"");
+				logger.info(id+"更新成功！");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"更新失败！\"");
+				logger.info("pid不能为空！");
+			}
+			
 		} catch (Exception e) {
 			logger.info(id+"更新失败！"+e);
 			msg.append("\"failure\",\"msg\":");

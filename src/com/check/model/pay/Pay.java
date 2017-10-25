@@ -13,6 +13,14 @@ public class Pay {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	private  Long bu_id;
+	
+	public Long getBu_id() {
+		return bu_id;
+	}
+	public void setBu_id(Long bu_id) {
+		this.bu_id = bu_id;
+	}
 	/** SIEBEL的ROW_ID */
 	private  String row_id;
 	public String getRow_id() {
@@ -110,6 +118,54 @@ public class Pay {
 		this.fk_num = fk_num;
 	}
 
+	private String flag;
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	private  String p_nm_t;
+	private  String p_ty_lv;
+	private  String p_code;
+	
+	private  String a_nm_t;
+	
+	public String getP_nm_t() {
+		return p_nm_t;
+	}
+	public void setP_nm_t(String p_nm_t) {
+		this.p_nm_t = p_nm_t;
+	}
+	public String getP_ty_lv() {
+		return p_ty_lv;
+	}
+	public void setP_ty_lv(String p_ty_lv) {
+		this.p_ty_lv = p_ty_lv;
+	}
+	public String getP_code() {
+		return p_code;
+	}
+	public void setP_code(String p_code) {
+		this.p_code = p_code;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	
+	private String dx_pay;
+	public String getDx_pay() {
+		return dx_pay;
+	}
+	public void setDx_pay(String dx_pay) {
+		this.dx_pay = dx_pay;
+	}
+	
+	
 
 
 }

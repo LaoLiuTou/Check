@@ -5,6 +5,7 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import com.check.model.entrust.Entrust;
+import com.check.model.sample.Sample;
 public interface IEntrustService {
 	/**
  * 通过id选取
@@ -34,6 +35,15 @@ public interface IEntrustService {
  */ 
 	public  Object addentrust(Entrust entrust);
 	/**
+	 * 添加 流程
+	 * @return
+	 */ 
+	public  int  addentrustFlow(Entrust entrust,String samples,String entrust_pins);
+	
+	
+	
+	public  int updateentrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins);
+	/**
  * 删除 
  * @return 
  */ 
@@ -56,5 +66,12 @@ public interface IEntrustService {
 	 * 样品 委托单 中间表
 	 */
 	public  List<String> seFlow(Entrust entrust,JSONObject sampleTree);
+	
+	
+	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdateEntrust(List<Entrust> entrustList);
 }
 

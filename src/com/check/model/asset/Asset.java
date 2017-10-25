@@ -78,12 +78,21 @@ public class Asset {
 		this.xh_t = xh_t;
 	}
 	/** 厂家 */
-	private  String cj_t;
+	/*private  String cj_t;
 	public String getCj_t() {
 		return cj_t;
 	}
 	public void setCj_t(String cj_t) {
 		this.cj_t = cj_t;
+	}*/
+	
+	
+	private Long  cj_id;
+	public Long getCj_id() {
+		return cj_id;
+	}
+	public void setCj_id(Long cj_id) {
+		this.cj_id = cj_id;
 	}
 	/** 最后修改时间 */
 	private  Date e_dt;

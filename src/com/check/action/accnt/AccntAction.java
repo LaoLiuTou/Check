@@ -918,7 +918,7 @@ public class AccntAction implements Action {
 				if(!result.equals("")){
 					msg.append("\"success\",\"msg\":");
 					msg.append(result);
-					logger.info(id+"查询成功！");
+					logger.info(accntids+"查询成功！");
 				}
 				else{
 					msg.append("\"failure\",\"msg\":");

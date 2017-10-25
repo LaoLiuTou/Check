@@ -213,6 +213,13 @@ public class MembersAction implements Action {
 	public void setName(String name) {
 		this.name = name;
 	}
+	private String  sign_flg;
+	public String getSign_flg() {
+		return sign_flg;
+	}
+	public void setSign_flg(String sign_flg) {
+		this.sign_flg = sign_flg;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -235,6 +242,7 @@ public class MembersAction implements Action {
 		members.setImg(img);
 		members.setSign(sign);
 		members.setName(name);
+		members.setSign_flg(sign_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iMembersService.addmembers(members).toString());
@@ -287,6 +295,7 @@ public class MembersAction implements Action {
 			paramMap.put("img", img);
 			paramMap.put("sign", sign);
 			paramMap.put("name", name);
+			paramMap.put("sign_flg", sign_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iMembersService.selectmembersByParam(paramMap); 
@@ -344,6 +353,7 @@ public class MembersAction implements Action {
 		members.setImg(img);
 		members.setSign(sign);
 		members.setName(name);
+		members.setSign_flg(sign_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iMembersService.updatemembers(members);
@@ -458,6 +468,7 @@ public class MembersAction implements Action {
 		paramMap.put("img", img);
 		paramMap.put("sign", sign);
 		paramMap.put("name", name);
+		paramMap.put("sign_flg", sign_flg);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {
@@ -666,6 +677,7 @@ public class MembersAction implements Action {
   				members.setImg(img);
   				members.setSign(sign);
   				members.setName(name);
+  				members.setSign_flg(sign_flg);
   				try {
   					int result = Integer.parseInt(iMembersService.addmembers(members).toString());
   					msg.append("\"success\",\"msg\":\"");

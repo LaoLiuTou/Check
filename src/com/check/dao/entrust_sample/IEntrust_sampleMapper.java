@@ -33,8 +33,13 @@ import com.check.model.entrust_sample.Entrust_sample;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deleteentrust_sample(String id);
+	 */ 
+	public  int deleteentrust_sample(String id);
+	/**
+	 * 删除 
+	 * @return 
+	 */ 
+	public  int deleteEntrust_sampleByPid(String pid);
 
 }
 

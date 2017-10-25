@@ -136,7 +136,7 @@ public class AccntServiceImpl  implements IAccntService {
 					iContService.addcont(cont); 
 				}
 				else{
-					iContService.updatecont(cont);
+					iContService.updatecont(cont,null);
 				}
 				
 				//flag   =  Y/N
@@ -153,7 +153,7 @@ public class AccntServiceImpl  implements IAccntService {
 			for(Cont temp:copyList){
 				temp.setPid(Long.valueOf("-1"));
 				temp.setUp_dt(null);
-				iContService.updatecont(temp);
+				iContService.updatecont(temp,null);
 			}
 			
 			
@@ -164,18 +164,25 @@ public class AccntServiceImpl  implements IAccntService {
 			JSONArray attaJA=JSONArray.fromObject(attastr);
 			for(int i=0;i<attaJA.size();i++){
 				JSONObject  attaJO = (JSONObject) attaJA.get(i);
-				Atta atta = new Atta();
-				if(attaJO.containsKey("c_id"))
-				atta.setC_id(attaJO.getString("c_id"));
-				//atta.setCm_tx(attaJO.getString("cm_tx"));
-				if(attaJO.containsKey("nm_t"))
-				atta.setNm_t(attaJO.getString("nm_t"));
-				if(attaJO.containsKey("type"))
-				atta.setType(attaJO.getString("type"));
-				if(attaJO.containsKey("url"))
-				atta.setUrl(attaJO.getString("url"));
-				atta.setPid(accnt.getId()+"");
-				iAttaService.addatta(atta);
+				if(attaJO.containsKey("id")){
+					iAttaService.deleteatta(attaJO.getString("id"));
+				}
+				else{
+					Atta atta = new Atta();
+					if(attaJO.containsKey("c_id"))
+					atta.setC_id(attaJO.getString("c_id"));
+					//atta.setCm_tx(attaJO.getString("cm_tx"));
+					if(attaJO.containsKey("nm_t"))
+					atta.setNm_t(attaJO.getString("nm_t"));
+					if(attaJO.containsKey("type"))
+					atta.setType(attaJO.getString("type"));
+					if(attaJO.containsKey("url"))
+					atta.setUrl(attaJO.getString("url"));
+					atta.setPid(accnt.getId()+"");
+					iAttaService.addatta(atta);
+				}
+				
+				
 			}
 			
 		}

@@ -33,6 +33,7 @@
 			<if test="img != null"> AND m.IMG =#{img} </if>
 			<if test="sign != null"> AND m.SIGN =#{sign} </if>
 			<if test="name != null"> AND m.NAME =#{name} </if>
+			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 		</trim>  
 		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -59,6 +60,7 @@
 			<if test="img != null"> AND IMG =#{img} </if>
 			<if test="sign != null"> AND SIGN =#{sign} </if>
 			<if test="name != null"> AND NAME =#{name} </if>
+			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 		</trim>  
 	</select>
 
@@ -78,6 +80,7 @@
 			<if test="img != null">IMG=#{img}, </if>
 			<if test="sign != null">SIGN=#{sign}, </if>
 			<if test="name != null">NAME=#{name}, </if>
+			<if test="sign_flg != null">SIGN_FLG=#{sign_flg}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -97,6 +100,7 @@
 			<if test="img != null">IMG, </if>
 			<if test="sign != null">SIGN, </if>
 			<if test="name != null">NAME, </if>
+			<if test="sign_flg != null">SIGN_FLG, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -111,6 +115,7 @@
 			<if test="img != null">#{img}, </if>
 			<if test="sign != null">#{sign}, </if>
 			<if test="name != null">#{name}, </if>
+			<if test="sign_flg != null">#{sign_flg}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

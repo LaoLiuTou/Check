@@ -10,6 +10,9 @@
 	<delete id="deleteentrust_sample" parameterType="String"> 
 		DELETE FROM entrust_sample WHERE ID=#{id}
 	</delete>
+	<delete id="deleteEntrust_sampleByPid" parameterType="String"> 
+		DELETE FROM entrust_sample WHERE PID=#{pid}
+	</delete>
 
 	<select id="selectentrust_sampleByParam" parameterType="java.util.Map" resultType="Entrust_sample">
 		SELECT *

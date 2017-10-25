@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.check.dao.sample.ISampleMapper;
 import com.check.model.sample.Sample;
+import com.check.model.sample_templet.Sample_templet;
 public class SampleServiceImpl  implements ISampleService {
 
 	@Autowired
@@ -58,6 +59,9 @@ public class SampleServiceImpl  implements ISampleService {
 	public  int deletesample(String id){
 		return iSampleMapper.deletesample(id);
 	}
-
+	 @Transactional
+	public int mulupdateSample(List<Sample> sampleList) {
+		 return iSampleMapper.mulupdateSample(sampleList);
+	}
 }
 

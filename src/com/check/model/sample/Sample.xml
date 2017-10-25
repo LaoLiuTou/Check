@@ -18,6 +18,7 @@
 		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
 		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		<if test="test_status != null"> LEFT JOIN test e on a.id=e.sample_id </if>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
@@ -86,7 +87,7 @@
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 		 
-			
+			<if test="test_status != null"> AND (e.STATUS = #{ts1} or e.STATUS = #{ts2}) </if>
 		</trim>  
 		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -96,6 +97,7 @@
 		SELECT COUNT(a.ID) 
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
 		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		<if test="test_status != null"> LEFT JOIN test e on a.id=e.sample_id </if>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
@@ -164,6 +166,8 @@
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 			
+			
+			<if test="test_status != null"> AND (e.STATUS = #{ts1} or e.STATUS = #{ts2}) </if>
 		</trim>  
 	</select>
 
@@ -329,4 +333,16 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>
+	
+	<update id="mulupdateSample" parameterType="java.util.List">  
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        UPDATE SAMPLE   
+        <trim prefix="SET" suffixOverrides=",">
+			<if test="item.flg != null">FLG=#{item.flg}, </if>
+			<if test="item.fq_flg != null">FQ_FLG=#{item.fq_flg}, </if>
+		</trim> 
+        where id = #{item.id}  
+        </foreach>  
+    </update> 
+    
 </mapper>

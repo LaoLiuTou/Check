@@ -24,7 +24,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
 			<if test="code != null"> AND CODE =#{code} </if>
 			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
 			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
@@ -48,7 +48,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
 			<if test="code != null"> AND CODE =#{code} </if>
 			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
 			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>

@@ -30,6 +30,7 @@ import com.check.model.lov.Lov;
 import com.check.model.pact.Pact;
 import com.check.model.prod.Prod;
 import com.check.model.sample.Sample;
+import com.check.model.sample_templet.Sample_templet;
 import com.check.service.accnt.IAccntService;
 import com.check.service.entrust.IEntrustService;
 import com.check.service.entrust_sample.IEntrust_sampleService;
@@ -1287,7 +1288,62 @@ public class SampleAction implements Action {
     	System.out.println(createLot());
 		return null;
 	}
+   
     
+    private String mulupdate;
+	 
+	public String getMulupdate() {
+		return mulupdate;
+	}
+	public void setMulupdate(String mulupdate) {
+		this.mulupdate = mulupdate;
+	}
+	public String mulUpdate() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		
+		JSONArray updateJA=JSONArray.fromObject(mulupdate);
+		if(updateJA!=null){
+			List<Sample> tempList= new ArrayList<Sample>();
+			for(int i=0;i<updateJA.size();i++){
+				JSONObject  updateJO = (JSONObject) updateJA.get(i);
+				Sample sample =new Sample(); 
+				if(updateJO.containsKey("id"))
+					sample.setId(Long.parseLong(updateJO.getString("id")));
+				if(updateJO.containsKey("fq_flg"))
+					sample.setFq_flg(updateJO.getString("fq_flg"));
+				tempList.add(sample);
+			}
+			
+			try {
+				iSampleService.mulupdateSample(tempList);
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"更新成功！\"");
+				logger.info("批量成功！");
+			} catch (Exception e) {
+				logger.info("更新失败！"+e);
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"批量失败！\"");
+				e.printStackTrace();
+			}
+		}
+		else{
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"参数不能为空！\"");
+		}
+		
+		
+
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
     /**
      * 
      * 编号

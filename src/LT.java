@@ -1,8 +1,13 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -11,12 +16,14 @@ public class LT {
 
 	/**
 	 * @param args
+	 * @throws ScriptException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ScriptException {
 		// TODO Auto-generated method stub
-		int i = 0;
+		//int i = 0;
 		 
-		System.out.println((i+"").equals(""));
+		//System.out.println((i+"").equals(""));
+		 
 		 /*try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			    GregorianCalendar gc=new GregorianCalendar();
@@ -62,6 +69,20 @@ public class LT {
 		}
 		System.out.println(gg_codeStr);
 		System.out.println(sy_codeStr);*/
+		/*String boolStr = "(123==1223)";  
+		ScriptEngineManager manager = new ScriptEngineManager();  
+		ScriptEngine engine = manager.getEngineByName("js");  
+		//engine.put("a", 4);  
+		Object flagOB = engine.eval(boolStr);  
+		System.out.println(flagOB.toString());*/
+		
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);	
+		System.out.println((year+"").substring(2,4));
+		String currentNum = "12345678".substring(4,8);
+		int newNum = Integer.parseInt(currentNum)+1;
+		 
+		System.out.println("FK"+17+newNum);
 	}
 
 }

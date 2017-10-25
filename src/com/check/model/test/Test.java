@@ -215,5 +215,42 @@ public class Test {
 	}
 
 
+	
+	private String s_nm_t;
+	private String sh_name;
+	private String sy_name;
+	private String pact_nm_t;
+	private String a_nm_t;
+	public String getS_nm_t() {
+		return s_nm_t;
+	}
+	public void setS_nm_t(String s_nm_t) {
+		this.s_nm_t = s_nm_t;
+	}
+	public String getSh_name() {
+		return sh_name;
+	}
+	public void setSh_name(String sh_name) {
+		this.sh_name = sh_name;
+	}
+	public String getSy_name() {
+		return sy_name;
+	}
+	public void setSy_name(String sy_name) {
+		this.sy_name = sy_name;
+	}
+	public String getPact_nm_t() {
+		return pact_nm_t;
+	}
+	public void setPact_nm_t(String pact_nm_t) {
+		this.pact_nm_t = pact_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+
 
 }

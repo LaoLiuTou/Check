@@ -182,6 +182,15 @@ public class ContAction implements Action {
 	public void setQq(String qq) {
 		this.qq = qq;
 	}
+	
+	private String st_lv;
+	public String getSt_lv() {
+		return st_lv;
+	}
+	public void setSt_lv(String st_lv) {
+		this.st_lv = st_lv;
+	}
+	
 	private String pid;
 	 
 	private String user_id;
@@ -206,6 +215,16 @@ public class ContAction implements Action {
 	public void setBu_id(String bu_id) {
 		this.bu_id = bu_id;
 	}
+	
+	
+	private String username;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -229,6 +248,7 @@ public class ContAction implements Action {
 		cont.setUser_id(Long.parseLong(user_id));
 		if(bu_id!=null&&!bu_id.equals(""))
 		cont.setBu_id(Long.parseLong(bu_id));
+		cont.setSt_lv(st_lv);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iContService.addcont(cont).toString());
@@ -276,6 +296,7 @@ public class ContAction implements Action {
 			paramMap.put("pid", pid);
 			paramMap.put("user_id", user_id);
 			paramMap.put("bu_id", bu_id);
+			paramMap.put("st_lv", st_lv);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iContService.selectcontByParam(paramMap); 
@@ -334,9 +355,12 @@ public class ContAction implements Action {
 		cont.setUser_id(Long.parseLong(user_id));
 		if(bu_id!=null&&!bu_id.equals(""))
 		cont.setBu_id(Long.parseLong(bu_id));
+		
+		cont.setSt_lv(st_lv);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			iContService.updatecont(cont);
+			iContService.updatecont(cont,username);
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
@@ -438,6 +462,7 @@ public class ContAction implements Action {
 			paramMap.put("pid", pid);
 			paramMap.put("user_id", user_id);
 			paramMap.put("bu_id", bu_id);
+			paramMap.put("st_lv", st_lv);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iContService.selectCountcontByParam(paramMap);

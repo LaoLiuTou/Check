@@ -38,6 +38,11 @@ public interface ITestService {
  */ 
 	public  int updatetest(Test test);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int updatetestbypid(Test test);
+	/**
  * 添加 
  * @return
  */ 

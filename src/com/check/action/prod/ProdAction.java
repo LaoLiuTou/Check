@@ -630,7 +630,7 @@ public class ProdAction implements Action {
 								paramMap = new HashMap (); 
 								paramMap.put("pid", temp.getId());
 								paramMap.put("ty_lv", "检验属性");
-								paramMap.put("jy_f", "Y");
+								/*paramMap.put("jy_f", "Y");*/
 								int tempnum = iProdService.selectCountprodByParam(paramMap);
 								paramMap.put("fromPage",0);
 								paramMap.put("toPage",tempnum); 
@@ -672,7 +672,7 @@ public class ProdAction implements Action {
 					Map  paramMap = new HashMap (); 
 					paramMap.put("pid", temp.getId());
 					paramMap.put("ty_lv", "检验属性");
-					paramMap.put("jy_f", "Y");
+					/*paramMap.put("jy_f", "Y");*/
 					int tempnum = iProdService.selectCountprodByParam(paramMap);
 					paramMap.put("fromPage",0);
 					paramMap.put("toPage",tempnum); 
@@ -706,6 +706,7 @@ public class ProdAction implements Action {
 		}
 		return null;
 	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String tree() throws Exception {
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -763,6 +764,127 @@ public class ProdAction implements Action {
 			
 			 
 			
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String subTree() throws Exception {
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			
+			if(prodids!=null&&!prodids.equals("")&&testid!=null&&!testid.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"查询条件重复.\"");
+			}
+			else if(testid!=null&&!testid.equals("")){
+				Test test = iTestService.selecttestById(testid);
+				if(test!=null){
+					Sample sample=iSampleService.selectsampleById(test.getSample_id());
+					
+					if(sample!=null){
+						Map  paramMap = new HashMap (); 
+						paramMap.put("pid", sample.getProd_id());
+						paramMap.put("ty_lv", "检测项目");
+						int num = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",num); 
+						List<Prod> prodList=iProdService.selectprodByParam(paramMap);
+						if(prodList.size()>0){
+							//所有结果
+							JSONArray allJA= new JSONArray();
+							for(Prod temp:prodList){
+								//parent
+								JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+								paramMap = new HashMap (); 
+								paramMap.put("pid", temp.getId());
+								paramMap.put("ty_lv", "检验属性");
+								/*paramMap.put("jy_f", "Y");*/
+								int tempnum = iProdService.selectCountprodByParam(paramMap);
+								paramMap.put("fromPage",0);
+								paramMap.put("toPage",tempnum); 
+								//sub
+								List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+								prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+								allJA.add(prodJO);
+								
+							}
+							msg.append("\"success\",\"msg\":");
+							msg.append(allJA);
+							logger.info("获取列表成功！");
+						}
+						else{
+							msg.append("\"failure\",\"msg\":");
+							msg.append("\"检测项目不存在.\"");
+						}
+						
+					}
+					else{
+						msg.append("\"failure\",\"msg\":");
+						msg.append("\"样品不存在.\"");
+					}
+				}
+				else{
+					msg.append("\"failure\",\"msg\":");
+					msg.append("\"试验单不存在.\"");
+				}
+				
+			}
+			else if(prodids!=null&&!prodids.equals("")){
+				String[] allProd= prodids.split("\\|"); 
+				//所有结果
+				JSONArray allJA= new JSONArray();
+				for(String prodid :allProd){
+					Prod temp = iProdService.selectprodById(prodid);
+					//parent
+					JSONObject prodJO= JSONObject.fromObject(temp, jsonConfig);
+					Map  paramMap = new HashMap (); 
+					paramMap.put("pid", temp.getId());
+					paramMap.put("ty_lv", "检验子项目");
+					paramMap.put("flg", "Y");
+					int tempnum = iProdService.selectCountprodByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",tempnum); 
+					//sub
+					List<Prod> sonProdList=iProdService.selectprodByParam(paramMap);
+					prodJO.accumulate("sub", JSONArray.fromObject(sonProdList, jsonConfig));
+					allJA.add(prodJO);
+					 
+				}
+				msg.append("\"success\",\"msg\":");
+				msg.append(allJA);
+				logger.info("获取列表成功！");
+				
+			}
+			 
+		
+		
+			 
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
 			msg.append("\"查询失败.\"");

@@ -38,6 +38,11 @@ import com.check.model.test.Test;
  */ 
 	public  int updatetest(Test test);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int updatetestbypid(Test test);
+	/**
  	* 添加 
  	* @return
  */ 
@@ -45,8 +50,13 @@ import com.check.model.test.Test;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deletetest(String id);
+	 */ 
+	public  int deletetest(String id);
+	/**
+	 * 删除 
+	 * @return 
+	 */ 
+	public  int deleteTestByPid(String pid);
 
 }
 

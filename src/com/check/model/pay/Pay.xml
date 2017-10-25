@@ -3,7 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.pay.IPayMapper"> 
 	<select id="selectpayById" parameterType="String" resultType="Pay">
-		SELECT * FROM pay WHERE ID=#{id}
+		SELECT a.*,b.nm_t as p_nm_t,b.ty_lv as p_ty_lv,b.code as p_code ,c.nm_t as a_nm_t 
+		FROM pay a 
+		LEFT JOIN pact b ON a.pid=b.id 
+		LEFT JOIN accnt c ON b.pid=c.id 
+		WHERE a.ID=#{id}
 	</select>
 
 
@@ -12,53 +16,67 @@
 	</delete>
 
 	<select id="selectpayByParam" parameterType="java.util.Map" resultType="Pay">
-		SELECT *
-		FROM pay
+		SELECT a.*,b.nm_t as p_nm_t,b.ty_lv as p_ty_lv,b.code as p_code ,c.nm_t as a_nm_t 
+		FROM pay a 
+		LEFT JOIN pact b ON a.pid=b.id 
+		LEFT JOIN accnt c ON b.pid=c.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="payment != null"> AND PAYMENT =#{payment} </if>
-			<if test="zk_n != null"> AND ZK_N =#{zk_n} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="dq_dt != null"> AND DQ_DT =#{dq_dt} </if>
-			<if test="yy_t != null"> AND YY_T =#{yy_t} </if>
-			<if test="fk_num != null"> AND FK_NUM =#{fk_num} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND a.PID =#{pid} </if>
+			<if test="payment != null"> AND a.PAYMENT =#{payment} </if>
+			<if test="zk_n != null"> AND a.ZK_N =#{zk_n} </if>
+			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="dq_dt != null"> AND a.DQ_DT =#{dq_dt} </if>
+			<if test="yy_t != null"> AND a.YY_T =#{yy_t} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="dx_pay != null"> AND a.DX_PAY =#{dx_pay} </if>
+			<if test="fk_num != null"> AND a.FK_NUM LIKE #{fk_num} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="p_nm_t != null"> AND b.nm_t LIKE #{p_nm_t} </if>
+			<if test="a_nm_t != null"> AND c.nm_t LIKE #{a_nm_t} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountpayByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM pay 
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="pid != null"> AND PID =#{pid} </if>
-			<if test="payment != null"> AND PAYMENT =#{payment} </if>
-			<if test="zk_n != null"> AND ZK_N =#{zk_n} </if>
-			<if test="st_lv != null"> AND ST_LV =#{st_lv} </if>
-			<if test="ty_lv != null"> AND TY_LV =#{ty_lv} </if>
-			<if test="dq_dt != null"> AND DQ_DT =#{dq_dt} </if>
-			<if test="yy_t != null"> AND YY_T =#{yy_t} </if>
-			<if test="fk_num != null"> AND FK_NUM =#{fk_num} </if>
-		</trim>  
+		SELECT COUNT(a.ID) 
+		FROM pay a 
+		LEFT JOIN pact b ON a.pid=b.id 
+		LEFT JOIN accnt c ON b.pid=c.id 
+				<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND a.PID =#{pid} </if>
+			<if test="payment != null"> AND a.PAYMENT =#{payment} </if>
+			<if test="zk_n != null"> AND a.ZK_N =#{zk_n} </if>
+			<if test="st_lv != null"> AND a.ST_LV =#{st_lv} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="dq_dt != null"> AND a.DQ_DT =#{dq_dt} </if>
+			<if test="yy_t != null"> AND a.YY_T =#{yy_t} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="dx_pay != null"> AND a.DX_PAY =#{dx_pay} </if>
+			<if test="fk_num != null"> AND a.FK_NUM LIKE #{fk_num} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="p_nm_t != null"> AND b.nm_t LIKE #{p_nm_t} </if>
+			<if test="a_nm_t != null"> AND c.nm_t LIKE #{a_nm_t} </if>
+		</trim>
 	</select>
 
 	<update id="updatepay" parameterType="Pay">
@@ -77,6 +95,9 @@
 			<if test="dq_dt != null">DQ_DT=#{dq_dt}, </if>
 			<if test="yy_t != null">YY_T=#{yy_t}, </if>
 			<if test="fk_num != null">FK_NUM=#{fk_num}, </if>
+			<if test="flag != null">FLAG=#{flag}, </if>
+			<if test="dx_pay != null">DX_PAY=#{dx_pay}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -96,6 +117,9 @@
 			<if test="dq_dt != null">DQ_DT, </if>
 			<if test="yy_t != null">YY_T, </if>
 			<if test="fk_num != null">FK_NUM, </if>
+			<if test="flag != null">FLAG, </if>
+			<if test="dx_pay != null">DX_PAY, </if>
+			<if test="bu_id != null">BU_ID, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -110,6 +134,9 @@
 			<if test="dq_dt != null">#{dq_dt}, </if>
 			<if test="yy_t != null">#{yy_t}, </if>
 			<if test="fk_num != null">#{fk_num}, </if>
+			<if test="flag != null">#{flag}, </if>
+			<if test="dx_pay != null">#{dx_pay}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

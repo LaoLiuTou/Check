@@ -26,6 +26,11 @@ import com.check.model.entrust.Entrust;
  */ 
 	public  int updateentrust(Entrust entrust);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdateEntrust(List<Entrust> entrustList);
+	/**
  	* 添加 
  	* @return
  */ 

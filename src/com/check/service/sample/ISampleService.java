@@ -2,6 +2,7 @@ package com.check.service.sample;
 import java.util.List;
 import java.util.Map;
 import com.check.model.sample.Sample;
+import com.check.model.sample_templet.Sample_templet;
 public interface ISampleService {
 	/**
  * 通过id选取
@@ -35,6 +36,11 @@ public interface ISampleService {
  * @return 
  */ 
 	public  int deletesample(String id);
+	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int mulupdateSample(List<Sample> sampleList);
 
 }
 

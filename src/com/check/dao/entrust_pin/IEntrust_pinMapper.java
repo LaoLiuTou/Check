@@ -33,8 +33,13 @@ import com.check.model.entrust_pin.Entrust_pin;
 	/**
  	* 删除 
  	* @return 
- */ 
-public  int deleteentrust_pin(String id);
+	 */ 
+	public  int deleteentrust_pin(String id);
+	/**
+	 * 删除 
+	 * @return 
+	 */ 
+	public  int deleteEntrust_pinByPid(String pid);
 
 }
 

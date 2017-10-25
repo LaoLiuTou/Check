@@ -98,9 +98,14 @@
     <li>list item 4</li>
     <li>list item 5</li>
 </ul>
-   <form id="uploadForm"> 
+   <form id="uploadForm" action="FileUpload" method="post" enctype="multipart/form-data"> 
+   <input type="text" name ="pid" value="1"> 
+   <input type="text" name ="fz_id" value="1"> 
+   <input type="text" name ="c_id" value="1"> 
+   <input type="text" name ="bu_id" value="1"> 
+   <input type="text" name ="ftype" value="cs"> 
         <input type="file" name="filename" id="fileinput"/>
-        <input type="button" id="upload" value="上传"/>
+        <input type="submit"   value="上传"/>
   </form>
  
 </body>

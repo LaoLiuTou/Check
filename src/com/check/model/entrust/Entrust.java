@@ -222,11 +222,12 @@ public class Entrust {
 		this.bu_id = bu_id;
 	}
 	/** 委托日期 */
-	private  String wt_dt;
-	public String getWt_dt() {
+	private  Date wt_dt;
+	
+	public Date getWt_dt() {
 		return wt_dt;
 	}
-	public void setWt_dt(String wt_dt) {
+	public void setWt_dt(Date wt_dt) {
 		this.wt_dt = wt_dt;
 	}
 	/** 是否提交(Y/N) */
@@ -280,7 +281,20 @@ public class Entrust {
 	
 	private String pact_nm_t;
 	private String a_nm_t;
+	
+	private String postal;
+	private String a_ty_lv;
+	private String cont_id;
+	private String ph_p;
+	
 	private String prod_nm_t;
+	private String db_nm_t;
+	
+	private String m_name;
+	private String jl_cont_nm_t;
+	private String db_cont_nm_t;
+	
+	
 	public String getPact_nm_t() {
 		return pact_nm_t;
 	}
@@ -298,6 +312,54 @@ public class Entrust {
 	}
 	public void setProd_nm_t(String prod_nm_t) {
 		this.prod_nm_t = prod_nm_t;
+	}
+	public String getDb_nm_t() {
+		return db_nm_t;
+	}
+	public void setDb_nm_t(String db_nm_t) {
+		this.db_nm_t = db_nm_t;
+	}
+	public String getPostal() {
+		return postal;
+	}
+	public void setPostal(String postal) {
+		this.postal = postal;
+	}
+	public String getCont_id() {
+		return cont_id;
+	}
+	public void setCont_id(String cont_id) {
+		this.cont_id = cont_id;
+	}
+	public String getPh_p() {
+		return ph_p;
+	}
+	public void setPh_p(String ph_p) {
+		this.ph_p = ph_p;
+	}
+	public String getA_ty_lv() {
+		return a_ty_lv;
+	}
+	public void setA_ty_lv(String a_ty_lv) {
+		this.a_ty_lv = a_ty_lv;
+	}
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+	public String getJl_cont_nm_t() {
+		return jl_cont_nm_t;
+	}
+	public void setJl_cont_nm_t(String jl_cont_nm_t) {
+		this.jl_cont_nm_t = jl_cont_nm_t;
+	}
+	public String getDb_cont_nm_t() {
+		return db_cont_nm_t;
+	}
+	public void setDb_cont_nm_t(String db_cont_nm_t) {
+		this.db_cont_nm_t = db_cont_nm_t;
 	}
 
 

@@ -29,6 +29,11 @@ public interface IPactService {
  */ 
 	public  int updatepact(Pact pact);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int updatepactAndAtta(Pact pact,String attastr);
+	/**
  * 添加 
  * @return
  */ 
@@ -45,5 +50,11 @@ public interface IPactService {
  */ 
 	public  int deletepact(String id);
 
+	
+	/**
+	  * tree
+	  * @return 
+	  */ 
+	 public  String selectAppTreePact(String ids,String test_status);
 }
 
