@@ -361,6 +361,21 @@ public class Entrust {
 	public void setDb_cont_nm_t(String db_cont_nm_t) {
 		this.db_cont_nm_t = db_cont_nm_t;
 	}
-
+	
+	private String cjz_type;
+	private String show_flg;
+	public String getCjz_type() {
+		return cjz_type;
+	}
+	public void setCjz_type(String cjz_type) {
+		this.cjz_type = cjz_type;
+	}
+	public String getShow_flg() {
+		return show_flg;
+	}
+	public void setShow_flg(String show_flg) {
+		this.show_flg = show_flg;
+	}
+	
 
 }

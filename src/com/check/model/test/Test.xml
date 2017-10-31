@@ -67,7 +67,7 @@
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
 			
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
-			<if test="pact_nm_t != null"> AND e.NM_T LIKE #{pact_nm_t} </if>
+			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND g.NM_T LIKE #{a_nm_t} </if>
 			 
 		</trim>  
@@ -117,7 +117,7 @@
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
 			
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
-			<if test="pact_nm_t != null"> AND e.NM_T LIKE #{pact_nm_t} </if>
+			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND g.NM_T LIKE #{a_nm_t} </if>
 			 
 		</trim>   

@@ -277,6 +277,8 @@ public class LovAction implements Action {
 		}
 		return null;
 	}
+	
+	 
 
 	public String update() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
@@ -382,6 +384,15 @@ public class LovAction implements Action {
 		}
 		return null;
 	}
+	
+	private String order;
+	
+	public String getOrder() {
+		return order;
+	}
+	public void setOrder(String order) {
+		this.order = order;
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String all() throws Exception {
 
@@ -403,13 +414,14 @@ public class LovAction implements Action {
 		if(up_dtTo!=null&&!up_dtTo.equals(""))
 		paramMap.put("up_dtTo", sdf.parse(up_dtTo));
 		paramMap.put("column_type", column_type);
+		paramMap.put("order", order);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {
 			totalnumber=iLovService.selectCountlovByParam(paramMap);
 			paramMap.put("fromPage",0);
 			paramMap.put("toPage",totalnumber);
-			list=iLovService.selectlovByParam(paramMap); 
+			list=iLovService.selectlovByParamOrder(paramMap); 
 			//XD  数据库时间
 			String dbtime= iAccntService.selectDbtime();
 			JsonConfig jsonConfig = new JsonConfig();

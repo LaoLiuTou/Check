@@ -18,6 +18,81 @@ alert(localStorage.getItem("test")); */
  
 </script>
 <script type="text/javascript">
+   $.ajax({
+           url:'http://192.168.1.144/Check/loginMembers',
+           type:"POST",
+           //dataType : "json",
+           //data : {'nm_t':'%吉林%水源水利%'},
+           data : {'username':'GHJL001','userpwd':'000000'},
+           /* headers: {
+            "token" : token,
+            "timesamp" : timestamp,
+            "sign" : hash
+        	}, */
+           //data : '',
+           success:function(response) {
+            
+             // alert(response);   
+             var obj = JSON.parse(response);
+             //console.log(obj["msg"]);
+             //var msgobj = JSON.parse(obj["msg"]);
+            	 var  token = obj["token"];
+				var timestamp = Date.parse(new Date());
+				var hash = md5(token+timestamp+"!QAZXSW@"); 
+				console.log(token);
+				console.log(timestamp);
+				console.log(hash);
+			    $.ajax({
+			           url:'http://192.168.1.144/Check/seFlowEntrust',
+			           type:"POST",
+			           //dataType : "json",
+			           //data : {'id':'23578','inbz_t':'30','jl_t':'','prod_id_sub':'592'},
+			           
+			          // data : {'nm_t':'%敦化市牡丹江%','code':'%GHJC%','a_e':'%吉林珂海水利水%','a_sv':'%吉林%'},
+			          // data : {"jd_lv_state":"('未委托','已发货','待发货','null','已提交','已接收')"},
+			           //data : {'c_id':'5',"jd_lv_state":"('已取消','已委托','已检验')"},
+			           //data : {'bu_id':'11','nm_t':'客户名1','cont':'[{"nm_t":"联系人1","ph_p":"联系人电话1","flag":"Y"}]'},
+			           //data : {'mulupdate':'[{"id":"1","show_flg":"N","sort":"111","lov_id":"1242","prod_id":"111"},{"id":"2","show_flg":"N","sort":"112","lov_id":"1243","prod_id":"111"}]'},
+			            /* 
+			            data : {'nm_t':'1000','c_id':'1000','pid':'1000',
+			                  'termids':'1000|1002|1001|1005|1006',
+			                  'muladd':'[{"id":"4364","show_flg":"N","sort":"111","lov_id":"1242"},{"id":"4365","show_flg":"N","sort":"112","lov_id":"1243"}]'},  
+			           */
+			           /*data : {'nm_t':'1000','c_id':'1000','pid':'1000','id':'1845',
+			                  'termids':'1000|1002|1001|1005|1006',
+			                  'mulupdate':'[{"id":"4367","show_flg":"Y","sort":"111","lov_id":"1242"},{"id":"4368","show_flg":"Y","sort":"112","lov_id":"1243"}]'},
+			            */
+			          //'wt_dtFrom':'2017-10-11 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':10','bu_id':'1'
+ 
+			           data : {'c_id':'5','bu_id':'1','pid':'2439','submit':'Y','ty_lv':'一般委托','qy_lv':'现场','st_lv':'已分配'
+			           ,'pay_lv':'未付款','flg':'Y','wt_dt':'2017-10-30 00:00:00','cg_f':'N',
+			           'sample':'{"122":[{"web_id":"1509340970","c_id":"5","nm_t":"1231","ty_lv":"样品","st_lv":"","jd_lv":"已委托","prod_id":"122","cd_t":"","sy_dt":"2017-10-30","gg_t":"","fz_id":"918","bw_t":"","ly_lv":"","db_n":"","dw_lv":"","qd_t":"","gc_t":"","jl_t":"","zz_dt":"","test_dt":"","kd_t":"","lo_t":"","la_t":"","hi_t":"","jc_f":"Y","cm_tx":"","bu_id":"1","sn_t":"","sz_t":"","st_t":"","pp_t":"","wj_t":"","ch_t":"","sh_t":"","snl_t":"","wa_t":"","pid":"2439","entrustnum":"2"}],"2064":[{"web_id":"1509340967","c_id":"5","nm_t":"12321","ty_lv":"样品","st_lv":"","jd_lv":"已委托","prod_id":"2064","cd_t":"","sy_dt":"2017-10-30","gg_t":"","fz_id":"918","bw_t":"","ly_lv":"","db_n":"","dw_lv":"","qd_t":"","gc_t":"","jl_t":"","zz_dt":"","test_dt":"","kd_t":"","lo_t":"","la_t":"","hi_t":"","jc_f":"Y","cm_tx":"","bu_id":"1","sn_t":"","sz_t":"","st_t":"","pp_t":"","wj_t":"","ch_t":"","sh_t":"","snl_t":"","wa_t":"","pid":"2439","entrustnum":"1"}]}'},
+ 			          // data : {'group_id':'2','flag':'Y','type':'试验单','curr_status':'检验中'},
+			           //data : {'wt_dtFrom':'2017-10-08 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':'10','bu_id':'1'},
+			           //data : {'sampleids':'{"1":"3","2":"2","3":"2","4":"3"}'},
+			           //data : {'jd_lv':'已分配','ty_lv':'样品','USER_ID':'64','PH_V':'AGS-W09','ly_lv':'取样','dw_lv':'JB_CG_10001','nm_t':'水晶','PH_OS':'ANDROID_7.0','pid':'2','prod_id':'2','sy_dt':'2017-09-27 00:00:00','c_id':'64','st_lv':'固定','entrustnum':'1','jc_f':''},
+			           headers: {
+			            "token" : token,
+			            "timesamp" : timestamp,
+			            "sign" : hash
+			        	},
+			           //data : '',
+			           success:function(response) {
+			            console.log(response);
+			             // alert(response);   
+			           },
+			           error:function(response){
+			           	alert("wrong");   
+			           }   
+			         });
+         
+         
+           },
+           error:function(response){
+           	alert("wrong");   
+           }   
+         }); 
+         
 /*     var xhr = new XMLHttpRequest();
      xhr.onreadystatechange = callback;   
     xhr.open("GET", "http://192.168.1.144/TTTMysql/listChatuser?page=1&size=10",true);
@@ -30,51 +105,7 @@ alert(localStorage.getItem("test")); */
 	    }      
 	}  */
  
-	var  token = "49db5ab6-f337-4847-b336-294a5b4438f2";
-	var timestamp = Date.parse(new Date());
-	var hash = md5(token+timestamp+"!QAZXSW@"); 
-	console.log(timestamp);
-	console.log(hash);
-    $.ajax({
-           url:'http://192.168.1.144/Check/addPay',
-           type:"POST",
-           //dataType : "json",
-           //data : {'id':'23578','inbz_t':'30','jl_t':'','prod_id_sub':'592'},
-           
-          // data : {'nm_t':'%敦化市牡丹江%','code':'%GHJC%','a_e':'%吉林珂海水利水%','a_sv':'%吉林%'},
-          // data : {"jd_lv_state":"('未委托','已发货','待发货','null','已提交','已接收')"},
-           //data : {'c_id':'5',"jd_lv_state":"('已取消','已委托','已检验')"},
-           //data : {'bu_id':'11','nm_t':'客户名1','cont':'[{"nm_t":"联系人1","ph_p":"联系人电话1","flag":"Y"}]'},
-           //data : {'mulupdate':'[{"id":"1","show_flg":"N","sort":"111","lov_id":"1242","prod_id":"111"},{"id":"2","show_flg":"N","sort":"112","lov_id":"1243","prod_id":"111"}]'},
-            /* 
-            data : {'nm_t':'1000','c_id':'1000','pid':'1000',
-                  'termids':'1000|1002|1001|1005|1006',
-                  'muladd':'[{"id":"4364","show_flg":"N","sort":"111","lov_id":"1242"},{"id":"4365","show_flg":"N","sort":"112","lov_id":"1243"}]'},  
-           */
-           /*data : {'nm_t':'1000','c_id':'1000','pid':'1000','id':'1845',
-                  'termids':'1000|1002|1001|1005|1006',
-                  'mulupdate':'[{"id":"4367","show_flg":"Y","sort":"111","lov_id":"1242"},{"id":"4368","show_flg":"Y","sort":"112","lov_id":"1243"}]'},
-            */
-          //'wt_dtFrom':'2017-10-11 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':10','bu_id':'1'
-  
-           data : {'bu_id':'11','flag':'Y'},
-           //data : {'wt_dtFrom':'2017-10-08 00:00:00','wt_dtTo':'2017-10-12 00:00:00','page':'1','size':'10','bu_id':'1'},
-           //data : {'sampleids':'{"1":"3","2":"2","3":"2","4":"3"}'},
-           //data : {'jd_lv':'已分配','ty_lv':'样品','USER_ID':'64','PH_V':'AGS-W09','ly_lv':'取样','dw_lv':'JB_CG_10001','nm_t':'水晶','PH_OS':'ANDROID_7.0','pid':'2','prod_id':'2','sy_dt':'2017-09-27 00:00:00','c_id':'64','st_lv':'固定','entrustnum':'1','jc_f':''},
-           headers: {
-            "token" : token,
-            "timesamp" : timestamp,
-            "sign" : hash
-        	},
-           //data : '',
-           success:function(response) {
-            console.log(response);
-             // alert(response);   
-           },
-           error:function(response){
-           	alert("wrong");   
-           }   
-         });
+	
 
    /* $.ajax({
 	        type : "GET", //jquey是不支持post方式跨域的

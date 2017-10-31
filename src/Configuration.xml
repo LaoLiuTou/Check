@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<settings>
-		<setting name="logImpl" value="STDOUT_LOGGING"/>
+		<!-- <setting name="logImpl" value="STDOUT_LOGGING"/> -->
 		<!-- <setting name="logImpl" value="LOG4J"/> -->
 		<setting name="cacheEnabled" value="true"/> 
 		<setting name="lazyLoadingEnabled" value="true"/> 
@@ -53,6 +53,8 @@
 		<typeAlias alias="Member_label" type="com.check.model.member_label.Member_label" /> 
 		<typeAlias alias="Notices" type="com.check.model.notices.Notices" /> 
 		<typeAlias alias="Notices_label" type="com.check.model.notices_label.Notices_label" /> 
+		<typeAlias alias="Status" type="com.check.model.status.Status" /> 
+		<typeAlias alias="Group_status" type="com.check.model.group_status.Group_status" /> 
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/check/model/accnt/Accnt.xml"/> 
@@ -88,5 +90,7 @@
 		<mapper resource="com/check/model/member_label/Member_label.xml"/> 
 		<mapper resource="com/check/model/notices/Notices.xml"/> 
 		<mapper resource="com/check/model/notices_label/Notices_label.xml"/> 
+		<mapper resource="com/check/model/status/Status.xml"/> 
+		<mapper resource="com/check/model/group_status/Group_status.xml"/> 
 	</mappers>  
 </configuration>

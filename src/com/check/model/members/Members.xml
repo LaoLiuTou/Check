@@ -34,6 +34,7 @@
 			<if test="sign != null"> AND m.SIGN =#{sign} </if>
 			<if test="name != null"> AND m.NAME =#{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
+			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
 		</trim>  
 		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -61,6 +62,7 @@
 			<if test="sign != null"> AND SIGN =#{sign} </if>
 			<if test="name != null"> AND NAME =#{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
+			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
 		</trim>  
 	</select>
 
@@ -81,6 +83,7 @@
 			<if test="sign != null">SIGN=#{sign}, </if>
 			<if test="name != null">NAME=#{name}, </if>
 			<if test="sign_flg != null">SIGN_FLG=#{sign_flg}, </if>
+			<if test="accnt_id != null">ACCNT_ID=#{accnt_id}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -101,6 +104,7 @@
 			<if test="sign != null">SIGN, </if>
 			<if test="name != null">NAME, </if>
 			<if test="sign_flg != null">SIGN_FLG, </if>
+			<if test="accnt_id != null">ACCNT_ID, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -116,6 +120,7 @@
 			<if test="sign != null">#{sign}, </if>
 			<if test="name != null">#{name}, </if>
 			<if test="sign_flg != null">#{sign_flg}, </if>
+			<if test="accnt_id != null">#{accnt_id}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

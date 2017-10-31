@@ -302,4 +302,22 @@
 			<result name="list">/pages/notices_label/notices_labelList.jsp</result>
 		</action>
 	</package>
+		<package name="Status" namespace="/"  extends="struts-default">
+		<action name="*Status" class="com.check.action.status.StatusAction" method="{1}">
+			<result name="add" type="redirect">/listStatus.action?page=1</result>
+			<result name="select">/pages/status/statusDetails.jsp</result>
+			<result name="delete" type="redirect">/listStatus.action?page=1</result>
+			<result name="update" type="redirect">/listStatus.action?page=1</result>
+			<result name="list">/pages/status/statusList.jsp</result>
+		</action>
+	</package>
+	<package name="Group_status" namespace="/"  extends="struts-default">
+		<action name="*Group_status" class="com.check.action.group_status.Group_statusAction" method="{1}">
+			<result name="add" type="redirect">/listGroup_status.action?page=1</result>
+			<result name="select">/pages/group_status/group_statusDetails.jsp</result>
+			<result name="delete" type="redirect">/listGroup_status.action?page=1</result>
+			<result name="update" type="redirect">/listGroup_status.action?page=1</result>
+			<result name="list">/pages/group_status/group_statusList.jsp</result>
+		</action>
+	</package>
 </struts>

@@ -220,6 +220,14 @@ public class MembersAction implements Action {
 	public void setSign_flg(String sign_flg) {
 		this.sign_flg = sign_flg;
 	}
+	private String accnt_id;
+	
+	public String getAccnt_id() {
+		return accnt_id;
+	}
+	public void setAccnt_id(String accnt_id) {
+		this.accnt_id = accnt_id;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -243,6 +251,8 @@ public class MembersAction implements Action {
 		members.setSign(sign);
 		members.setName(name);
 		members.setSign_flg(sign_flg);
+		if(accnt_id!=null&&!accnt_id.equals(""))
+			members.setAccnt_id(Long.parseLong(accnt_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iMembersService.addmembers(members).toString());
@@ -296,6 +306,7 @@ public class MembersAction implements Action {
 			paramMap.put("sign", sign);
 			paramMap.put("name", name);
 			paramMap.put("sign_flg", sign_flg);
+			paramMap.put("accnt_id", accnt_id);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iMembersService.selectmembersByParam(paramMap); 
@@ -354,6 +365,8 @@ public class MembersAction implements Action {
 		members.setSign(sign);
 		members.setName(name);
 		members.setSign_flg(sign_flg);
+		if(accnt_id!=null&&!accnt_id.equals(""))
+			members.setAccnt_id(Long.parseLong(accnt_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iMembersService.updatemembers(members);
@@ -469,6 +482,7 @@ public class MembersAction implements Action {
 		paramMap.put("sign", sign);
 		paramMap.put("name", name);
 		paramMap.put("sign_flg", sign_flg);
+		paramMap.put("accnt_id", accnt_id);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {
@@ -678,6 +692,8 @@ public class MembersAction implements Action {
   				members.setSign(sign);
   				members.setName(name);
   				members.setSign_flg(sign_flg);
+  				if(accnt_id!=null&&!accnt_id.equals(""))
+  	  				members.setAccnt_id(Long.parseLong(accnt_id));
   				try {
   					int result = Integer.parseInt(iMembersService.addmembers(members).toString());
   					msg.append("\"success\",\"msg\":\"");

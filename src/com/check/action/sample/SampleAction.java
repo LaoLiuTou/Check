@@ -540,6 +540,13 @@ public class SampleAction implements Action {
 	public void setProd_nm_t(String prod_nm_t) {
 		this.prod_nm_t = prod_nm_t;
 	}
+	private String show_flg;
+	public String getShow_flg() {
+		return show_flg;
+	}
+	public void setShow_flg(String show_flg) {
+		this.show_flg = show_flg;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -600,6 +607,7 @@ public class SampleAction implements Action {
 		sample.setFq_flg(fq_flg);
 		if(copy_id!=null&&!copy_id.equals(""))
 		sample.setCopy_id(Long.parseLong(copy_id));
+		sample.setShow_flg(show_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			
@@ -716,6 +724,7 @@ public class SampleAction implements Action {
 		sample.setFq_flg(fq_flg);
 		if(copy_id!=null&&!copy_id.equals(""))
 			sample.setCopy_id(Long.parseLong(copy_id));
+		sample.setShow_flg("N");
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			
@@ -841,6 +850,8 @@ public class SampleAction implements Action {
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("prod_nm_t", prod_nm_t);
+			
+			paramMap.put("show_flg", show_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iSampleService.selectsampleByParam(paramMap); 
@@ -931,6 +942,8 @@ public class SampleAction implements Action {
 		sample.setFlg(flg);
 		sample.setTxm(txm);
 		sample.setFq_flg(fq_flg);
+		sample.setShow_flg(show_flg);
+		
 		if(copy_id!=null&&!copy_id.equals(""))
 		sample.setCopy_id(Long.parseLong(copy_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
@@ -1094,7 +1107,8 @@ public class SampleAction implements Action {
 			
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
-			paramMap.put("prod_nm_t", prod_nm_t);
+			paramMap.put("prod_nm_t", prod_nm_t); 
+			paramMap.put("show_flg", show_flg);
 			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
@@ -1199,6 +1213,8 @@ public class SampleAction implements Action {
 		paramMap.put("pact_nm_t", pact_nm_t);
 		paramMap.put("a_nm_t", a_nm_t);
 		paramMap.put("prod_nm_t", prod_nm_t);
+		paramMap.put("show_flg", show_flg);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iSampleService.selectCountsampleByParam(paramMap);

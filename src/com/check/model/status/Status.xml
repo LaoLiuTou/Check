@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.status.IStatusMapper"> 
+	<select id="selectstatusById" parameterType="String" resultType="Status">
+		SELECT a.*,b.group_id as group_id  FROM 
+		status a LEFT join group_status b 
+		ON a.id=b.status_id 
+		 WHERE ID=#{a.id}
+	</select>
+
+
+	<delete id="deletestatus" parameterType="String"> 
+		DELETE FROM status WHERE ID=#{id}
+	</delete>
+
+	<select id="selectstatusByParam" parameterType="java.util.Map" resultType="Status">
+		SELECT a.*,b.group_id as group_id  FROM 
+		status a LEFT join group_status b 
+		ON a.id=b.status_id 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="curr_status != null"> AND a.CURR_STATUS =#{curr_status} </if>
+			<if test="null_status != null"> AND a.CURR_STATUS IS NULL </if>
+			<if test="step_status != null"> AND a.STEP_STATUS =#{step_status} </if>
+			<if test="type != null"> AND a.TYPE =#{type} </if>
+			<if test="sort != null"> AND a.SORT =#{sort} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="group_id != null"> AND b.GROUP_ID =#{group_id} </if>
+		</trim>  
+		ORDER BY a.SORT ASC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountstatusByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(a.id) 
+		 FROM 
+		 status a LEFT join group_status b 
+		ON a.id=b.status_id  
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="curr_status != null"> AND a.CURR_STATUS =#{curr_status} </if>
+			<if test="null_status != null"> AND a.CURR_STATUS IS NULL </if>
+			<if test="step_status != null"> AND a.STEP_STATUS =#{step_status} </if>
+			<if test="type != null"> AND a.TYPE =#{type} </if>
+			<if test="sort != null"> AND a.SORT =#{sort} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="group_id != null"> AND b.GROUP_ID =#{group_id} </if>
+		</trim>  
+	</select>
+
+	<update id="updatestatus" parameterType="Status">
+		UPDATE status 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="curr_status != null">CURR_STATUS=#{curr_status}, </if>
+			<if test="step_status != null">STEP_STATUS=#{step_status}, </if>
+			<if test="type != null">TYPE=#{type}, </if>
+			<if test="sort != null">SORT=#{sort}, </if>
+			<if test="flag != null">FLAG=#{flag}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addstatus" parameterType="Status">
+		INSERT INTO status 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="curr_status != null">CURR_STATUS, </if>
+			<if test="step_status != null">STEP_STATUS, </if>
+			<if test="type != null">TYPE, </if>
+			<if test="sort != null">SORT, </if>
+			<if test="flag != null">FLAG, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="cm_tx != null">CM_TX, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="curr_status != null">#{curr_status}, </if>
+			<if test="step_status != null">#{step_status}, </if>
+			<if test="type != null">#{type}, </if>
+			<if test="sort != null">#{sort}, </if>
+			<if test="flag != null">#{flag}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="cm_tx != null">#{cm_tx}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

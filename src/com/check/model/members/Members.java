@@ -125,6 +125,14 @@ public class Members {
 	public void setSign_flg(String sign_flg) {
 		this.sign_flg = sign_flg;
 	}
-
+	private Long accnt_id;
+	public Long getAccnt_id() {
+		return accnt_id;
+	}
+	public void setAccnt_id(Long accnt_id) {
+		this.accnt_id = accnt_id;
+	}
+	
+	
 
 }

@@ -79,6 +79,7 @@
 			<if test="txm != null"> AND a.TXM =#{txm} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			<if test="show_flg != null"> AND a.SHOW_FLG =#{show_flg} </if>
 			
 			
 			<if test="jd_lv_state != null"> AND a.JD_LV IN ${jd_lv_state} </if>
@@ -87,7 +88,7 @@
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 		 
-			<if test="test_status != null"> AND (e.STATUS = #{ts1} or e.STATUS = #{ts2}) </if>
+			<if test="test_status != null"> AND e.STATUS IN ${test_status} </if>
 		</trim>  
 		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -158,6 +159,7 @@
 			<if test="txm != null"> AND a.TXM =#{txm} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			<if test="show_flg != null"> AND a.SHOW_FLG =#{show_flg} </if>
 			
 			
 			<if test="jd_lv_state != null"> AND a.JD_LV IN ${jd_lv_state} </if>
@@ -167,7 +169,7 @@
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
 			
 			
-			<if test="test_status != null"> AND (e.STATUS = #{ts1} or e.STATUS = #{ts2}) </if>
+			<if test="test_status != null"> AND e.STATUS IN ${test_status} </if>
 		</trim>  
 	</select>
 
@@ -223,6 +225,7 @@
 			<if test="txm != null">TXM=#{txm}, </if>
 			<if test="fq_flg != null">FQ_FLG=#{fq_flg}, </if>
 			<if test="copy_id != null">COPY_ID=#{copy_id}, </if>
+			<if test="show_flg != null">SHOW_FLG=#{show_flg}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -278,6 +281,7 @@
 			<if test="txm != null">TXM, </if>
 			<if test="fq_flg != null">FQ_FLG, </if>
 			<if test="copy_id != null">COPY_ID, </if>
+			<if test="show_flg != null">SHOW_FLG, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -328,6 +332,7 @@
 			<if test="txm != null">#{txm}, </if>
 			<if test="fq_flg != null">#{fq_flg}, </if>
 			<if test="copy_id != null">#{copy_id}, </if>
+			<if test="show_flg != null">#{show_flg}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

@@ -418,6 +418,14 @@ public class Sample {
 	public void setProd_nm_t(String prod_nm_t) {
 		this.prod_nm_t = prod_nm_t;
 	}
-
+	private String show_flg;
+	public String getShow_flg() {
+		return show_flg;
+	}
+	public void setShow_flg(String show_flg) {
+		this.show_flg = show_flg;
+	}
+	
+	
 
 }

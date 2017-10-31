@@ -26,7 +26,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY ID ASC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 

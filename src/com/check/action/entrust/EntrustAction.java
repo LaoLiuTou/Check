@@ -24,14 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.check.model.accnt.Accnt;
 import com.check.model.entrust.Entrust;
+import com.check.model.entrust_pin.Entrust_pin;
 import com.check.model.entrust_sample.Entrust_sample;
 import com.check.model.lot.Lot;
 import com.check.model.lov.Lov;
 import com.check.model.pact.Pact;
 import com.check.model.prod.Prod;
+import com.check.model.results.Results;
 import com.check.model.sample.Sample;
 import com.check.service.accnt.IAccntService;
 import com.check.service.entrust.IEntrustService;
+import com.check.service.entrust_pin.IEntrust_pinService;
 import com.check.service.entrust_sample.IEntrust_sampleService;
 import com.check.service.lot.ILotService;
 import com.check.service.lov.ILovService;
@@ -65,6 +68,9 @@ public class EntrustAction implements Action {
 	private ISampleService iSampleService;
 	@Autowired
 	private IEntrust_sampleService iEntrust_sampleService;
+	
+	@Autowired
+	private IEntrust_pinService iEntrust_pinService;
 	
 	private List<Entrust> list;
 	private Entrust entrust;
@@ -423,6 +429,20 @@ public class EntrustAction implements Action {
 		this.prod_nm_t = prod_nm_t;
 	}
 
+	private String cjz_type;
+	private String show_flg;
+	public String getCjz_type() {
+		return cjz_type;
+	}
+	public void setCjz_type(String cjz_type) {
+		this.cjz_type = cjz_type;
+	}
+	public String getShow_flg() {
+		return show_flg;
+	}
+	public void setShow_flg(String show_flg) {
+		this.show_flg = show_flg;
+	}
 	
 	private String sampleids;
 	 
@@ -505,6 +525,11 @@ public class EntrustAction implements Action {
 		entrust.setSpyj_t(spyj_t);
 		if(copy_id!=null&&!copy_id.equals(""))
 		entrust.setCopy_id(Long.parseLong(copy_id));
+		
+		//add
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iEntrustService.addentrust(entrust).toString());
@@ -591,12 +616,83 @@ public class EntrustAction implements Action {
 		entrust.setSpyj_t(spyj_t);
 		if(copy_id!=null&&!copy_id.equals(""))
 		entrust.setCopy_id(Long.parseLong(copy_id));
+		
+		
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
+		
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iEntrustService.updateentrust(entrust);
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
+		} catch (Exception e) {
+			logger.info(id+"更新失败！"+e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	private String entrust_ids;
+	
+	public String getEntrust_ids() {
+		return entrust_ids;
+	}
+	public void setEntrust_ids(String entrust_ids) {
+		this.entrust_ids = entrust_ids;
+	}
+	public String remoteUpdate() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+		
+		 
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			if(entrust_ids!=null&& !entrust_ids.equals("")){
+				String[] e_ids= entrust_ids.split("\\|");
+				for(String e_id :e_ids){
+					Entrust entrust =new Entrust(); 
+					entrust.setId(Long.parseLong(e_id));
+					entrust.setSt_lv(st_lv);
+					Map paramMap = new HashMap ();
+					paramMap.put("pid", e_id);
+					//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+					int e_snum = iEntrust_sampleService.selectCountentrust_sampleByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",e_snum);
+					List<Entrust_sample> entrust_samples = iEntrust_sampleService.selectentrust_sampleByParam(paramMap);
+					
+					paramMap = new HashMap ();
+					paramMap.put("pid", e_id);
+					//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+					int e_pinnum = iEntrust_pinService.selectCountentrust_pinByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",e_pinnum);
+					List <Entrust_pin> entrust_pins =iEntrust_pinService.selectentrust_pinByParam(paramMap);
+					
+					iEntrustService.addRemoteFlowFunction(entrust,entrust_samples,entrust_pins);
+				}
+				
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"更新成功！\"");
+				logger.info(id+"更新成功！");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"委托单Id不能为空！\"");
+			}
+
 		} catch (Exception e) {
 			logger.info(id+"更新失败！"+e);
 			msg.append("\"failure\",\"msg\":");
@@ -667,6 +763,10 @@ public class EntrustAction implements Action {
 		entrust.setSpyj_t(spyj_t);
 		if(copy_id!=null&&!copy_id.equals(""))
 		entrust.setCopy_id(Long.parseLong(copy_id));
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
+		
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			//int result = Integer.parseInt(iEntrustService.addentrust(entrust).toString());
@@ -755,7 +855,7 @@ public class EntrustAction implements Action {
 			         
 			         
 			         Entrust entrust =new Entrust(); 
-			         entrust.setBu_id(pact.getBu_id());
+			         entrust.setBu_id(bu_id);
 			         entrust.setProd_id(key);
 			         entrust.setJl_id(pact.getJl_id());
 			         //entrust.setSp_id(key)
@@ -764,10 +864,10 @@ public class EntrustAction implements Action {
 			         if(templist.get(0).getSy_dt()!=null){
 			        	 entrust.setWt_dt(sdf.parse(templist.get(0).getSy_dt()));
 			         }
-			         entrust.setC_id(pact.getC_id());
+			         entrust.setC_id(c_id);
 			 		 wt_dt = templist.get(0).getSy_dt();
-			 		 bu_id = pact.getBu_id();
-			 		 c_id = pact.getC_id();
+			 		 //bu_id = pact.getBu_id();
+			 		 //c_id = pact.getC_id();
 			 	     pid=	 pact.getId()+"";
 			         //编号
 			 		 if(templist.get(0).getFlg().equals("Y")){
@@ -779,6 +879,12 @@ public class EntrustAction implements Action {
 			 		 
 			 		 //流水号
 					 entrust.setLs_n(createLs_t());
+					 
+					 //默认值
+					 entrust.setSt_lv("新建");
+					 entrust.setCjz_type("远程委托");
+					 entrust.setShow_flg("N");
+					 entrust.setCg_f(cg_f);
 					 int result = Integer.parseInt(iEntrustService.addentrust(entrust).toString());
 					 if(result>0){
 						String qrResult = MatrixToImageWriter.createQrImage("TG_"+entrust.getId());
@@ -792,12 +898,45 @@ public class EntrustAction implements Action {
 							upentrust.setEwm(path+"/QRImages/"+qrResult);
 							iEntrustService.updateentrust(upentrust);
 						}
+						
+						///中间表
+						Map paramMap = new HashMap ();
+						paramMap.put("pid", prod.getId());
+						paramMap.put("ty_lv", "检测项目");
+						//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+						int prodnum = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",prodnum);
+						List<Prod> prodList=iProdService.selectprodByParam(paramMap); 
+						for(Prod temp : prodList){
+							if(entrust.getCg_f()!=null&&entrust.getCg_f().equals("Y")){
+								//
+								Entrust_pin entrust_pin= new Entrust_pin();
+								entrust_pin.setC_id(entrust.getC_id());
+								entrust_pin.setJc_f("Y");
+								entrust_pin.setJcx_id(temp.getId()+"");
+								entrust_pin.setPid(entrust.getId()+"");
+								iEntrust_pinService.addentrust_pin(entrust_pin);
+							}
+							else{
+								Entrust_pin entrust_pin= new Entrust_pin();
+								entrust_pin.setC_id(entrust.getC_id());
+								entrust_pin.setJc_f(temp.getFj_f());
+								entrust_pin.setJcx_id(temp.getId()+"");
+								entrust_pin.setPid(entrust.getId()+"");
+								iEntrust_pinService.addentrust_pin(entrust_pin);
+							}
+						}
+						 
+						
 					  }
 					
 					 
 					 
 			         for(int i=0; i<templist.size(); i++){  
 			        	Sample sample= templist.get(i);
+			        	
+			        	//更新样品
 			        	int ennum= Integer.parseInt(sampleidJO.getString(sample.getId()+""));
 			            for(int j=0;j<ennum-1;j++){
 			            	sample.setId(null);
@@ -805,8 +944,8 @@ public class EntrustAction implements Action {
 							sample.setPart(createSampleCode(sample.getBu_id(),prod.getId()+""));
 							//批号
 							sample.setLot(createSampleLot(sample.getBu_id(),sample.getSy_dt(),pact.getId()+"",
-									prod.getId()+"",sample.getC_id()));
-						 
+									prod.getId()+"",sample.getC_id())); 
+							sample.setSt_lv("已接收");
 							
 							int sresult = Integer.parseInt(iSampleService.addsample(sample).toString());
 							if(sresult>0){
@@ -826,7 +965,11 @@ public class EntrustAction implements Action {
 								entrust_sample.setC_id(entrust.getC_id());
 								entrust_sample.setPid(entrust.getId()+"");
 								entrust_sample.setSample_id(sample.getId()+"");
-								iEntrust_sampleService.addentrust_sample(entrust_sample);	
+								iEntrust_sampleService.addentrust_sample(entrust_sample);
+								
+								
+								
+								
 							}
 						}
 			         }  
@@ -928,6 +1071,9 @@ public class EntrustAction implements Action {
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("prod_nm_t", prod_nm_t);
+			paramMap.put("cjz_type", cjz_type);
+			paramMap.put("show_flg", show_flg);
+			 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iEntrustService.selectentrustByParam(paramMap); 
@@ -1015,6 +1161,8 @@ public class EntrustAction implements Action {
 		entrust.setSpyj_t(spyj_t);
 		if(copy_id!=null&&!copy_id.equals(""))
 		entrust.setCopy_id(Long.parseLong(copy_id));
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iEntrustService.updateentrustFlow(entrust,p_status,entrust_samples,entrust_pins);
@@ -1181,6 +1329,9 @@ public class EntrustAction implements Action {
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("prod_nm_t", prod_nm_t);
+			paramMap.put("cjz_type", cjz_type);
+			paramMap.put("show_flg", show_flg);
+			 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iEntrustService.selectCountentrustByParam(paramMap);

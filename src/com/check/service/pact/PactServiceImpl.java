@@ -203,10 +203,20 @@ public class PactServiceImpl  implements IPactService {
 						paramMap = new HashMap ();
 						paramMap.put("pid", aids[i]);  
 						if(test_status!=null&&!test_status.equals("")){
-							paramMap.put("test_status", test_status);
 							String [] ts=test_status.split("\\|");
-							paramMap.put("ts1", ts[0]);
-							paramMap.put("ts2", ts[1]);
+							StringBuffer tssb= new StringBuffer("(");
+							for(int index=0;index<ts.length;index++){
+								if(index==(ts.length-1)){
+									tssb.append("'"+ts[index]+"'");
+								}
+								else{
+									tssb.append("'"+ts[index]+"'"+",");
+								}
+								
+							}
+							tssb.append(")");
+							paramMap.put("test_status", tssb.toString());
+							 
 						}
 					
 						//paramMap.put("up_dtFrom", sdf.parse(updatetime));

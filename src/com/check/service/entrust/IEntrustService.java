@@ -5,6 +5,8 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import com.check.model.entrust.Entrust;
+import com.check.model.entrust_pin.Entrust_pin;
+import com.check.model.entrust_sample.Entrust_sample;
 import com.check.model.sample.Sample;
 public interface IEntrustService {
 	/**
@@ -62,6 +64,13 @@ public interface IEntrustService {
 	 */
 	public  int entrustFlow(Entrust entrust,String accnt,String pact,String sample,String entrust_sample,
 			String test,String results);
+	
+	/**
+	 * 审核委托单之后 新建Entrust_sample Test Results Entrust_pin   st_lv entrust_ids  
+	 * @return 
+	 */ 
+	public  void  addRemoteFlowFunction(Entrust entrust,List<Entrust_sample> entrust_samples,List<Entrust_pin> entrust_pins);
+	
 	/**
 	 * 样品 委托单 中间表
 	 */
