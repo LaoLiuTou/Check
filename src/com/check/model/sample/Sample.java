@@ -427,5 +427,16 @@ public class Sample {
 	}
 	
 	
-
+	private String e_code;
+	public String getE_code() {
+		return e_code;
+	}
+	public void setE_code(String e_code) {
+		this.e_code = e_code;
+	}
+	
+	
+	
+	
+	
 }

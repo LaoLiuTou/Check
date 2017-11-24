@@ -15,9 +15,13 @@
 	</delete>
 
 	<select id="selectsampleByParam" parameterType="java.util.Map" resultType="Sample">
-		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T  
+		SELECT a.*,b.NM_T as PACT_NM_T,c.NM_T as A_NM_T,d.NM_T as PROD_NM_T ,f.code as E_CODE
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
-		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID 
+		LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN entrust_sample g ON g.sample_id=a.ID 
+		LEFT JOIN entrust f ON f.id=g.PID 
+		
 		<if test="test_status != null"> LEFT JOIN test e on a.id=e.sample_id </if>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
@@ -82,11 +86,16 @@
 			<if test="show_flg != null"> AND a.SHOW_FLG =#{show_flg} </if>
 			
 			
+			
+			<if test="p_pid != null"> AND b.pid =#{p_pid} </if>
+			
+			
 			<if test="jd_lv_state != null"> AND a.JD_LV IN ${jd_lv_state} </if>
 			
 			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
+			<if test="e_code != null"> AND f.CODE LIKE #{e_code} </if>
 		 
 			<if test="test_status != null"> AND e.STATUS IN ${test_status} </if>
 		</trim>  
@@ -97,7 +106,10 @@
 	<select id="selectCountsampleByParam" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(a.ID) 
 		FROM sample a LEFT JOIN pact b ON a.PID=b.ID 
-		LEFT JOIN accnt as c ON b.PID=c.ID LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN accnt as c ON b.PID=c.ID 
+		LEFT JOIN prod d ON a.prod_id=d.ID 
+		LEFT JOIN entrust_sample g ON g.sample_id=a.ID 
+		LEFT JOIN entrust f ON f.id=g.PID 
 		<if test="test_status != null"> LEFT JOIN test e on a.id=e.sample_id </if>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
@@ -160,14 +172,14 @@
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
 			<if test="show_flg != null"> AND a.SHOW_FLG =#{show_flg} </if>
-			
+			<if test="p_pid != null"> AND b.pid =#{p_pid} </if>
 			
 			<if test="jd_lv_state != null"> AND a.JD_LV IN ${jd_lv_state} </if>
 			
 			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
 			<if test="prod_nm_t != null"> AND d.NM_T LIKE #{prod_nm_t} </if>
-			
+			<if test="e_code != null"> AND f.CODE LIKE #{e_code} </if>
 			
 			<if test="test_status != null"> AND e.STATUS IN ${test_status} </if>
 		</trim>  

@@ -78,6 +78,7 @@ public class ContServiceImpl  implements IContService {
 				members.setType("委托方");
 				members.setBu_id(tempCont.getBu_id());
 				members.setAccnt_id(tempCont.getPid());
+				//members.setName(tempCont.getNm_t());
 			    int resultM = iMembersMapper.addmembers(members);
 			    if(resultM>0){
 			    	cont.setUser_id(members.getId());

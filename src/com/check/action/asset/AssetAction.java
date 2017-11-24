@@ -1,6 +1,8 @@
 package com.check.action.asset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -270,6 +272,42 @@ public class AssetAction implements Action {
 	public void setYh_dt(String yh_dt) {
 		this.yh_dt = yh_dt;
 	}
+	private String flag; 
+	private String bxjz_dt;
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	public String getBxjz_dt() {
+		return bxjz_dt;
+	}
+	public void setBxjz_dt(String bxjz_dt) {
+		this.bxjz_dt = bxjz_dt;
+	}
+	private String m_name;
+	private String a_nm_t; 
+	private String next_yh_dt;
+	 
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	public String getNext_yh_dt() {
+		return next_yh_dt;
+	}
+	public void setNext_yh_dt(String next_yh_dt) {
+		this.next_yh_dt = next_yh_dt;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -299,7 +337,13 @@ public class AssetAction implements Action {
 		asset.setSc_dt(sc_dt);
 		if(zq_n!=null&&!zq_n.equals(""))
 		asset.setZq_n(Long.parseLong(zq_n));
-		asset.setYh_dt(yh_dt);
+		if(yh_dt!=null&&!yh_dt.equals(""))
+		asset.setYh_dt(sdf.parse(yh_dt));
+		asset.setFlag(flag);
+		asset.setBxjz_dt(bxjz_dt);
+		
+	
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iAssetService.addasset(asset).toString());
@@ -359,9 +403,33 @@ public class AssetAction implements Action {
 			paramMap.put("sc_dt", sc_dt);
 			paramMap.put("zq_n", zq_n);
 			paramMap.put("yh_dt", yh_dt);
+			paramMap.put("flag", flag);
+			paramMap.put("bxjz_dt", bxjz_dt);
+			paramMap.put("m_name", m_name);
+			paramMap.put("a_nm_t", a_nm_t);
+			
+			 
+			  
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iAssetService.selectassetByParam(paramMap); 
+			List<Asset> tempList= new ArrayList<Asset>();
+			for(Asset temp:list){
+				//下次养护日期
+				if(temp.getYh_dt()!=null&&temp.getZq_n()!=null){
+					Date n_yh_dt=temp.getYh_dt();
+					do{
+						GregorianCalendar gc=new GregorianCalendar();
+			            gc.setTime(n_yh_dt);
+			            gc.add(5, Integer.parseInt(temp.getZq_n()+"")); 
+			            n_yh_dt=gc.getTime();
+					}
+					while(n_yh_dt.before(new Date()));
+					temp.setNext_yh_dt(sdf.format(n_yh_dt));
+				}
+				tempList.add(temp);
+				
+			}
 			totalnumber=iAssetService.selectCountassetByParam(paramMap);
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
@@ -376,7 +444,7 @@ public class AssetAction implements Action {
 			}
 			});
 			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
-			msg.append(JSONArray.fromObject(list, jsonConfig));
+			msg.append(JSONArray.fromObject(tempList, jsonConfig));
 			logger.info("获取列表成功！");
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
@@ -423,7 +491,11 @@ public class AssetAction implements Action {
 		asset.setSc_dt(sc_dt);
 		if(zq_n!=null&&!zq_n.equals(""))
 		asset.setZq_n(Long.parseLong(zq_n));
-		asset.setYh_dt(yh_dt);
+		if(yh_dt!=null&&!yh_dt.equals(""))
+			asset.setYh_dt(sdf.parse(yh_dt));
+		asset.setFlag(flag);
+		asset.setBxjz_dt(bxjz_dt);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iAssetService.updateasset(asset);
@@ -474,6 +546,21 @@ public class AssetAction implements Action {
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			asset=iAssetService.selectassetById(id);
+			//下次养护日期
+			if(asset.getYh_dt()!=null&&asset.getZq_n()!=null){
+				Date n_yh_dt=asset.getYh_dt();
+				do{
+					GregorianCalendar gc=new GregorianCalendar();
+		            gc.setTime(n_yh_dt);
+		            gc.add(5, Integer.parseInt(asset.getZq_n()+"")); 
+		            n_yh_dt=gc.getTime();
+		            //entrust.setJh_dt(sdf.format(gc.getTime()));
+				}
+				while(n_yh_dt.before(new Date()));
+				asset.setNext_yh_dt(sdf.format(n_yh_dt));
+			}
+			
+	            
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
 				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
@@ -540,6 +627,10 @@ public class AssetAction implements Action {
 			paramMap.put("sc_dt", sc_dt);
 			paramMap.put("zq_n", zq_n);
 			paramMap.put("yh_dt", yh_dt);
+			paramMap.put("flag", flag);
+			paramMap.put("bxjz_dt", bxjz_dt);
+			paramMap.put("m_name", m_name);
+			paramMap.put("a_nm_t", a_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iAssetService.selectCountassetByParam(paramMap);

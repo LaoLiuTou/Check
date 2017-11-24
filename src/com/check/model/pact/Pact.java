@@ -318,5 +318,24 @@ public class Pact {
 		this.a_price = a_price;
 	}
 	
+	private String wjxy_type;
+	public String getWjxy_type() {
+		return wjxy_type;
+	}
+	public void setWjxy_type(String wjxy_type) {
+		this.wjxy_type = wjxy_type;
+	}
 
+	private String m_name;
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+	
+	
+	
+	
+	
 }

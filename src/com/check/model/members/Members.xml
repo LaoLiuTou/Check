@@ -3,8 +3,16 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.members.IMembersMapper"> 
 	<select id="selectmembersById" parameterType="String" resultType="Members">
-		SELECT m.*,aga.group_id as group_id FROM members m left join auth_group_access aga on
-		m.id=aga.uid  WHERE m.ID=#{id}
+		SELECT m.*,aga.group_id as group_id ,c.nm_t as c_nm_t ,d.nm_t as a_nm_t,
+		e.nm_t as b_nm_t ,f.nm_t as d_nm_t
+		FROM members m 
+		left join auth_group_access aga on m.id=aga.uid  
+		LEFT JOIN cont c on m.id=c.user_id  
+		LEFT JOIN accnt d on d.id=c.pid  
+		LEFT JOIN bu e on e.id=m.bu_id   
+		LEFT JOIN departments f on f.id=m.departments_id   
+		
+		WHERE m.ID=#{id}
 	</select>
 
 
@@ -13,8 +21,15 @@
 	</delete>
 
 	<select id="selectmembersByParam" parameterType="java.util.Map" resultType="Members">
-		SELECT m.*,aga.group_id as group_id FROM members m left join auth_group_access aga on
-		m.id=aga.uid 
+		SELECT m.*,aga.group_id as group_id ,c.nm_t as c_nm_t ,d.nm_t as a_nm_t,
+		e.nm_t as b_nm_t ,f.nm_t as d_nm_t
+		FROM members m 
+		left join auth_group_access aga on m.id=aga.uid  
+		LEFT JOIN cont c on m.id=c.user_id  
+		LEFT JOIN accnt d on d.id=c.pid  
+		LEFT JOIN bu e on e.id=m.bu_id   
+		LEFT JOIN departments f on f.id=m.departments_id   
+		 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND m.ID =#{id} </if>
 			<if test="row_id != null"> AND m.ROW_ID =#{row_id} </if>
@@ -29,12 +44,16 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(m.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND m.UP_DT =#{up_dt} </if>
 			<if test="type != null"> AND m.TYPE =#{type} </if>
+			<if test="typeno != null"> AND m.TYPE &lt;&gt; #{typeno} </if>
 			<if test="bu_id != null"> AND m.BU_ID =#{bu_id} </if>
 			<if test="img != null"> AND m.IMG =#{img} </if>
 			<if test="sign != null"> AND m.SIGN =#{sign} </if>
 			<if test="name != null"> AND m.NAME =#{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
+			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
+			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
+			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
 		</trim>  
 		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
@@ -57,12 +76,16 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
 			<if test="type != null"> AND TYPE =#{type} </if>
+			<if test="typeno != null"> AND m.TYPE &lt;&gt; #{typeno} </if>
 			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
 			<if test="img != null"> AND IMG =#{img} </if>
 			<if test="sign != null"> AND SIGN =#{sign} </if>
 			<if test="name != null"> AND NAME =#{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
+			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
+			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
+			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
 		</trim>  
 	</select>
 
@@ -84,6 +107,8 @@
 			<if test="name != null">NAME=#{name}, </if>
 			<if test="sign_flg != null">SIGN_FLG=#{sign_flg}, </if>
 			<if test="accnt_id != null">ACCNT_ID=#{accnt_id}, </if>
+			<if test="last_name != null">LAST_NAME=#{last_name}, </if>
+			<if test="departments_id != null">DEPARTMENTS_ID=#{departments_id}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -105,6 +130,8 @@
 			<if test="name != null">NAME, </if>
 			<if test="sign_flg != null">SIGN_FLG, </if>
 			<if test="accnt_id != null">ACCNT_ID, </if>
+			<if test="last_name != null">LAST_NAME, </if>
+			<if test="departments_id != null">DEPARTMENTS_ID, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -121,6 +148,8 @@
 			<if test="name != null">#{name}, </if>
 			<if test="sign_flg != null">#{sign_flg}, </if>
 			<if test="accnt_id != null">#{accnt_id}, </if>
+			<if test="last_name != null">#{last_name}, </if>
+			<if test="departments_id != null">#{departments_id}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

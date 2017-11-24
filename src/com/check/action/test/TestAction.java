@@ -345,6 +345,15 @@ public class TestAction implements Action {
 	public void setA_nm_t(String a_nm_t) {
 		this.a_nm_t = a_nm_t;
 	}
+	
+	private String e_flg;
+	public String getE_flg() {
+		return e_flg;
+	}
+	public void setE_flg(String e_flg) {
+		this.e_flg = e_flg;
+	}
+	
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -464,6 +473,7 @@ public class TestAction implements Action {
 			paramMap.put("s_nm_t", s_nm_t);
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
+			paramMap.put("e_flg", e_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iTestService.selecttestByParam(paramMap); 
@@ -765,6 +775,7 @@ public class TestAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("ewm", ewm);
+			paramMap.put("e_flg", e_flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iTestService.selectCounttestByParam(paramMap);

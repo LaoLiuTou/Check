@@ -505,7 +505,14 @@ public class SampleAction implements Action {
 	public void setJd_lv_state(String jd_lv_state) {
 		this.jd_lv_state = jd_lv_state;
 	}
-
+	private String e_code;
+	public String getE_code() {
+		return e_code;
+	}
+	public void setE_code(String e_code) {
+		this.e_code = e_code;
+	}
+	
 	
 	
 	//委托组数
@@ -546,6 +553,14 @@ public class SampleAction implements Action {
 	}
 	public void setShow_flg(String show_flg) {
 		this.show_flg = show_flg;
+	}
+	private String p_pid;
+	
+	public String getP_pid() {
+		return p_pid;
+	}
+	public void setP_pid(String p_pid) {
+		this.p_pid = p_pid;
 	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
@@ -684,8 +699,19 @@ public class SampleAction implements Action {
 		//192.168.1.144/Check/appAddSample?entrustnum=1&prod_id=14&bu_id=1&pid=194&sy_dt=2014-04-30 00:00:00&c_id=11
 		//批号
 		//sample.setLot(createLot());
-		sample.setSt_lv(st_lv);
-		sample.setJd_lv(jd_lv);
+		if(st_lv!=null&&!st_lv.equals("")){
+			sample.setSt_lv(st_lv);
+		}
+		else{
+			sample.setSt_lv("良好");
+		}
+		if(jd_lv!=null&&!jd_lv.equals("")){
+			sample.setJd_lv(jd_lv);
+		}
+		else{
+			sample.setJd_lv("已提交");
+		}
+		
 		sample.setProd_id(prod_id);
 		sample.setCd_t(cd_t);
 		sample.setSy_dt(sy_dt);
@@ -850,8 +876,10 @@ public class SampleAction implements Action {
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("prod_nm_t", prod_nm_t);
+			paramMap.put("e_code", e_code);
 			
 			paramMap.put("show_flg", show_flg);
+			paramMap.put("p_pid", p_pid);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iSampleService.selectsampleByParam(paramMap); 
@@ -1108,7 +1136,9 @@ public class SampleAction implements Action {
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("prod_nm_t", prod_nm_t); 
+			paramMap.put("e_code", e_code); 
 			paramMap.put("show_flg", show_flg);
+			paramMap.put("p_pid", p_pid);
 			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
@@ -1213,7 +1243,9 @@ public class SampleAction implements Action {
 		paramMap.put("pact_nm_t", pact_nm_t);
 		paramMap.put("a_nm_t", a_nm_t);
 		paramMap.put("prod_nm_t", prod_nm_t);
+		paramMap.put("e_code", e_code);
 		paramMap.put("show_flg", show_flg);
+		paramMap.put("p_pid", p_pid);
 		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {

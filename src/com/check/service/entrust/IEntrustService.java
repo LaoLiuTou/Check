@@ -2,6 +2,8 @@ package com.check.service.entrust;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import net.sf.json.JSONObject;
 
 import com.check.model.entrust.Entrust;
@@ -40,11 +42,11 @@ public interface IEntrustService {
 	 * 添加 流程
 	 * @return
 	 */ 
-	public  int  addentrustFlow(Entrust entrust,String samples,String entrust_pins);
+	public  int  addentrustFlow(Entrust entrust,String samples,String entrust_pins,String entrust_assets);
 	
 	
 	
-	public  int updateentrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins);
+	public  int updateentrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins,String entrust_assets);
 	/**
  * 删除 
  * @return 
@@ -82,5 +84,11 @@ public interface IEntrustService {
 	 * @return 
 	 */ 
 	public  int mulupdateEntrust(List<Entrust> entrustList);
+	
+	 /**
+	  * 修改远程委托单流程
+	  * @return 
+	  */ 
+	 public  int updateRemoteEntrustFlow(Entrust entrust,String entrust_pins,String entrust_assets);
 }
 

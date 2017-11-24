@@ -120,5 +120,19 @@ public class Cont {
 		this.st_lv = st_lv;
 	}
 	
+	private Date sq_dt;
+	private String m_username;
+	public Date getSq_dt() {
+		return sq_dt;
+	}
+	public void setSq_dt(Date sq_dt) {
+		this.sq_dt = sq_dt;
+	}
+	public String getM_username() {
+		return m_username;
+	}
+	public void setM_username(String m_username) {
+		this.m_username = m_username;
+	}
 
 }

@@ -239,19 +239,21 @@ public class Entrust {
 		this.submit = submit;
 	}
 	/** 实际完成时间 */
-	private  String sjwc_dt;
-	public String getSjwc_dt() {
+	private  Date sjwc_dt;
+	 
+	public Date getSjwc_dt() {
 		return sjwc_dt;
 	}
-	public void setSjwc_dt(String sjwc_dt) {
+	public void setSjwc_dt(Date sjwc_dt) {
 		this.sjwc_dt = sjwc_dt;
 	}
 	/** 发放报告时间 */
-	private  String ff_dt;
-	public String getFf_dt() {
+	private  Date ff_dt;
+	 
+	public Date getFf_dt() {
 		return ff_dt;
 	}
-	public void setFf_dt(String ff_dt) {
+	public void setFf_dt(Date ff_dt) {
 		this.ff_dt = ff_dt;
 	}
 	/** 废弃标识 */

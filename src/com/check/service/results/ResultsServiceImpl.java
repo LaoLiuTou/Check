@@ -84,9 +84,9 @@ public class ResultsServiceImpl  implements IResultsService {
 				}
 				//运算符
 				String valueStr = results.getValue();
-				String statand_lvStr = cresults.getStatand_lv();
-				String statandStr = cresults.getStatand();
-				String statand_vaStr = cresults.getStatand_va();
+				String statand_lvStr = presults.getStatand_lv();
+				String statandStr = presults.getStatand();
+				String statand_vaStr = presults.getStatand_va();
 				if(inbz_t_p!=null&&!inbz_t_p.equals("")){
 					statand_vaStr=inbz_t_p;
 				}
@@ -115,9 +115,9 @@ public class ResultsServiceImpl  implements IResultsService {
 					
 					//运算符
 					String valueStr = tempResults.getValue();
-					String statand_lvStr = tempResults.getStatand_lv();
-					String statandStr = tempResults.getStatand();
-					String statand_vaStr = tempResults.getStatand_va();
+					String statand_lvStr = results.getStatand_lv();
+					String statandStr = results.getStatand();
+					String statand_vaStr = results.getStatand_va();
 					if(results.getInbz_t()!=null&&!results.getInbz_t().equals("")){
 						statand_vaStr=results.getInbz_t();
 					}
@@ -129,6 +129,12 @@ public class ResultsServiceImpl  implements IResultsService {
 						//
 						iResultsMapper.updateresults(tempResults); 
 					}
+					//修改父记录
+					if(tempResults.getFlg()!=null&&tempResults.getFlg().equals("Y")){
+						results.setBool(tempResults.getBool());
+						results.setValue(tempResults.getValue());
+					}
+					
 					
 				}
 			}
@@ -183,7 +189,7 @@ public class ResultsServiceImpl  implements IResultsService {
 			else if(statand_lvStr.equals("数字")){
 				 if(statandStr.equals("区间")){
 					 String[] statand_vaStrs = statand_vaStr.split(",");
-					 boolStr = "("+statand_vaStrs[0]+"<="+valueStr+"<="+statand_vaStrs[1]+")"; 
+					 boolStr = "("+statand_vaStrs[0]+"<="+valueStr+"&&"+valueStr+"<="+statand_vaStrs[1]+")"; 
 				 }
 				 else{
 					 boolStr = "("+valueStr+statandStr+statand_vaStr+")";  

@@ -12,43 +12,47 @@
 	</delete>
 
 	<select id="selectconclusion_templetByParam" parameterType="java.util.Map" resultType="Conclusion_templet">
-		SELECT *
-		FROM conclusion_templet
+		SELECT a.*,b.nm_t as prod_nm_t  
+		FROM conclusion_templet a 
+		LEFT JOIN prod b on a.prod_id=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="status != null"> AND STATUS =#{status} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="nm_t != null"> AND a.NM_T LIKE #{nm_t} </if>
+			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="prod_nm_t != null"> AND b.NM_T LIKE #{prod_nm_t} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountconclusion_templetByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM conclusion_templet 
+		SELECT COUNT(a.ID) 
+		FROM conclusion_templet a 
+		LEFT JOIN prod b on a.prod_id=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
-			<if test="prod_id != null"> AND PROD_ID =#{prod_id} </if>
-			<if test="status != null"> AND STATUS =#{status} </if>
-			<if test="cm_tx != null"> AND CM_TX =#{cm_tx} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-		</trim>  
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="nm_t != null"> AND a.NM_T LIKE #{nm_t} </if>
+			<if test="prod_id != null"> AND a.PROD_ID =#{prod_id} </if>
+			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="prod_nm_t != null"> AND b.NM_T LIKE #{prod_nm_t} </if>
+		</trim>   
 	</select>
 
 	<update id="updateconclusion_templet" parameterType="Conclusion_templet">

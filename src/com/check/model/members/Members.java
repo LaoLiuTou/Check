@@ -134,5 +134,51 @@ public class Members {
 	}
 	
 	
+	private String  last_name;
+	public String getLast_name() {
+		return last_name;
+	}
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+	
+	private Long departments_id;
+	
 
+	public Long getDepartments_id() {
+		return departments_id;
+	}
+	public void setDepartments_id(Long departments_id) {
+		this.departments_id = departments_id;
+	}
+	private String c_nm_t;
+	private String a_nm_t;
+	public String getC_nm_t() {
+		return c_nm_t;
+	}
+	public void setC_nm_t(String c_nm_t) {
+		this.c_nm_t = c_nm_t;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	
+	private String b_nm_t;
+	private String d_nm_t;
+	public String getB_nm_t() {
+		return b_nm_t;
+	}
+	public void setB_nm_t(String b_nm_t) {
+		this.b_nm_t = b_nm_t;
+	}
+	public String getD_nm_t() {
+		return d_nm_t;
+	}
+	public void setD_nm_t(String d_nm_t) {
+		this.d_nm_t = d_nm_t;
+	}
+	
 }

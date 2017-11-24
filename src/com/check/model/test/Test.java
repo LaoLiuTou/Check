@@ -252,5 +252,13 @@ public class Test {
 		this.a_nm_t = a_nm_t;
 	}
 
+	private String e_flg;
+	public String getE_flg() {
+		return e_flg;
+	}
+	public void setE_flg(String e_flg) {
+		this.e_flg = e_flg;
+	}
+	
 
 }

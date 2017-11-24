@@ -225,4 +225,20 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 <bean id="iGroup_statusService" class="com.check.service.group_status.Group_statusServiceImpl"></bean>
+<bean id="iNotice_memberMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.notice_member.INotice_memberMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iNotice_memberService" class="com.check.service.notice_member.Notice_memberServiceImpl"></bean>
+<bean id="iProd_assetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.prod_asset.IProd_assetMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iProd_assetService" class="com.check.service.prod_asset.Prod_assetServiceImpl"></bean>
+<bean id="iDepartmentsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.departments.IDepartmentsMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iDepartmentsService" class="com.check.service.departments.DepartmentsServiceImpl"></bean>
+
 </beans>

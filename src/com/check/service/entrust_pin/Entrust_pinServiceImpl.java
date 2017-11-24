@@ -1,4 +1,5 @@
 package com.check.service.entrust_pin;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,23 @@ public class Entrust_pinServiceImpl  implements IEntrust_pinService {
  * @return
  */ 
 	public  Object addentrust_pin(Entrust_pin entrust_pin){
-		return iEntrust_pinMapper.addentrust_pin(entrust_pin);
+		
+		int result=0;
+		Map paramMap = new HashMap ();
+		
+		paramMap.put("fromPage",0);
+		paramMap.put("toPage",1);
+		paramMap.put("pid", entrust_pin.getPid());
+		paramMap.put("jcx_id", entrust_pin.getJcx_id());
+		paramMap.put("c_id", entrust_pin.getC_id());
+		List<Entrust_pin> temp = iEntrust_pinMapper.selectentrust_pinByParam(paramMap);
+		if(temp.size()>0){
+			
+		}
+		else{
+			result=iEntrust_pinMapper.addentrust_pin(entrust_pin);
+		}
+		return result ;
 	}
 
 	/**

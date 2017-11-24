@@ -1,5 +1,6 @@
 package com.check.action.results;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -599,7 +601,7 @@ public class ResultsAction implements Action {
 		results.setSd(sd);
 		if(bu_id!=null&&!bu_id.equals(""))
 			results.setBu_id(Long.parseLong(bu_id));
-		if(rel_id!=null&&!rel_id.equals(""))
+		if(statand_id!=null&&!statand_id.equals(""))
 		results.setStatand_id(Long.parseLong(statand_id));
 		
 		
@@ -667,11 +669,52 @@ public class ResultsAction implements Action {
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			 
-			iResultsService.updateRelatedResults(results, jl_t, dd_t);
+			int result=iResultsService.updateRelatedResults(results, jl_t, dd_t);
+			if(result>0){
+				List<String> templist = new ArrayList<String>();
+				if(statand_id!=null&&!statand_id.equals("")){
+					Results pResult=iResultsService.selectresultsById(id);
+					templist.add("\""+pResult.getId()+"\""+":"+"\""+pResult.getBool()+"\"");
+					Map paramMap= new HashMap();
+					paramMap.put("rel_id", pResult.getId()+"");
+					int sum= iResultsService.selectCountresultsByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",sum); 
+					List<Results> subList= iResultsService.selectresultsByParam(paramMap);
+					for(Results subResult:subList){
+						templist.add("\""+subResult.getId()+"\""+":"+"\""+subResult.getBool()+"\"");
+					}
+					
+				}
+				else{
+					
+					Results cResult=iResultsService.selectresultsById(id);
+					if(cResult.getRel_id()!=null){
+						Results pResult=iResultsService.selectresultsById(cResult.getRel_id()+"");
+						templist.add("\""+pResult.getId()+"\""+":"+"\""+pResult.getBool()+"\"");
+						Map paramMap= new HashMap();
+						paramMap.put("rel_id", pResult.getId()+"");
+						int sum= iResultsService.selectCountresultsByParam(paramMap);
+						paramMap.put("fromPage",0);
+						paramMap.put("toPage",sum); 
+						List<Results> subList= iResultsService.selectresultsByParam(paramMap);
+						for(Results subResult:subList){
+							templist.add("\""+subResult.getId()+"\""+":"+"\""+subResult.getBool()+"\"");
+						}
+					}
+					
+				}
+				msg.append("\"success\",\"msg\":");
+				//msg.append("\"更新成功\"");
+				msg.append("{"+StringUtils.join(templist,",")+"}");
+				logger.info(id+"更新成功！");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"更新失败！\"");
+			}
 			
-			msg.append("\"success\",\"msg\":");
-			msg.append("\"更新成功\"");
-			logger.info(id+"更新成功！");
+			
 		} catch (Exception e) {
 			logger.info(id+"更新失败！"+e);
 			msg.append("\"failure\",\"msg\":");

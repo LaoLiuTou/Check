@@ -42,11 +42,11 @@ public interface IProdService {
 	  * 添加流程 
 	  * @return
 	  */ 
-	 public  Object addflowprod(Prod prod,String muladd,String termids,String subprod);
+	 public  Object addflowprod(Prod prod,String muladd,String termids,String subprod,String prod_assets);
 	 /**
 	  * 更新流程 
 	  * @return
 	  */ 
-	 public  Object updateflowprod(Prod prod,String mulupdate,String termids,String subprod);
+	 public  Object updateflowprod(Prod prod,String mulupdate,String termids,String subprod,String prod_assets);
 }
 

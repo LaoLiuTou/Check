@@ -6,12 +6,10 @@
 		SELECT * FROM auth_rule WHERE ID=#{id}
 	</select>
 	<select id="selectauth_ruleByUserId" parameterType="String" resultType="Auth_rule">
-		SELECT * FROM auth_rule WHERE parentid IN(SELECT id FROM auth_rule WHERE INSTR((SELECT CONCAT(',',t1.rules,',') 
-		FROM auth_group t1,auth_group_access t2 WHERE t2.uid= #{id} AND t2.group_id = t1.id),CONCAT(',',id,',')) 
-		AND parentid = '0' AND STATUS = '1') 
-		UNION SELECT * FROM auth_rule WHERE INSTR((SELECT CONCAT(',',t1.rules,',') FROM auth_group t1,auth_group_access t2 
-		WHERE t2.uid= #{id} AND t2.group_id = t1.id),CONCAT(',',id,','))
-		 AND parentid = '0' AND STATUS = '1' ORDER BY sort ASC
+		SELECT * FROM auth_rule WHERE INSTR((SELECT CONCAT(',',t1.rules,',') 
+		FROM auth_group t1,auth_group_access t2 
+		WHERE t2.uid= #{id} AND t2.group_id = t1.id),CONCAT(',',id,',')) 
+		  AND STATUS = '1' ORDER BY sort ASC 
 	</select>
 
 

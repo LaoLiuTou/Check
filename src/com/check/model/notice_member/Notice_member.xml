@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.notice_member.INotice_memberMapper"> 
+	<select id="selectnotice_memberById" parameterType="String" resultType="Notice_member">
+		SELECT * FROM notice_member WHERE ID=#{id}
+	</select>
+
+
+	<delete id="deletenotice_member" parameterType="String"> 
+		DELETE FROM notice_member WHERE ID=#{id}
+	</delete>
+
+	<select id="selectnotice_memberByParam" parameterType="java.util.Map" resultType="Notice_member">
+		SELECT *
+		FROM notice_member
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="notices_id != null"> AND NOTICES_ID =#{notices_id} </if>
+			<if test="members_id != null"> AND MEMBERS_ID =#{members_id} </if>
+			<if test="read_flag != null"> AND READ_FLAG =#{read_flag} </if>
+		</trim>  
+		ORDER BY ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountnotice_memberByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(ID) 
+		FROM notice_member 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND C_ID =#{c_id} </if>
+			<if test="notices_id != null"> AND NOTICES_ID =#{notices_id} </if>
+			<if test="members_id != null"> AND MEMBERS_ID =#{members_id} </if>
+			<if test="read_flag != null"> AND READ_FLAG =#{read_flag} </if>
+		</trim>  
+	</select>
+
+	<update id="updatenotice_member" parameterType="Notice_member">
+		UPDATE notice_member 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="notices_id != null">NOTICES_ID=#{notices_id}, </if>
+			<if test="members_id != null">MEMBERS_ID=#{members_id}, </if>
+			<if test="read_flag != null">READ_FLAG=#{read_flag}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="addnotice_member" parameterType="Notice_member">
+		INSERT INTO notice_member 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="notices_id != null">NOTICES_ID, </if>
+			<if test="members_id != null">MEMBERS_ID, </if>
+			<if test="read_flag != null">READ_FLAG, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="notices_id != null">#{notices_id}, </if>
+			<if test="members_id != null">#{members_id}, </if>
+			<if test="read_flag != null">#{read_flag}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>

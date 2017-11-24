@@ -63,5 +63,60 @@ public class Notices {
 	}
 
 
+	private String choose_id;
+	private String show_flag;
+	public String getChoose_id() {
+		return choose_id;
+	}
+	public void setChoose_id(String choose_id) {
+		this.choose_id = choose_id;
+	}
+	public String getShow_flag() {
+		return show_flag;
+	}
+	public void setShow_flag(String show_flag) {
+		this.show_flag = show_flag;
+	}
+	
+	
+	private String flag;
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	private String read_flag;
+	public String getRead_flag() {
+		return read_flag;
+	}
+	public void setRead_flag(String read_flag) {
+		this.read_flag = read_flag;
+	}
+	
+	private String m_name;
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+	
+	private String nm_id;
+	public String getNm_id() {
+		return nm_id;
+	}
+	public void setNm_id(String nm_id) {
+		this.nm_id = nm_id;
+	}
+	
 
+	private String choose_name;
+	public String getChoose_name() {
+		return choose_name;
+	}
+	public void setChoose_name(String choose_name) {
+		this.choose_name = choose_name;
+	}
+	
 }

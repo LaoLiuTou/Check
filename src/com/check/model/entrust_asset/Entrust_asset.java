@@ -62,6 +62,22 @@ public class Entrust_asset {
 		this.ass_id = ass_id;
 	}
 
+	private String flag;
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	
 
+	private String a_nm_t;
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	
 
 }

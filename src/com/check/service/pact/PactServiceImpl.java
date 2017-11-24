@@ -12,18 +12,25 @@ import net.sf.json.processors.JsonValueProcessor;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.check.dao.entrust.IEntrustMapper;
 import com.check.dao.pact.IPactMapper;
 import com.check.dao.prod.IProdMapper;
 import com.check.dao.results.IResultsMapper;
 import com.check.dao.sample.ISampleMapper;
 import com.check.dao.test.ITestMapper;
 import com.check.model.atta.Atta;
+import com.check.model.conclusion_templet.Conclusion_templet;
+import com.check.model.entrust.Entrust;
+import com.check.model.entrust_pin.Entrust_pin;
 import com.check.model.pact.Pact;
 import com.check.model.prod.Prod;
 import com.check.model.results.Results;
 import com.check.model.sample.Sample;
 import com.check.model.test.Test;
 import com.check.service.atta.IAttaService;
+import com.check.service.conclusion_templet.IConclusion_templetService;
+import com.check.service.entrust_pin.IEntrust_pinService;
 public class PactServiceImpl  implements IPactService {
 
 	@Autowired
@@ -42,7 +49,13 @@ public class PactServiceImpl  implements IPactService {
 	@Autowired
 	private ITestMapper iTestMapper;
 	@Autowired
+	private IEntrustMapper iEntrustMapper;
+	@Autowired
 	private IResultsMapper iResultsMapper;
+	@Autowired
+	private IEntrust_pinService iEntrust_pinService;
+	@Autowired
+	private IConclusion_templetService iConclusion_templetService;
 	/**
  * 通过id选取
  * @return
@@ -244,10 +257,53 @@ public class PactServiceImpl  implements IPactService {
 								paramMap.put("fromPage",0);
 								paramMap.put("toPage",1);
 								List<Test> testList = iTestMapper.selecttestByParam(paramMap);
+								//委托单
+								Entrust entrust=new Entrust();
 								if(testList.size()>0){
 									tempTest=testList.get(0);
+									if(tempTest.getPid()!=null){
+										entrust=iEntrustMapper.selectentrustById(tempTest.getPid());
+									}
+									
 								}
 								sb.append("\"test\":"+JSONObject.fromObject(tempTest, jsonConfig)+",");
+								if(entrust==null){
+									sb.append("\"entrust\":\"\""+",");
+									sb.append("\"c_t\":\"\""+",");
+								}
+								else{
+									sb.append("\"entrust\":"+JSONObject.fromObject(entrust, jsonConfig)+",");
+								
+									//委托单检测项目中间表
+									paramMap = new HashMap ();
+									paramMap.put("pid", entrust.getId());
+									int epNum=iEntrust_pinService.selectCountentrust_pinByParam(paramMap);
+									paramMap.put("fromPage",0);
+									paramMap.put("toPage",epNum);
+									List<Entrust_pin> epinList = iEntrust_pinService.selectentrust_pinByParam(paramMap);
+								
+									sb.append("\"entrust_pin\":"+JSONArray.fromObject(epinList, jsonConfig)+",");
+									//模板表
+									paramMap = new HashMap ();
+									paramMap.put("prod_id", entrust.getProd_id());
+									paramMap.put("bu_id", entrust.getBu_id());
+									paramMap.put("status", "1");
+									int c_tNum=iConclusion_templetService.selectCountconclusion_templetByParam(paramMap);
+									paramMap.put("fromPage",0);
+									paramMap.put("toPage",c_tNum);
+									List<Conclusion_templet> c_tList = iConclusion_templetService.selectconclusion_templetByParam(paramMap);
+
+									if(c_tList.size()>0){
+										sb.append("\"c_t\":"+JSONArray.fromObject(c_tList, jsonConfig)+",");
+									}
+									else{
+										sb.append("\"c_t\":\"\""+",");
+									}
+								}
+								
+								
+								
+								
 								
 								//子检测项目
 								paramMap = new HashMap ();

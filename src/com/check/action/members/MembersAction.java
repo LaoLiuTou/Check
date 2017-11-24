@@ -18,9 +18,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.check.model.auth_group_access.Auth_group_access;
 import com.check.model.auth_rule.Auth_rule;
 import com.check.model.members.Members;
 import com.check.service.accnt.IAccntService;
+import com.check.service.auth_group_access.IAuth_group_accessService;
 import com.check.service.auth_rule.IAuth_ruleService;
 import com.check.service.members.IMembersService;
 import com.check.utils.CacheToRedis;
@@ -41,6 +43,8 @@ public class MembersAction implements Action {
 	private IAuth_ruleService iAuth_ruleService;
 	@Autowired
 	private IAccntService iAccntService;
+	@Autowired
+	private IAuth_group_accessService iAuth_group_accessService;
 	private List<Members> list;
 	private Members members;
 	public int getPage() {
@@ -228,6 +232,39 @@ public class MembersAction implements Action {
 	public void setAccnt_id(String accnt_id) {
 		this.accnt_id = accnt_id;
 	}
+	private String  last_name;
+	public String getLast_name() {
+		return last_name;
+	}
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+	private String accnt_id_null;
+	
+	public String getAccnt_id_null() {
+		return accnt_id_null;
+	}
+	public void setAccnt_id_null(String accnt_id_null) {
+		this.accnt_id_null = accnt_id_null;
+	}
+	private String departments_id;
+	
+	public String getDepartments_id() {
+		return departments_id;
+	}
+	public void setDepartments_id(String departments_id) {
+		this.departments_id = departments_id;
+	}
+	
+	
+	private String group_id;
+	
+	public String getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(String group_id) {
+		this.group_id = group_id;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -253,9 +290,20 @@ public class MembersAction implements Action {
 		members.setSign_flg(sign_flg);
 		if(accnt_id!=null&&!accnt_id.equals(""))
 			members.setAccnt_id(Long.parseLong(accnt_id));
+		if(departments_id!=null&&!departments_id.equals(""))
+			members.setDepartments_id(Long.parseLong(departments_id));
+		members.setLast_name(last_name);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iMembersService.addmembers(members).toString());
+			
+			if(result>0){
+				Auth_group_access auth_group_access = new Auth_group_access();
+				if(group_id!=null&&!group_id.equals(""))
+				auth_group_access.setGroup_id(Long.parseLong(group_id));
+				auth_group_access.setUid(members.getId());
+				iAuth_group_accessService.addauth_group_access(auth_group_access);
+			}
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(members.getId()+"\"");
 			logger.info(result+"添加成功！");
@@ -307,6 +355,12 @@ public class MembersAction implements Action {
 			paramMap.put("name", name);
 			paramMap.put("sign_flg", sign_flg);
 			paramMap.put("accnt_id", accnt_id);
+			paramMap.put("last_name", last_name);
+			paramMap.put("accnt_id_null", accnt_id_null);
+			paramMap.put("departments_id", departments_id);
+			
+			
+			 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iMembersService.selectmembersByParam(paramMap); 
@@ -367,9 +421,22 @@ public class MembersAction implements Action {
 		members.setSign_flg(sign_flg);
 		if(accnt_id!=null&&!accnt_id.equals(""))
 			members.setAccnt_id(Long.parseLong(accnt_id));
+
+		if(departments_id!=null&&!departments_id.equals(""))
+			members.setDepartments_id(Long.parseLong(departments_id));
+		members.setLast_name(last_name);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iMembersService.updatemembers(members);
+			if(group_id!=null&&!group_id.equals("")){
+				
+				Auth_group_access auth_group_access = new Auth_group_access();
+				auth_group_access.setGroup_id(Long.parseLong(group_id));
+				auth_group_access.setUid(members.getId());
+				iAuth_group_accessService.updateauth_group_accessbyuid(auth_group_access);
+			}
+			
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
@@ -483,6 +550,11 @@ public class MembersAction implements Action {
 		paramMap.put("name", name);
 		paramMap.put("sign_flg", sign_flg);
 		paramMap.put("accnt_id", accnt_id);
+		paramMap.put("last_name", last_name);
+		paramMap.put("accnt_id_null", accnt_id_null);
+		paramMap.put("departments_id", departments_id);
+		
+
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {
@@ -575,16 +647,17 @@ public class MembersAction implements Action {
 		return null;
 	}
     
+  	
   	@SuppressWarnings({ "unchecked", "rawtypes" })
   	public String login() throws Exception {
-
+  		
   		response.setContentType("text/html;charset=UTF-8"); 
   		Map  paramMap = new HashMap ();
   		paramMap.put("fromPage",0);
   		paramMap.put("toPage",1); 
-  			 
+  		
   		paramMap.put("username", username);
-  			 
+  		paramMap.put("status", "1");
   		StringBuffer msg = new StringBuffer("{\"state\":");
   		try {
   			list=iMembersService.selectmembersByParam(paramMap); 
@@ -598,12 +671,12 @@ public class MembersAction implements Action {
   						public Object processArrayValue(Object value, JsonConfig jsonConfig) {
   							return value;  
   						} 
-  					public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
-  						if(value instanceof Date){ 
-  							return sdf.format((Date)value);
+  						public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+  							if(value instanceof Date){ 
+  								return sdf.format((Date)value);
+  							}
+  							return value; 
   						}
-  						return value; 
-  					}
   					});
   					msg.append("\"success\",\"msg\":");
   					msg.append(JSONObject.fromObject(members, jsonConfig));
@@ -639,11 +712,11 @@ public class MembersAction implements Action {
   		}
   		msg.append("}");
   		if(callback==null){
-			response.getWriter().write(msg.toString());
-		}
-		else{
-			response.getWriter().write(callback+"("+msg.toString()+")");
-		}
+  			response.getWriter().write(msg.toString());
+  		}
+  		else{
+  			response.getWriter().write(callback+"("+msg.toString()+")");
+  		}
   		return null;
   	}
 
@@ -692,6 +765,10 @@ public class MembersAction implements Action {
   				members.setSign(sign);
   				members.setName(name);
   				members.setSign_flg(sign_flg);
+  				members.setLast_name(last_name);
+
+  				if(departments_id!=null&&!departments_id.equals(""))
+  					members.setDepartments_id(Long.parseLong(departments_id));
   				if(accnt_id!=null&&!accnt_id.equals(""))
   	  				members.setAccnt_id(Long.parseLong(accnt_id));
   				try {

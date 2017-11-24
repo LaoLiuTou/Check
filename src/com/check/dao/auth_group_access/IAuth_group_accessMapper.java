@@ -26,6 +26,11 @@ import com.check.model.auth_group_access.Auth_group_access;
  */ 
 	public  int updateauth_group_access(Auth_group_access auth_group_access);
 	/**
+	 * 更新 
+	 * @return 
+	 */ 
+	public  int updateauth_group_accessbyuid(Auth_group_access auth_group_access);
+	/**
  	* 添加 
  	* @return
  */ 

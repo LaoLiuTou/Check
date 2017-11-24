@@ -320,4 +320,32 @@
 			<result name="list">/pages/group_status/group_statusList.jsp</result>
 		</action>
 	</package>
+	<package name="Notice_member" namespace="/"  extends="struts-default">
+		<action name="*Notice_member" class="com.check.action.notice_member.Notice_memberAction" method="{1}">
+			<result name="add" type="redirect">/listNotice_member.action?page=1</result>
+			<result name="select">/pages/notice_member/notice_memberDetails.jsp</result>
+			<result name="delete" type="redirect">/listNotice_member.action?page=1</result>
+			<result name="update" type="redirect">/listNotice_member.action?page=1</result>
+			<result name="list">/pages/notice_member/notice_memberList.jsp</result>
+		</action>
+	</package>
+	<package name="Prod_asset" namespace="/"  extends="struts-default">
+		<action name="*Prod_asset" class="com.check.action.prod_asset.Prod_assetAction" method="{1}">
+			<result name="add" type="redirect">/listProd_asset.action?page=1</result>
+			<result name="select">/pages/prod_asset/prod_assetDetails.jsp</result>
+			<result name="delete" type="redirect">/listProd_asset.action?page=1</result>
+			<result name="update" type="redirect">/listProd_asset.action?page=1</result>
+			<result name="list">/pages/prod_asset/prod_assetList.jsp</result>
+		</action>
+	</package>
+	<package name="Departments" namespace="/"  extends="struts-default">
+		<action name="*Departments" class="com.check.action.departments.DepartmentsAction" method="{1}">
+			<result name="add" type="redirect">/listDepartments.action?page=1</result>
+			<result name="select">/pages/departments/departmentsDetails.jsp</result>
+			<result name="delete" type="redirect">/listDepartments.action?page=1</result>
+			<result name="update" type="redirect">/listDepartments.action?page=1</result>
+			<result name="list">/pages/departments/departmentsList.jsp</result>
+		</action>
+	</package>
+	
 </struts>

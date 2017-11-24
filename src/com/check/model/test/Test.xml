@@ -26,7 +26,7 @@
 
 	<select id="selecttestByParam" parameterType="java.util.Map" resultType="Test">
 		SELECT a.*,  b.nm_t as s_nm_t,c.name as sy_name,d.name as sh_name,
-		f.nm_t as pact_nm_t,g.nm_t as a_nm_t
+		f.nm_t as pact_nm_t,g.nm_t as a_nm_t,e.flg as e_flg 
 		FROM test a  
 		LEFT JOIN sample  b ON a.SAMPLE_ID=b.ID 
 		LEFT JOIN members c ON a.SY_ID=c.ID 
@@ -63,8 +63,10 @@
 			<if test="e_dt != null"> AND a.E_DT =#{e_dt} </if>
 			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
 			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="sum_status != null"> AND a.STATUS IN ${sum_status} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
+			<if test="e_flg != null"> AND e.FLG =#{e_flg} </if>
 			
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
 			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
@@ -96,7 +98,7 @@
 			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
 			<if test="pid != null"> AND a.PID =#{pid} </if>
 			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
-			<if test="code != null"> AND a.CODE =#{code} </if>
+		<if test="code != null"> AND a.CODE LIKE #{code} </if>
 			<if test="sy_dt != null"> AND a.SY_DT =#{sy_dt} </if>
 			<if test="dd_t != null"> AND a.DD_T =#{dd_t} </if>
 			<if test="sample_id != null"> AND a.SAMPLE_ID =#{sample_id} </if>
@@ -113,9 +115,10 @@
 			<if test="e_dt != null"> AND a.E_DT =#{e_dt} </if>
 			<if test="cm_tx != null"> AND a.CM_TX =#{cm_tx} </if>
 			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="sum_status != null"> AND a.STATUS IN ${sum_status} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
-			
+			<if test="e_flg != null"> AND e.FLG =#{e_flg} </if>
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
 			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND g.NM_T LIKE #{a_nm_t} </if>
@@ -185,7 +188,7 @@
 			<if test="fq_flg != null">FQ_FLG=#{fq_flg}, </if>
 			<if test="ewm != null">EWM=#{ewm}, </if>
 		</trim>
-		WHERE PID=#{pid}
+		WHERE PID=#{pid} AND status &lt;&gt; '已取消' 
 	</update>
 
 	<insert id="addtest" parameterType="Test">

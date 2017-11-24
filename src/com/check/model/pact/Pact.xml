@@ -8,10 +8,11 @@
 		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
 		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment, 
 		convert((SELECT SUM(cs_n* price) FROM entrust  WHERE pid = p.id AND ST_LV &lt;&gt;  "已取消"),decimal(10,2)) AS A_PRICE 
+		 ,a6.name as m_name 
 		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
 		left join accnt a3 on p.DB_ID=a3.ID left join  cont a4 on p.JL_CONT_ID = a4.ID left join
 		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID 
-		
+		LEFT JOIN members a6 on a6.id=p.c_id 
 		WHERE p.ID=#{id} 
 		
 	</select>
@@ -23,12 +24,12 @@
 
 	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
 		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
-		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment 
+		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment ,a6.name as m_name 
 		 
 		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
 		left join accnt a3 on p.DB_ID=a3.ID left join  cont a4 on p.JL_CONT_ID = a4.ID left join
-		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID 
-		
+		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID  
+		LEFT JOIN members a6 on a6.id=p.c_id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND p.ID =#{id} </if>
 			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
@@ -65,6 +66,7 @@
 			<if test="terms != null"> AND p.TERMS =#{terms} </if>
 			<if test="cm_tx != null"> AND p.CM_TX =#{cm_tx} </if>
 			<if test="tj_f != null"> AND p.TJ_F =#{tj_f} </if>
+			<if test="wjxy_type != null"> AND p.WJXY_TYPE =#{wjxy_type} </if>
 			
 			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
 			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
@@ -113,6 +115,7 @@
 			<if test="terms != null"> AND p.TERMS =#{terms} </if>
 			<if test="cm_tx != null"> AND p.CM_TX =#{cm_tx} </if>
 			<if test="tj_f != null"> AND p.TJ_F =#{tj_f} </if>
+			<if test="wjxy_type != null"> AND p.WJXY_TYPE =#{wjxy_type} </if>
 			
 			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
 			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
@@ -153,6 +156,7 @@
 			<if test="terms != null">TERMS=#{terms}, </if>
 			<if test="cm_tx != null">CM_TX=#{cm_tx}, </if>
 			<if test="tj_f != null">TJ_F=#{tj_f}, </if>
+			<if test="wjxy_type != null">WJXY_TYPE=#{wjxy_type}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -190,6 +194,7 @@
 			<if test="terms != null">TERMS, </if>
 			<if test="cm_tx != null">CM_TX, </if>
 			<if test="tj_f != null">TJ_F, </if>
+			<if test="wjxy_type != null">WJXY_TYPE, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -222,6 +227,7 @@
 			<if test="terms != null">#{terms}, </if>
 			<if test="cm_tx != null">#{cm_tx}, </if>
 			<if test="tj_f != null">#{tj_f}, </if>
+			<if test="wjxy_type != null">#{wjxy_type}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

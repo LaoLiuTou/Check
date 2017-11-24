@@ -317,6 +317,16 @@ public class ProdAction implements Action {
 	public void setSubprod(String subprod) {
 		this.subprod = subprod;
 	}
+	private String prod_assets;
+	
+	
+	
+	public String getProd_assets() {
+		return prod_assets;
+	}
+	public void setProd_assets(String prod_assets) {
+		this.prod_assets = prod_assets;
+	}
 	public String addflow() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -351,7 +361,7 @@ public class ProdAction implements Action {
 		prod.setFlg(flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			int result = Integer.parseInt(iProdService.addflowprod(prod,muladd,termids,subprod).toString());
+			int result = Integer.parseInt(iProdService.addflowprod(prod,muladd,termids,subprod,prod_assets).toString());
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(prod.getId()+"\"");
 			logger.info(result+"添加成功！");
@@ -409,7 +419,7 @@ public class ProdAction implements Action {
 		prod.setFlg(flg);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			int result = Integer.parseInt(iProdService.updateflowprod(prod,mulupdate,termids,subprod).toString());
+			int result = Integer.parseInt(iProdService.updateflowprod(prod,mulupdate,termids,subprod,prod_assets).toString());
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(prod.getId()+"\"");
 			logger.info(result+"添加成功！");

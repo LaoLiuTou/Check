@@ -159,14 +159,53 @@ public class Asset {
 		this.zq_n = zq_n;
 	}
 	/** 养护日期 */
-	private  String yh_dt;
-	public String getYh_dt() {
+	private  Date yh_dt; 
+	
+	public Date getYh_dt() {
 		return yh_dt;
 	}
-	public void setYh_dt(String yh_dt) {
+	public void setYh_dt(Date yh_dt) {
 		this.yh_dt = yh_dt;
 	}
+	private String flag; 
+	private String bxjz_dt;
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	public String getBxjz_dt() {
+		return bxjz_dt;
+	}
+	public void setBxjz_dt(String bxjz_dt) {
+		this.bxjz_dt = bxjz_dt;
+	}
+ 
+	private String m_name;
+	private String a_nm_t;
 
+	private String next_yh_dt;
+	
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+	public String getA_nm_t() {
+		return a_nm_t;
+	}
+	public void setA_nm_t(String a_nm_t) {
+		this.a_nm_t = a_nm_t;
+	}
+	public String getNext_yh_dt() {
+		return next_yh_dt;
+	}
+	public void setNext_yh_dt(String next_yh_dt) {
+		this.next_yh_dt = next_yh_dt;
+	}
+	
 
 
 }

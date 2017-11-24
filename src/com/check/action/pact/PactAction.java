@@ -370,6 +370,14 @@ public class PactAction implements Action {
 	public void setAtta(String atta) {
 		this.atta = atta;
 	}
+	private String wjxy_type;
+	public String getWjxy_type() {
+		return wjxy_type;
+	}
+	public void setWjxy_type(String wjxy_type) {
+		this.wjxy_type = wjxy_type;
+	}
+
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -422,6 +430,7 @@ public class PactAction implements Action {
 		pact.setTerms(terms);
 		pact.setCm_tx(cm_tx);
 		pact.setTj_f(tj_f);
+		pact.setWjxy_type(wjxy_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			//int result = Integer.parseInt(iPactService.addpact(pact).toString());
@@ -514,6 +523,7 @@ public class PactAction implements Action {
 		pact.setTerms(terms);
 		pact.setCm_tx(cm_tx);
 		pact.setTj_f(tj_f);
+		pact.setWjxy_type(wjxy_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iPactService.addpact(pact).toString());
@@ -599,6 +609,7 @@ public class PactAction implements Action {
 			paramMap.put("tj_f", tj_f);
 			paramMap.put("a_e", a_e);
 			paramMap.put("a_sv", a_sv);
+			paramMap.put("wjxy_type", wjxy_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iPactService.selectpactByParam(paramMap); 
@@ -673,6 +684,7 @@ public class PactAction implements Action {
 		pact.setTerms(terms);
 		pact.setCm_tx(cm_tx);
 		pact.setTj_f(tj_f);
+		pact.setWjxy_type(wjxy_type);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iPactService.updatepactAndAtta(pact,atta);
@@ -807,6 +819,7 @@ public class PactAction implements Action {
 		paramMap.put("tj_f", tj_f);
 		paramMap.put("a_e", a_e);
 		paramMap.put("a_sv", a_sv);
+		paramMap.put("wjxy_type", wjxy_type);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

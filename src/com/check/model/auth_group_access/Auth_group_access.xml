@@ -56,6 +56,17 @@
 		</trim>
 		WHERE ID=#{id}
 	</update>
+	<update id="updateauth_group_accessbyuid" parameterType="Auth_group_access">
+		UPDATE auth_group_access 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="uid != null">UID=#{uid}, </if>
+			<if test="group_id != null">GROUP_ID=#{group_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+		</trim>
+		WHERE UID=#{uid}
+	</update>
 
 	<insert id="addauth_group_access" parameterType="Auth_group_access">
 		INSERT INTO auth_group_access 

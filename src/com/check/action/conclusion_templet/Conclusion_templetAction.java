@@ -168,6 +168,13 @@ public class Conclusion_templetAction implements Action {
 	public void setBu_id(String bu_id) {
 		this.bu_id = bu_id;
 	}
+	private String prod_nm_t;
+	public String getProd_nm_t() {
+		return prod_nm_t;
+	}
+	public void setProd_nm_t(String prod_nm_t) {
+		this.prod_nm_t = prod_nm_t;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -228,6 +235,7 @@ public class Conclusion_templetAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("cm_tx", cm_tx);
 			paramMap.put("bu_id", bu_id);
+			paramMap.put("prod_nm_t", prod_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iConclusion_templetService.selectconclusion_templetByParam(paramMap); 
@@ -380,6 +388,7 @@ public class Conclusion_templetAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("cm_tx", cm_tx);
 			paramMap.put("bu_id", bu_id);
+			paramMap.put("prod_nm_t", prod_nm_t);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iConclusion_templetService.selectCountconclusion_templetByParam(paramMap);

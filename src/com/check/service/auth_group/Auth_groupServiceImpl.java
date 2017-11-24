@@ -25,6 +25,14 @@ public class Auth_groupServiceImpl  implements IAuth_groupService {
 	public List<Auth_group> selectauth_groupByParam(Map paramMap){ 
 		return iAuth_groupMapper.selectauth_groupByParam(paramMap);
 	}
+	/**
+	 * 通过查询参数获取信息
+	 * @return
+	 */ 
+	@SuppressWarnings("rawtypes")
+	public List<Auth_group> selectauth_groupByTreeParam(Map paramMap){ 
+		return iAuth_groupMapper.selectauth_groupByTreeParam(paramMap);
+	}
 
 	/**
 	* 通过查询参数获取总条数

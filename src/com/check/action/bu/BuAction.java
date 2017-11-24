@@ -256,7 +256,24 @@ public class BuAction implements Action {
 		if(up_dt!=null&&!up_dt.equals(""))
 		bu.setUp_dt(sdf.parse(up_dt));
 		bu.setNm_t(nm_t);
-		bu.setLoc(loc);
+		
+		
+		Map  paramMap = new HashMap ();
+		int count = iBuService.selectCountbuByParam(paramMap);
+		if(count>0){
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",1); 
+			List<Bu> tempList= iBuService.selectbuByParam(paramMap);
+			String tempLoc = tempList.get(0).getLoc();
+			if(tempLoc!=null){
+				String[] locs= tempLoc.split("_");
+				bu.setLoc(locs[0]+locs[1]+(Integer.parseInt(locs[1])+1));
+			}
+		}
+		else{
+			bu.setLoc("JB_TS_10001");
+		}
+		
 		bu.setKh_t(kh_t);
 		bu.setZh_t(zh_t);
 		bu.setLhzh(lhzh);

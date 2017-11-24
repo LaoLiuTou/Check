@@ -282,8 +282,9 @@ public class PayAction implements Action {
 		if(list.size()>0){
 			Pay temp =list.get(0);
 			String currentNum = temp.getFk_num().substring(4,8);
-			int newNum = Integer.parseInt(currentNum)+1;
-			pay.setFk_num("FK"+twoYear+newNum);
+			int newNum = 10000+Integer.parseInt(currentNum)+1;
+			String newNumStr =newNum+""; 
+			pay.setFk_num("FK"+twoYear+newNumStr.substring(1,newNumStr.length()));
 		}
 		else{
 			pay.setFk_num("FK"+twoYear+"0001");

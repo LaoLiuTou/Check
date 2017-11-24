@@ -71,6 +71,7 @@
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="spyj_t != null"> AND a.SPYJ_T =#{spyj_t} </if>
 			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			<if test="p_pid != null"> AND b.pid =#{p_pid} </if>
 			
 			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>
@@ -128,6 +129,7 @@
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="spyj_t != null"> AND a.SPYJ_T =#{spyj_t} </if>
 			<if test="copy_id != null"> AND a.COPY_ID =#{copy_id} </if>
+			<if test="p_pid != null"> AND b.pid =#{p_pid} </if>
 			
 			<if test="pact_nm_t != null"> AND b.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND c.NM_T  LIKE #{a_nm_t} </if>

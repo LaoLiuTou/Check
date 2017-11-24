@@ -11,23 +11,47 @@
 		DELETE FROM auth_group WHERE ID=#{id}
 	</delete>
 
-	<select id="selectauth_groupByParam" parameterType="java.util.Map" resultType="Auth_group">
-		SELECT *
-		FROM auth_group
+
+	
+	<select id="selectauth_groupByTreeParam" parameterType="java.util.Map" resultType="Auth_group">
+		SELECT a.* ,c.ID as u_id,c.NAME as u_name 
+		FROM auth_group a 
+		LEFT JOIN auth_group_access b ON a.id=b.group_id 
+		LEFT JOIN members c ON b.uid=c.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="title != null"> AND TITLE =#{title} </if>
-			<if test="status != null"> AND STATUS =#{status} </if>
-			<if test="rules != null"> AND RULES =#{rules} </if>
-			<if test="resp != null"> AND RESP =#{resp} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="title != null"> AND a.TITLE =#{title} </if>
+			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="rules != null"> AND a.RULES =#{rules} </if>
+			<if test="resp != null"> AND a.RESP =#{resp} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC  
+	</select>
+	<select id="selectauth_groupByParam" parameterType="java.util.Map" resultType="Auth_group">
+		SELECT a.* 
+		FROM auth_group a  
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="title != null"> AND a.TITLE =#{title} </if>
+			<if test="status != null"> AND a.STATUS =#{status} </if>
+			<if test="rules != null"> AND a.RULES =#{rules} </if>
+			<if test="resp != null"> AND a.RESP =#{resp} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+		</trim>  
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
@@ -46,6 +70,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
 		</trim>  
 	</select>
 
@@ -59,6 +84,7 @@
 			<if test="resp != null">RESP=#{resp}, </if>
 			<if test="c_dt != null">C_DT=#{c_dt}, </if>
 			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -72,6 +98,7 @@
 			<if test="resp != null">RESP, </if>
 			<if test="c_dt != null">C_DT, </if>
 			<if test="up_dt != null">UP_DT, </if>
+			<if test="bu_id != null">BU_ID, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="title != null">#{title}, </if>
@@ -80,6 +107,7 @@
 			<if test="resp != null">#{resp}, </if>
 			<if test="c_dt != null">#{c_dt}, </if>
 			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

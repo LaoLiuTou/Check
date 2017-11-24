@@ -3,7 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.notices.INoticesMapper"> 
 	<select id="selectnoticesById" parameterType="String" resultType="Notices">
-		SELECT * FROM notices WHERE ID=#{id}
+		SELECT a.*, b.name as m_name
+		FROM notices  a  
+		LEFT JOIN members b on b.id=a.c_id 
+	 
+		WHERE a.ID=#{id}
 	</select>
 
 
@@ -12,40 +16,55 @@
 	</delete>
 
 	<select id="selectnoticesByParam" parameterType="java.util.Map" resultType="Notices">
-		SELECT *
-		FROM notices
+		SELECT a.*, b.name as m_name ,c.read_flag as read_flag ,c.id as nm_id
+		FROM notices a  
+		LEFT JOIN members b  on b.id=a.c_id 
+		LEFT JOIN notice_member c  on a.id=c.notices_id  
+		
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="title != null"> AND TITLE =#{title} </if>
-			<if test="contents != null"> AND CONTENTS =#{contents} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="title != null"> AND a.TITLE LIKE #{title} </if>
+			<if test="contents != null"> AND a.CONTENTS =#{contents} </if>
+			<if test="choose_id != null"> AND a.CHOOSE_ID =#{choose_id} </if>
+			<if test="choose_name != null"> AND a.CHOOSE_NAME =#{choose_name} </if>
+			<if test="show_flag != null"> AND a.SHOW_FLAG =#{show_flag} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="members_id != null"> AND c.MEMBERS_ID =#{members_id} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
-
+ 
 	<select id="selectCountnoticesByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM notices 
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="title != null"> AND TITLE =#{title} </if>
-			<if test="contents != null"> AND CONTENTS =#{contents} </if>
+		SELECT COUNT(a.ID) 
+		FROM notices a  
+		LEFT JOIN members b  on b.id=a.c_id 
+		LEFT JOIN notice_member c  on a.id=c.notices_id 
+     	<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="title != null"> AND a.TITLE LIKE #{title} </if>
+			<if test="contents != null"> AND a.CONTENTS =#{contents} </if>
+			<if test="choose_id != null"> AND a.CHOOSE_ID =#{choose_id} </if>
+			<if test="choose_name != null"> AND a.CHOOSE_NAME =#{choose_name} </if>
+			<if test="show_flag != null"> AND a.SHOW_FLAG =#{show_flag} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
+			<if test="members_id != null"> AND c.MEMBERS_ID =#{members_id} </if>
 		</trim>  
 	</select>
 
@@ -59,6 +78,10 @@
 			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
 			<if test="title != null">TITLE=#{title}, </if>
 			<if test="contents != null">CONTENTS=#{contents}, </if>
+			<if test="choose_id != null">CHOOSE_ID=#{choose_id}, </if>
+			<if test="choose_name != null">CHOOSE_NAME=#{choose_name}, </if>
+			<if test="show_flag != null">SHOW_FLAG=#{show_flag}, </if>
+			<if test="flag != null">FLAG=#{flag}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -72,6 +95,10 @@
 			<if test="bu_id != null">BU_ID, </if>
 			<if test="title != null">TITLE, </if>
 			<if test="contents != null">CONTENTS, </if>
+			<if test="choose_id != null">CHOOSE_ID, </if>
+			<if test="choose_name != null">CHOOSE_NAME, </if>
+			<if test="show_flag != null">SHOW_FLAG, </if>
+			<if test="flag != null">FLAG, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="c_dt != null">#{c_dt}, </if>
@@ -80,6 +107,10 @@
 			<if test="bu_id != null">#{bu_id}, </if>
 			<if test="title != null">#{title}, </if>
 			<if test="contents != null">#{contents}, </if>
+			<if test="choose_id != null">#{choose_id}, </if>
+			<if test="choose_name != null">#{choose_name}, </if>
+			<if test="show_flag != null">#{show_flag}, </if>
+			<if test="flag != null">#{flag}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

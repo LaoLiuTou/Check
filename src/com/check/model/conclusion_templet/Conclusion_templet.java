@@ -70,6 +70,16 @@ public class Conclusion_templet {
 		this.bu_id = bu_id;
 	}
 
-
+	private String prod_nm_t;
+	public String getProd_nm_t() {
+		return prod_nm_t;
+	}
+	public void setProd_nm_t(String prod_nm_t) {
+		this.prod_nm_t = prod_nm_t;
+	}
+	
+	
+	
+	
 
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -19,6 +21,7 @@ import com.check.service.auth_group.IAuth_groupService;
 import com.check.utils.CacheToRedis;
 import com.check.utils.RedisUtil;
 import com.check.model.auth_group.Auth_group;
+import com.check.model.sample.Sample;
 public class Auth_groupAction implements Action {
 	private int page;
 	private int size;
@@ -160,6 +163,14 @@ public class Auth_groupAction implements Action {
 	public void setUp_dt(String up_dt) {
 		this.up_dt = up_dt;
 	}
+	private String bu_id;
+	
+	public String getBu_id() {
+		return bu_id;
+	}
+	public void setBu_id(String bu_id) {
+		this.bu_id = bu_id;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -175,6 +186,8 @@ public class Auth_groupAction implements Action {
 		auth_group.setC_dt(sdf.parse(c_dt));
 		if(up_dt!=null&&!up_dt.equals(""))
 		auth_group.setUp_dt(sdf.parse(up_dt));
+		if(bu_id!=null&&!bu_id.equals(""))
+			auth_group.setBu_id(Long.parseLong(bu_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iAuth_groupService.addauth_group(auth_group).toString());
@@ -220,6 +233,7 @@ public class Auth_groupAction implements Action {
 			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 			if(up_dtTo!=null&&!up_dtTo.equals(""))
 			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+			paramMap.put("bu_id", bu_id);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iAuth_groupService.selectauth_groupByParam(paramMap); 
@@ -270,6 +284,8 @@ public class Auth_groupAction implements Action {
 		auth_group.setC_dt(sdf.parse(c_dt));
 		if(up_dt!=null&&!up_dt.equals(""))
 		auth_group.setUp_dt(sdf.parse(up_dt));
+		if(bu_id!=null&&!bu_id.equals(""))
+			auth_group.setBu_id(Long.parseLong(bu_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iAuth_groupService.updateauth_group(auth_group);
@@ -377,6 +393,7 @@ public class Auth_groupAction implements Action {
 		paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 		if(up_dtTo!=null&&!up_dtTo.equals(""))
 		paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		paramMap.put("bu_id", bu_id);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {
@@ -419,6 +436,85 @@ public class Auth_groupAction implements Action {
 		}
 		return null;
 	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String tree() throws Exception {
+		
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer();
+		Map  paramMap = new HashMap ();
+		paramMap.put("id", id);
+		paramMap.put("title", title);
+		paramMap.put("status", status);
+		paramMap.put("rules", rules);
+		paramMap.put("resp", resp);
+		if(c_dtFrom!=null&&!c_dtFrom.equals(""))
+			paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));
+		if(c_dtTo!=null&&!c_dtTo.equals(""))
+			paramMap.put("c_dtTo", sdf.parse(c_dtTo));
+		if(up_dtFrom!=null&&!up_dtFrom.equals(""))
+			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
+		if(up_dtTo!=null&&!up_dtTo.equals(""))
+			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		paramMap.put("bu_id", bu_id);
+		//StringBuffer msg = new StringBuffer("{\"state\":");
+		msg.append("{\"state\":");
+		try {
+			 
+			list=iAuth_groupService.selectauth_groupByTreeParam(paramMap); 
+			
+			TreeMap sampleMap = (TreeMap) sort(list);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
+			msg.append(JSONObject.fromObject(sampleMap, jsonConfig));
+			//msg.append("\"");
+			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}"); 
+		
+		
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map<String, ArrayList> sort(List<Auth_group> agList) {
+		TreeMap tm = new TreeMap();
+		for (int i = 0; i < agList.size(); i++) {
+			Auth_group ag = agList.get(i);
+			if (tm.containsKey(ag.getId()+"")) {//
+				ArrayList l11 = (ArrayList) tm.get(ag.getId()+"");
+				l11.add(ag);
+			} else {
+				ArrayList tem = new ArrayList();
+				tem.add(ag);
+				tm.put(ag.getId()+"", tem);
+			}
+
+		}
+		return tm;
+	}
+	
 	public String append() throws Exception {
 		response.setContentType("text/html;charset=UTF-8"); 
 		StringBuffer msg = new StringBuffer();

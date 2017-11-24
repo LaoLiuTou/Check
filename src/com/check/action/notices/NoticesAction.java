@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Action;
+import com.check.service.notice_member.INotice_memberService;
 import com.check.service.notices.INoticesService;
+import com.check.model.notice_member.Notice_member;
 import com.check.model.notices.Notices;
 public class NoticesAction implements Action {
 	private int page;
@@ -24,6 +26,8 @@ public class NoticesAction implements Action {
 	private String callback;//跨域
 	@Autowired
 	private INoticesService iNoticesService;
+	@Autowired
+	private INotice_memberService iNotice_memberService;
 	private List<Notices> list;
 	private Notices notices;
 	public int getPage() {
@@ -154,6 +158,35 @@ public class NoticesAction implements Action {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
+	private String choose_id;
+	private String show_flag;
+	private String flag;
+	public String getChoose_id() {
+		return choose_id;
+	}
+	public void setChoose_id(String choose_id) {
+		this.choose_id = choose_id;
+	}
+	public String getShow_flag() {
+		return show_flag;
+	}
+	public void setShow_flag(String show_flag) {
+		this.show_flag = show_flag;
+	}
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	private String choose_name;
+	public String getChoose_name() {
+		return choose_name;
+	}
+	public void setChoose_name(String choose_name) {
+		this.choose_name = choose_name;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -170,12 +203,47 @@ public class NoticesAction implements Action {
 		notices.setBu_id(Long.parseLong(bu_id));
 		notices.setTitle(title);
 		notices.setContents(contents);
+		notices.setChoose_id(choose_id);
+		notices.setShow_flag(show_flag);
+		notices.setFlag(flag);
+		notices.setChoose_name(choose_name);
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			int result = Integer.parseInt(iNoticesService.addnotices(notices).toString());
-			msg.append("\"success\",\"msg\":\"");
-			msg.append(notices.getId()+"\"");
-			logger.info(result+"添加成功！");
+			/*if(choose_id!=null&&!choose_id.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"接收者不能为空！\"");
+				
+			}
+			else if(title!=null&&!title.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"标题不能为空！\"");
+			}
+			else if(contents!=null&&!contents.equals("")){
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"内容不能为空！\"");
+			}
+			else{*/
+				
+				int result = Integer.parseInt(iNoticesService.addnotices(notices).toString());
+				if(result>0){
+					Notice_member notice_member=new Notice_member();
+					if(c_id!=null&&!c_id.equals(""))
+						notice_member.setC_id(Long.parseLong(c_id));
+					notice_member.setMembers_id(Long.parseLong(c_id));
+					notice_member.setNotices_id(notices.getId());
+					notice_member.setRead_flag("Y");
+					iNotice_memberService.addnotice_member(notice_member);
+					
+					
+					msg.append("\"success\",\"msg\":\"");
+					msg.append(notices.getId()+"\"");
+					logger.info(result+"添加成功！");
+					 
+				}
+			//}
+			
+			 
 		} catch (Exception e) {
 			msg.append("\"failure\",\"msg\":");
 			msg.append("\"添加失败！\"");
@@ -190,6 +258,77 @@ public class NoticesAction implements Action {
 			response.getWriter().write(callback+"("+msg.toString()+")");
 		}
 		return null;
+	}
+	
+	
+	
+	public String push() throws Exception {
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html;charset=UTF-8"); 
+	 
+		
+		Notices notices = iNoticesService.selectnoticesById(id);
+		
+		
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			if(notices!=null){
+				
+				if(notices.getFlag()!=null&&notices.getFlag().equals("N")){
+					if(notices.getChoose_id()!=null){
+						
+						String[] memberids=notices.getChoose_id().split("\\|");
+						for(String memberid:memberids){
+							Notice_member notice_member=new Notice_member();
+							if(notices.getC_id()!=null)
+						    notice_member.setC_id(notices.getC_id());
+							notice_member.setMembers_id(Long.parseLong(memberid));
+							notice_member.setNotices_id(notices.getId());
+							notice_member.setRead_flag("N");
+							iNotice_memberService.addnotice_member(notice_member);
+						}
+						notices.setFlag("Y");
+						iNoticesService.updatenotices(notices);
+						msg.append("\"success\",\"msg\":\"添加成功！\""); 
+					}
+					else{
+						msg.append("\"failure\",\"msg\":\"通知的接收者为空！\""); 
+					}
+					
+				}
+				else{
+					msg.append("\"failure\",\"msg\":\"已经推送过该通知！\""); 
+				}
+			  
+			}
+			else{
+				msg.append("\"failure\",\"msg\":\"未查询到通知！\""); 
+			}
+			  
+			
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+ 
+	private String members_id;
+	
+	public String getMembers_id() {
+		return members_id;
+	}
+	public void setMembers_id(String members_id) {
+		this.members_id = members_id;
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String list() throws Exception {
@@ -211,6 +350,13 @@ public class NoticesAction implements Action {
 			paramMap.put("bu_id", bu_id);
 			paramMap.put("title", title);
 			paramMap.put("contents", contents);
+			paramMap.put("choose_id", choose_id);
+			paramMap.put("show_flag", show_flag);
+			paramMap.put("flag", flag);
+			paramMap.put("members_id", members_id);
+			paramMap.put("choose_name", choose_name);
+			 
+			 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iNoticesService.selectnoticesByParam(paramMap); 
@@ -262,6 +408,10 @@ public class NoticesAction implements Action {
 		notices.setBu_id(Long.parseLong(bu_id));
 		notices.setTitle(title);
 		notices.setContents(contents);
+		notices.setChoose_id(choose_id);
+		notices.setShow_flag(show_flag);
+		notices.setFlag(flag);
+		notices.setChoose_name(choose_name);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iNoticesService.updatenotices(notices);
@@ -360,6 +510,12 @@ public class NoticesAction implements Action {
 			paramMap.put("bu_id", bu_id);
 			paramMap.put("title", title);
 			paramMap.put("contents", contents);
+			paramMap.put("choose_id", choose_id);
+			paramMap.put("show_flag", show_flag);
+			paramMap.put("flag", flag);
+			paramMap.put("members_id", members_id);
+			paramMap.put("choose_name", choose_name);
+			 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iNoticesService.selectCountnoticesByParam(paramMap);
@@ -397,6 +553,8 @@ public class NoticesAction implements Action {
 		return null;
 	}
 
+	
+	
     public String execute() throws Exception {
 		return null;
 	}

@@ -10,24 +10,29 @@
 	<delete id="deleteentrust_asset" parameterType="String"> 
 		DELETE FROM entrust_asset WHERE ID=#{id}
 	</delete>
+	<delete id="deleteentrust_assetbyentrust" parameterType="String"> 
+		DELETE FROM entrust_asset WHERE AGREE_ID=#{entrustid}
+	</delete>
 
 	<select id="selectentrust_assetByParam" parameterType="java.util.Map" resultType="Entrust_asset">
-		SELECT *
-		FROM entrust_asset
+		SELECT a.*,b.NM_T as a_nm_t
+		FROM entrust_asset a 
+		LEFT JOIN asset b on a.ass_id=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="agree_id != null"> AND AGREE_ID =#{agree_id} </if>
-			<if test="ass_id != null"> AND ASS_ID =#{ass_id} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="agree_id != null"> AND a.AGREE_ID =#{agree_id} </if>
+			<if test="ass_id != null"> AND a.ASS_ID =#{ass_id} </if>
+			<if test="flag != null"> AND a.FLAG =#{flag} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
@@ -46,6 +51,7 @@
 			<if test="c_id != null"> AND C_ID =#{c_id} </if>
 			<if test="agree_id != null"> AND AGREE_ID =#{agree_id} </if>
 			<if test="ass_id != null"> AND ASS_ID =#{ass_id} </if>
+			<if test="flag != null"> AND FLAG =#{flag} </if>
 		</trim>  
 	</select>
 
@@ -59,6 +65,7 @@
 			<if test="c_id != null">C_ID=#{c_id}, </if>
 			<if test="agree_id != null">AGREE_ID=#{agree_id}, </if>
 			<if test="ass_id != null">ASS_ID=#{ass_id}, </if>
+			<if test="flag != null">FLAG=#{flag}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -72,6 +79,7 @@
 			<if test="c_id != null">C_ID, </if>
 			<if test="agree_id != null">AGREE_ID, </if>
 			<if test="ass_id != null">ASS_ID, </if>
+			<if test="flag != null">FLAG, </if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
@@ -80,6 +88,7 @@
 			<if test="c_id != null">#{c_id}, </if>
 			<if test="agree_id != null">#{agree_id}, </if>
 			<if test="ass_id != null">#{ass_id}, </if>
+			<if test="flag != null">#{flag}, </if>
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

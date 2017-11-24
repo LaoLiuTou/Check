@@ -14,6 +14,8 @@ public interface IAuth_groupService {
  */ 
  @SuppressWarnings("rawtypes")
 	public List<Auth_group> selectauth_groupByParam(Map paramMap); 
+	@SuppressWarnings("rawtypes")
+	public List<Auth_group> selectauth_groupByTreeParam(Map paramMap); 
 	/**
 	* 通过查询参数获取总条数
 	 * @return

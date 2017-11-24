@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<settings>
-		<!-- <setting name="logImpl" value="STDOUT_LOGGING"/> -->
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
 		<!-- <setting name="logImpl" value="LOG4J"/> -->
 		<setting name="cacheEnabled" value="true"/> 
 		<setting name="lazyLoadingEnabled" value="true"/> 
@@ -55,6 +55,9 @@
 		<typeAlias alias="Notices_label" type="com.check.model.notices_label.Notices_label" /> 
 		<typeAlias alias="Status" type="com.check.model.status.Status" /> 
 		<typeAlias alias="Group_status" type="com.check.model.group_status.Group_status" /> 
+		<typeAlias alias="Notice_member" type="com.check.model.notice_member.Notice_member" /> 
+		<typeAlias alias="Prod_asset" type="com.check.model.prod_asset.Prod_asset" /> 
+		<typeAlias alias="Departments" type="com.check.model.departments.Departments" /> 
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/check/model/accnt/Accnt.xml"/> 
@@ -92,5 +95,8 @@
 		<mapper resource="com/check/model/notices_label/Notices_label.xml"/> 
 		<mapper resource="com/check/model/status/Status.xml"/> 
 		<mapper resource="com/check/model/group_status/Group_status.xml"/> 
+		<mapper resource="com/check/model/notice_member/Notice_member.xml"/> 
+		<mapper resource="com/check/model/prod_asset/Prod_asset.xml"/> 
+		<mapper resource="com/check/model/departments/Departments.xml"/> 
 	</mappers>  
 </configuration>

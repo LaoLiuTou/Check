@@ -35,6 +35,11 @@ import com.check.model.entrust_asset.Entrust_asset;
  	* @return 
  */ 
 public  int deleteentrust_asset(String id);
+/**
+ * 删除 
+ * @return 
+ */ 
+public  int deleteentrust_assetbyentrust(String entrustid);
 
 }
 

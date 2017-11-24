@@ -27,7 +27,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
 			<if test="curr_status != null"> AND a.CURR_STATUS =#{curr_status} </if>
-			<if test="null_status != null"> AND a.CURR_STATUS IS NULL </if>
+			<if test="null_status != null"><![CDATA[ AND (a.CURR_STATUS IS NULL OR a.CURR_STATUS='') ]]> </if>
 			<if test="step_status != null"> AND a.STEP_STATUS =#{step_status} </if>
 			<if test="type != null"> AND a.TYPE =#{type} </if>
 			<if test="sort != null"> AND a.SORT =#{sort} </if>
@@ -54,7 +54,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
 			<if test="curr_status != null"> AND a.CURR_STATUS =#{curr_status} </if>
-			<if test="null_status != null"> AND a.CURR_STATUS IS NULL </if>
+			<if test="null_status != null"><![CDATA[ AND (a.CURR_STATUS IS NULL OR a.CURR_STATUS='') ]]> </if>
 			<if test="step_status != null"> AND a.STEP_STATUS =#{step_status} </if>
 			<if test="type != null"> AND a.TYPE =#{type} </if>
 			<if test="sort != null"> AND a.SORT =#{sort} </if>

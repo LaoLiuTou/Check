@@ -161,6 +161,13 @@ public class Entrust_assetAction implements Action {
 	public void setAss_id(String ass_id) {
 		this.ass_id = ass_id;
 	}
+	private String flag;
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -175,6 +182,7 @@ public class Entrust_assetAction implements Action {
 		entrust_asset.setC_id(c_id);
 		entrust_asset.setAgree_id(agree_id);
 		entrust_asset.setAss_id(ass_id);
+		entrust_asset.setFlag(flag);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iEntrust_assetService.addentrust_asset(entrust_asset).toString());
@@ -216,6 +224,7 @@ public class Entrust_assetAction implements Action {
 			paramMap.put("c_id", c_id);
 			paramMap.put("agree_id", agree_id);
 			paramMap.put("ass_id", ass_id);
+			paramMap.put("flag", flag);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iEntrust_assetService.selectentrust_assetByParam(paramMap); 
@@ -264,7 +273,8 @@ public class Entrust_assetAction implements Action {
 		entrust_asset.setUp_dt(sdf.parse(up_dt));
 		entrust_asset.setC_id(c_id);
 		entrust_asset.setAgree_id(agree_id);
-		entrust_asset.setAss_id(ass_id);
+		entrust_asset.setAss_id(ass_id);  
+		entrust_asset.setFlag(flag);  
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iEntrust_assetService.updateentrust_asset(entrust_asset);
@@ -363,6 +373,7 @@ public class Entrust_assetAction implements Action {
 			paramMap.put("c_id", c_id);
 			paramMap.put("agree_id", agree_id);
 			paramMap.put("ass_id", ass_id);
+			paramMap.put("flag", flag);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iEntrust_assetService.selectCountentrust_assetByParam(paramMap);

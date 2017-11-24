@@ -16,9 +16,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.check.model.accnt.Accnt;
 import com.check.model.cont.Cont;
+import com.check.model.members.Members;
 import com.check.service.accnt.IAccntService;
 import com.check.service.cont.IContService;
+import com.check.service.members.IMembersService;
 import com.opensymphony.xwork2.Action;
 public class ContAction implements Action {
 	private int page;
@@ -31,6 +34,8 @@ public class ContAction implements Action {
 	private IContService iContService;
 	@Autowired
 	private IAccntService iAccntService;
+	@Autowired
+	private IMembersService iMembersService;
 	private List<Cont> list;
 	private Cont cont;
 	public int getPage() {
@@ -225,6 +230,37 @@ public class ContAction implements Action {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	private String sq_dt;
+	private String sq_dtTo;
+	private String sq_dtFrom;
+	
+	public String getSq_dt() {
+		return sq_dt;
+	}
+	public void setSq_dt(String sq_dt) {
+		this.sq_dt = sq_dt;
+	}
+	public String getSq_dtTo() {
+		return sq_dtTo;
+	}
+	public void setSq_dtTo(String sq_dtTo) {
+		this.sq_dtTo = sq_dtTo;
+	}
+	public String getSq_dtFrom() {
+		return sq_dtFrom;
+	}
+	public void setSq_dtFrom(String sq_dtFrom) {
+		this.sq_dtFrom = sq_dtFrom;
+	}
+	
+	private String flag;
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -249,9 +285,18 @@ public class ContAction implements Action {
 		if(bu_id!=null&&!bu_id.equals(""))
 		cont.setBu_id(Long.parseLong(bu_id));
 		cont.setSt_lv(st_lv);
+		if(sq_dt!=null&&!sq_dt.equals(""))
+		cont.setSq_dt(sdf.parse(sq_dt));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iContService.addcont(cont).toString());
+			if(result>0&&flag!=null&&flag.equals("Y")){
+				Accnt accnt = new Accnt();
+				accnt.setId(cont.getPid());
+				accnt.setCont_id(cont.getId()+"");
+				iAccntService.updateaccnt(accnt);
+			}
+			 
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(cont.getId()+"\"");
 			logger.info(result+"添加成功！");
@@ -297,6 +342,12 @@ public class ContAction implements Action {
 			paramMap.put("user_id", user_id);
 			paramMap.put("bu_id", bu_id);
 			paramMap.put("st_lv", st_lv);
+			if(sq_dtFrom!=null&&!sq_dtFrom.equals(""))
+			paramMap.put("sq_dtFrom", sdf.parse(sq_dtFrom));
+			if(sq_dtTo!=null&&!sq_dtTo.equals(""))
+			paramMap.put("sq_dtTo", sdf.parse(sq_dtTo));
+			 
+			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iContService.selectcontByParam(paramMap); 
@@ -357,10 +408,21 @@ public class ContAction implements Action {
 		cont.setBu_id(Long.parseLong(bu_id));
 		
 		cont.setSt_lv(st_lv);
-		
+	 
+		if(sq_dt!=null&&!sq_dt.equals(""))
+			cont.setSq_dt(sdf.parse(sq_dt));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iContService.updatecont(cont,username);
+			
+			if(flag!=null&&flag.equals("Y")){
+				Cont tempCont = iContService.selectcontById(cont.getId()+"");
+				
+				Accnt accnt = new Accnt();
+				accnt.setId(tempCont.getPid());
+				accnt.setCont_id(cont.getId()+"");
+				iAccntService.updateaccnt(accnt);
+			}
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");
 			logger.info(id+"更新成功！");
@@ -384,7 +446,25 @@ public class ContAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
+			
+			Cont tempCont =iContService.selectcontById(id); 
+			if(tempCont!=null){
+				if(tempCont.getUser_id()!=null){
+					Members tempMembers = iMembersService.selectmembersById(tempCont.getUser_id()+"");
+					if(tempMembers!=null){
+						
+						Members members = new Members();
+						members.setId(tempMembers.getId());
+						members.setStatus(Long.parseLong("0"));
+						iMembersService.updatemembers(members);
+					}
+				}
+			}
+			
+			
+			
 			iContService.deletecont(id);
+			 
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"删除成功！\"");
 			logger.info(id+"删除成功！");
@@ -463,6 +543,12 @@ public class ContAction implements Action {
 			paramMap.put("user_id", user_id);
 			paramMap.put("bu_id", bu_id);
 			paramMap.put("st_lv", st_lv);
+			if(sq_dtFrom!=null&&!sq_dtFrom.equals(""))
+			paramMap.put("sq_dtFrom", sdf.parse(sq_dtFrom));
+			if(sq_dtTo!=null&&!sq_dtTo.equals(""))
+			paramMap.put("sq_dtTo", sdf.parse(sq_dtTo));
+				
+				 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iContService.selectCountcontByParam(paramMap);
