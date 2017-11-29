@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
  
+import com.check.dao.auth_group.IAuth_groupMapper;
+import com.check.dao.auth_group_access.IAuth_group_accessMapper;
 import com.check.dao.entrust.IEntrustMapper;
 import com.check.dao.entrust_asset.IEntrust_assetMapper;
 import com.check.dao.entrust_pin.IEntrust_pinMapper;
@@ -109,6 +111,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 	private IEntrust_assetMapper iEntrust_assetMapper;
 	@Autowired
 	private IProd_assetMapper iProd_assetMapper;
+	@Autowired
+	private IAuth_group_accessMapper iAuth_group_accessMapper;
+	@Autowired
+	private IAuth_groupMapper iAuth_groupMapper;
 	
 	
 	
@@ -612,6 +618,131 @@ public class EntrustServiceImpl  implements IEntrustService {
 		 }
 		 return result;
 	 }
+	 /**
+	  * 委托方更新 流程
+	  * @return 
+	  */ 
+	 @Transactional
+	 public  int updateWTEntrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins,String entrust_assets){
+		 int result=0;
+		 //st_lv--已完成   test  --STATUS  已完成
+		 //st_lv--检验中   test  --STATUS  待审核
+		 
+		 Prod pProd = iProdService.selectprodById(entrust.getProd_id());
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 
+		 if(entrust.getJh_dt()==null||entrust.getJh_dt().equals("")){
+			 if(entrust.getWt_dt()!=null&&pProd.getZq_n()!=null){
+				 
+				 GregorianCalendar gc=new GregorianCalendar();
+				 gc.setTime(entrust.getWt_dt());
+				 gc.add(5, Integer.parseInt(pProd.getZq_n()+""));
+				 entrust.setJh_dt(sdf.format(gc.getTime()));
+			 }
+		 }
+		 
+		 //常规价、复检价
+		 if(entrust.getCg_f()!=null){
+			 if(entrust.getCg_f().equals("Y")){
+				 entrust.setPrice(pProd.getCgj());
+				 //entrust.setSt_lv("已分配");
+			 }
+			 else if(entrust.getCg_f().equals("N")){
+				 entrust.setPrice(pProd.getFjj());
+				 //entrust.setSt_lv("已分配");
+			 }
+		 }
+		 
+		 
+		 
+		 if(entrust.getSt_lv()!=null){
+			 Test test = new Test();
+			 test.setPid(entrust.getId()+"");
+			 if(entrust.getSt_lv().equals("已完成")){
+				 test.setStatus("已完成");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("检验中")){
+				 test.setStatus("待审核");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("已发放")){
+				 test.setStatus("已发放");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("已存档")){
+				 test.setStatus("已存档");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("审批中")){
+				 test.setStatus("审批中");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("需调整")){
+				 test.setStatus("需调整");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else if(entrust.getSt_lv().equals("已分配")){
+				 test.setStatus("新建");
+				 iTestService.updatetestbypid(test);
+			 }
+			 else{
+				 //do nothing
+			 }
+		 }
+		 
+		 
+		 Entrust  tempEntrust = iEntrustMapper.selectentrustById(entrust.getId()+"");
+		 if(tempEntrust.getFlg()!=null&&tempEntrust.getFlg().equals("Y")&&entrust.getFlg().equals("N")){
+			 entrust.setCode(createEntrustAppend(tempEntrust.getPid(),sdf.format(tempEntrust.getWt_dt()),
+					 tempEntrust.getBu_id(),tempEntrust.getC_id()));
+		 }
+		 result = iEntrustMapper.updateentrust(entrust);
+		 if(result>0){
+			  
+			
+			 entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
+			 if(p_status!=null&&p_status.equals("N")){
+				 //先删除 所有委托单相关信息然后新建
+				 //删除
+				 deleteFunction(entrust);
+				 //新建 
+				 addESEPFunction(entrust, entrust_samples, entrust_pins);
+				  
+			 }
+			 else if(p_status!=null&&p_status.equals("Y")){
+				 
+				 //删除
+				 //deleteFunction(entrust);
+				 //新建
+				 //addFlowFunction(entrust, entrust_samples, entrust_pins);
+			 }
+			 else{
+				 //do nothing
+			 }
+			 
+			 
+			 iEntrust_assetMapper.deleteentrust_assetbyentrust(entrust.getId()+"");
+			 if(entrust_assets!=null&&!entrust_assets.equals("")){
+				 JSONArray entrust_assetJA=JSONArray.fromObject(entrust_assets);
+				 for(int i=0;i<entrust_assetJA.size();i++){
+					 JSONObject  addJO = (JSONObject) entrust_assetJA.get(i);
+					 Entrust_asset ps=new Entrust_asset();
+					 if(addJO.containsKey("ass_id"))
+						 ps.setAss_id(addJO.getString("ass_id"));
+					 if(addJO.containsKey("flag"))
+						 ps.setFlag(addJO.getString("flag"));
+					 
+					 ps.setC_id(entrust.getC_id());
+					 ps.setAgree_id(entrust.getId()+"");
+					 iEntrust_assetMapper.addentrust_asset(ps); 
+				 }
+				 
+			 }
+			 
+		 }
+		 return result;
+	 }
 
 	 
 	 
@@ -729,6 +860,78 @@ public class EntrustServiceImpl  implements IEntrustService {
 	}
 
 	
+	/**
+	 * 委托方添加 流程
+	 * @return
+	 */ 
+	@Transactional
+	public  int  addWTEntrustFlow(Entrust entrust,String entrust_samples,String entrust_pins,String entrust_assets){
+ 
+		int result=0;
+		Prod pProd = iProdService.selectprodById(entrust.getProd_id());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if(entrust.getJh_dt()==null||entrust.getJh_dt().equals("")){
+			if(entrust.getWt_dt()!=null&&pProd.getZq_n()!=null){
+				
+				GregorianCalendar gc=new GregorianCalendar();
+				gc.setTime(entrust.getWt_dt());
+				gc.add(5, Integer.parseInt(pProd.getZq_n()+""));
+				entrust.setJh_dt(sdf.format(gc.getTime()));
+			}
+		}
+		
+		//常规价、复检价
+		if(entrust.getCg_f().equals("Y")){
+			entrust.setPrice(pProd.getCgj());
+		}
+		else if(entrust.getCg_f().equals("N")){
+			entrust.setPrice(pProd.getFjj());
+		}
+		
+		/////////////////
+		result = iEntrustMapper.addentrust(entrust);
+		if(result>0){
+			//二维码
+			String qrResult = MatrixToImageWriter.createQrImage("TG_"+entrust.getId());
+			if(qrResult.length()>0){
+				HttpServletRequest request = ServletActionContext.getRequest();
+				String path = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ request.getContextPath();
+				Entrust upentrust = new Entrust();
+				upentrust.setId(entrust.getId());
+				upentrust.setEwm(path+"/QRImages/"+qrResult);
+				iEntrustMapper.updateentrust(upentrust);
+			}
+			entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
+			//不建test result
+			addESEPFunction(entrust, entrust_samples, entrust_pins);
+			
+			
+			if(entrust_assets!=null&&!entrust_assets.equals("")){
+				JSONArray entrust_assetJA=JSONArray.fromObject(entrust_assets);
+				for(int i=0;i<entrust_assetJA.size();i++){
+					JSONObject  addJO = (JSONObject) entrust_assetJA.get(i);
+					Entrust_asset ps=new Entrust_asset();
+					if(addJO.containsKey("ass_id"))
+						ps.setAss_id(addJO.getString("ass_id"));
+					if(addJO.containsKey("flag"))
+						ps.setFlag(addJO.getString("flag"));
+					
+					ps.setC_id(entrust.getC_id());
+					ps.setAgree_id(entrust.getId()+"");
+					iEntrust_assetMapper.addentrust_asset(ps); 
+				}
+				
+			}
+			
+		}
+		
+		
+		return result;
+	}
+	
+	
 	
 	
 	/**
@@ -738,6 +941,12 @@ public class EntrustServiceImpl  implements IEntrustService {
 	public  void  addRemoteFlowFunction(Entrust entrust,List<Entrust_sample> entrust_samples,List<Entrust_pin> entrust_pins){
 		
 		int result =0;
+		
+		//默认实验人,审批人
+		Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
+		entrust.setSyr_id(prod.getSy_id());
+		//entrust.setSp_id(prod.getSp_id()+"");
+		
 		result=iEntrustMapper.updateentrust(entrust);
 		if(result>0){
 			entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
@@ -777,6 +986,8 @@ public class EntrustServiceImpl  implements IEntrustService {
 				test.setSample_id(sample.getId()+"");
 				test.setStatus("新建");
 				test.setSy_id(entrust.getSyr_id());
+				test.setSh_id(prod.getSh_id()+"");
+				
 				int testresult = Integer.parseInt(iTestService.addtest(test).toString());
 				if(testresult>0){
 					String testqrResult = MatrixToImageWriter.createQrImage("EX_"+test.getId());
@@ -881,6 +1092,9 @@ public class EntrustServiceImpl  implements IEntrustService {
 		}
 	}
 	
+	
+	
+ 
 	/**
 	 * 新建Entrust_sample Test Results Entrust_pin
 	 * @return 
@@ -1057,6 +1271,39 @@ public class EntrustServiceImpl  implements IEntrustService {
 		}
 	}
 	/**
+	 * 新建Entrust_sample   Entrust_pin
+	 * @return 
+	 */ 
+	public  void  addESEPFunction(Entrust entrust,String entrust_samples,String entrust_pins){
+		//样品sampless
+		JSONArray sampleJA = JSONArray.fromObject(entrust_samples);
+		for(int index=0;index<sampleJA.size();index++){
+			JSONObject sampleJO = (JSONObject) sampleJA.get(index);
+		 
+			Entrust_sample entrust_sample= new Entrust_sample();
+			entrust_sample.setC_id(entrust.getC_id());
+			entrust_sample.setPid(entrust.getId()+"");
+			if(sampleJO.containsKey("sample_id"))
+				entrust_sample.setSample_id(sampleJO.getString("sample_id"));
+			iEntrust_sampleService.addentrust_sample(entrust_sample);	
+		     //试验单 test  end
+		}
+		
+		
+		JSONArray epinJA = JSONArray.fromObject(entrust_pins);
+		for(int index=0;index<epinJA.size();index++){
+			JSONObject epinJO = (JSONObject) epinJA.get(index);
+			Entrust_pin entrust_pin =new Entrust_pin();
+			entrust_pin.setC_id(entrust.getC_id());
+			if(epinJO.containsKey("jc_f"))
+				entrust_pin.setJc_f(epinJO.getString("jc_f"));
+			if(epinJO.containsKey("jcx_id"))
+				entrust_pin.setJcx_id(epinJO.getString("jcx_id"));
+			entrust_pin.setPid(entrust.getId()+"");
+			iEntrust_pinService.addentrust_pin(entrust_pin);
+		}
+	}
+	/**
  * 删除 
  * @return 
  */ 
@@ -1216,7 +1463,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 				}
 				//实验人id
 				entrust.setSyr_id(pProd.getSy_id());
-				
+				entrust.setSp_id(pProd.getSp_id()+"");
 				
 				//试验次数
 				int totleNum=0;
@@ -1846,8 +2093,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 		}
 		test.setSample_id(sample.getId()+"");
 		test.setStatus("新建");
-		
+		Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
 		test.setSy_id(entrust.getSyr_id());
+		test.setSh_id(prod.getSh_id()+"");
+		
 		int testresult = Integer.parseInt(iTestService.addtest(test).toString());
 		if(testresult>0){
 			String testqrResult = MatrixToImageWriter.createQrImage("EX_"+test.getId());

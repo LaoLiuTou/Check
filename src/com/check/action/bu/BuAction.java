@@ -267,7 +267,7 @@ public class BuAction implements Action {
 			String tempLoc = tempList.get(0).getLoc();
 			if(tempLoc!=null){
 				String[] locs= tempLoc.split("_");
-				bu.setLoc(locs[0]+locs[1]+(Integer.parseInt(locs[1])+1));
+				bu.setLoc(locs[0]+"_"+locs[1]+"_"+(Integer.parseInt(locs[2])+1));
 			}
 		}
 		else{

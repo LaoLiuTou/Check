@@ -28,7 +28,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND a.NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND a.NM_T LIKE #{nm_t} </if>
 			<if test="state != null"> AND a.STATE =#{state} </if>
 			<if test="city != null"> AND a.CITY =#{city} </if>
 			<if test="county != null"> AND a.COUNTY =#{county} </if>
@@ -55,7 +55,7 @@
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
 			<if test="c_id != null"> AND C_ID =#{c_id} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
 			<if test="state != null"> AND STATE =#{state} </if>
 			<if test="city != null"> AND CITY =#{city} </if>
 			<if test="county != null"> AND COUNTY =#{county} </if>

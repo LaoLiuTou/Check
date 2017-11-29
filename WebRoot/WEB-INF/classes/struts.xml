@@ -347,5 +347,14 @@
 			<result name="list">/pages/departments/departmentsList.jsp</result>
 		</action>
 	</package>
+	<package name="User_set" namespace="/"  extends="struts-default">
+		<action name="*User_set" class="com.check.action.user_set.User_setAction" method="{1}">
+			<result name="add" type="redirect">/listUser_set.action?page=1</result>
+			<result name="select">/pages/user_set/user_setDetails.jsp</result>
+			<result name="delete" type="redirect">/listUser_set.action?page=1</result>
+			<result name="update" type="redirect">/listUser_set.action?page=1</result>
+			<result name="list">/pages/user_set/user_setList.jsp</result>
+		</action>
+	</package>
 	
 </struts>

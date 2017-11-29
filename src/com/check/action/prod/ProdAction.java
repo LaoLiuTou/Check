@@ -327,6 +327,43 @@ public class ProdAction implements Action {
 	public void setProd_assets(String prod_assets) {
 		this.prod_assets = prod_assets;
 	}
+	
+
+	
+	
+	
+	private String sh_id;
+	private String sp_id;
+	private String print_flag;
+	
+	
+	public String getSh_id() {
+		return sh_id;
+	}
+	public void setSh_id(String sh_id) {
+		this.sh_id = sh_id;
+	}
+	public String getSp_id() {
+		return sp_id;
+	}
+	public void setSp_id(String sp_id) {
+		this.sp_id = sp_id;
+	}
+	public String getPrint_flag() {
+		return print_flag;
+	}
+	public void setPrint_flag(String print_flag) {
+		this.print_flag = print_flag;
+	}
+	
+	private String templete_id;
+	
+	public String getTemplete_id() {
+		return templete_id;
+	}
+	public void setTemplete_id(String templete_id) {
+		this.templete_id = templete_id;
+	}
 	public String addflow() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -359,6 +396,14 @@ public class ProdAction implements Action {
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
 		prod.setFlg(flg);
+		if(sh_id!=null&&!sh_id.equals(""))
+			prod.setSh_id(Long.parseLong(sh_id));
+		if(sp_id!=null&&!sp_id.equals(""))
+			prod.setSp_id(Long.parseLong(sp_id));
+		prod.setPrint_flag(print_flag);
+		if(templete_id!=null&&!templete_id.equals(""))
+		prod.setTemplete_id(Long.parseLong(templete_id));
+		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iProdService.addflowprod(prod,muladd,termids,subprod,prod_assets).toString());
@@ -417,6 +462,13 @@ public class ProdAction implements Action {
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
 		prod.setFlg(flg);
+		if(sh_id!=null&&!sh_id.equals(""))
+			prod.setSh_id(Long.parseLong(sh_id));
+		if(sp_id!=null&&!sp_id.equals(""))
+			prod.setSp_id(Long.parseLong(sp_id));
+		prod.setPrint_flag(print_flag);
+		if(templete_id!=null&&!templete_id.equals(""))
+			prod.setTemplete_id(Long.parseLong(templete_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iProdService.updateflowprod(prod,mulupdate,termids,subprod,prod_assets).toString());
@@ -475,6 +527,14 @@ public class ProdAction implements Action {
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
 		prod.setFlg(flg);
+		if(sh_id!=null&&!sh_id.equals(""))
+			prod.setSh_id(Long.parseLong(sh_id));
+		if(sp_id!=null&&!sp_id.equals(""))
+			prod.setSp_id(Long.parseLong(sp_id));
+		
+		prod.setPrint_flag(print_flag);
+		if(templete_id!=null&&!templete_id.equals(""))
+			prod.setTemplete_id(Long.parseLong(templete_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iProdService.addprod(prod).toString());
@@ -540,6 +600,11 @@ public class ProdAction implements Action {
 			paramMap.put("cgj", cgj);
 			paramMap.put("fjj", fjj);
 			paramMap.put("flg", flg);
+			paramMap.put("sh_id", sh_id);
+			paramMap.put("sp_id", sp_id);
+			paramMap.put("print_flag", print_flag);
+			paramMap.put("templete_id", templete_id);
+			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iProdService.selectprodByParam(paramMap); 
@@ -943,6 +1008,14 @@ public class ProdAction implements Action {
 		prod.setCgj(cgj);
 		prod.setFjj(fjj);
 		prod.setFlg(flg);
+		if(sh_id!=null&&!sh_id.equals(""))
+			prod.setSh_id(Long.parseLong(sh_id));
+		if(sp_id!=null&&!sp_id.equals(""))
+			prod.setSp_id(Long.parseLong(sp_id));
+		prod.setPrint_flag(print_flag);
+
+		if(templete_id!=null&&!templete_id.equals(""))
+			prod.setTemplete_id(Long.parseLong(templete_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iProdService.updateprod(prod);
@@ -1067,6 +1140,13 @@ public class ProdAction implements Action {
 		paramMap.put("cgj", cgj);
 		paramMap.put("fjj", fjj);
 		paramMap.put("flg", flg);
+		paramMap.put("sh_id", sh_id);
+		paramMap.put("sp_id", sp_id);
+		paramMap.put("print_flag", print_flag);
+		paramMap.put("templete_id", templete_id);
+		 
+
+		
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

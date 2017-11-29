@@ -45,8 +45,18 @@ public interface IEntrustService {
 	public  int  addentrustFlow(Entrust entrust,String samples,String entrust_pins,String entrust_assets);
 	
 	
+	/**
+	 * 添加 流程
+	 * @return
+	 */ 
+	public  int  addWTEntrustFlow(Entrust entrust,String samples,String entrust_pins,String entrust_assets);
+	
+	
 	
 	public  int updateentrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins,String entrust_assets);
+	 
+	
+	public  int updateWTEntrustFlow(Entrust entrust,String p_status, String entrust_samples,String entrust_pins,String entrust_assets);
 	/**
  * 删除 
  * @return 

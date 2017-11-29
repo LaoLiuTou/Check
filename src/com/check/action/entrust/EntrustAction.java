@@ -1035,28 +1035,90 @@ public class EntrustAction implements Action {
 			// Integer.parseInt(iEntrustService.addentrust(entrust).toString());
 			int result = iEntrustService.addentrustFlow(entrust,
 					entrust_samples, entrust_pins,entrust_assets);
-
-			/*
-			 * //修改 Entrust_sample 可删除 同时修改样品jd_lv--已接收 ； //删除 test results //
-			 * 修改 根据pid删除e_pin 然后在新建
-			 */
-			// 新增 Entrust_sample 关系
-			// 修改 样品表jd_lv 修改成 已委托
-			// 新建 test
-			// 新建 results
-			// 新建 e_pin
-
-			/*
-			 * if(result>0){ String qrResult =
-			 * MatrixToImageWriter.createQrImage("TG_"+entrust.getId());
-			 * if(qrResult.length()>0){ HttpServletRequest request =
-			 * ServletActionContext.getRequest(); String path =
-			 * request.getScheme() + "://" + request.getServerName() + ":" +
-			 * request.getServerPort() + request.getContextPath(); Entrust
-			 * upentrust = new Entrust(); upentrust.setId(entrust.getId());
-			 * upentrust.setEwm(path+"/QRImages/"+qrResult);
-			 * iEntrustService.updateentrust(upentrust); } }
-			 */
+ 
+			msg.append("\"success\",\"msg\":\"");
+			msg.append(entrust.getId() + "\"");
+			logger.info(result + "添加成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if (callback == null) {
+			response.getWriter().write(msg.toString());
+		} else {
+			response.getWriter().write(callback + "(" + msg.toString() + ")");
+		}
+		return null;
+	}
+	public String addWtFlow() throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		Entrust entrust = new Entrust();
+		if (id != null && !id.equals(""))
+			entrust.setId(Long.parseLong(id));
+		entrust.setRow_id(row_id);
+		if (c_dt != null && !c_dt.equals(""))
+			entrust.setC_dt(sdf.parse(c_dt));
+		if (up_dt != null && !up_dt.equals(""))
+			entrust.setUp_dt(sdf.parse(up_dt));
+		entrust.setC_id(c_id);
+		// 编号
+		if (flg.equals("Y")) {
+			entrust.setCode(createAppend());
+		} else {
+			
+			entrust.setCode(createCode());
+		}
+		
+		entrust.setProd_id(prod_id);
+		entrust.setTy_lv(ty_lv);
+		entrust.setQy_lv(qy_lv);
+		entrust.setJl_id(jl_id);
+		entrust.setSp_id(sp_id);
+		entrust.setLq_id(lq_id);
+		entrust.setSt_lv(st_lv);
+		entrust.setPay_lv(pay_lv);
+		entrust.setPrice(price);
+		if (cs_n != null && !cs_n.equals(""))
+			entrust.setCs_n(Long.parseLong(cs_n));
+		Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
+		entrust.setSyr_id(prod.getSy_id());
+		entrust.setJh_dt(jh_dt);
+		entrust.setCg_f(cg_f);
+		entrust.setCm_tx(cm_tx);
+		entrust.setFlg(flg);
+		entrust.setPid(pid);
+		
+		// 流水号
+		entrust.setLs_n(createLs_t());
+		entrust.setGg_code(gg_code);
+		entrust.setSy_code(sy_code);
+		entrust.setEwm(ewm);
+		entrust.setBu_id(bu_id);
+		if (wt_dt != null && !wt_dt.equals(""))
+			entrust.setWt_dt(sdf.parse(wt_dt));
+		entrust.setSubmit(submit);
+		if (sjwc_dt != null && !sjwc_dt.equals(""))
+			entrust.setSjwc_dt(sdf.parse(sjwc_dt));
+		if (ff_dt != null && !ff_dt.equals(""))
+			entrust.setFf_dt(sdf.parse(ff_dt));
+		entrust.setFq_flg(fq_flg);
+		entrust.setSpyj_t(spyj_t);
+		if (copy_id != null && !copy_id.equals(""))
+			entrust.setCopy_id(Long.parseLong(copy_id));
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
+		
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			// int result =
+			// Integer.parseInt(iEntrustService.addentrust(entrust).toString());
+			int result = iEntrustService.addWTEntrustFlow(entrust,
+					entrust_samples, entrust_pins,entrust_assets);
+			
 			msg.append("\"success\",\"msg\":\"");
 			msg.append(entrust.getId() + "\"");
 			logger.info(result + "添加成功！");
@@ -1217,6 +1279,7 @@ public class EntrustAction implements Action {
 						}
 					}
 
+					entrust.setSp_id(prod.getSp_id()+"");
 					int result = Integer.parseInt(iEntrustService.addentrust(
 							entrust).toString());
 					if (result > 0) {
@@ -1557,6 +1620,75 @@ public class EntrustAction implements Action {
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iEntrustService.updateentrustFlow(entrust, p_status,
+					entrust_samples, entrust_pins,entrust_assets);
+			msg.append("\"success\",\"msg\":");
+			msg.append("\"更新成功！\"");
+			logger.info(id + "更新成功！");
+		} catch (Exception e) {
+			logger.info(id + "更新失败！" + e);
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"更新失败！\"");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if (callback == null) {
+			response.getWriter().write(msg.toString());
+		} else {
+			response.getWriter().write(callback + "(" + msg.toString() + ")");
+		}
+		return null;
+	}
+	public String updateWtFlow() throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		Entrust entrust = new Entrust();
+		if (id != null && !id.equals(""))
+			entrust.setId(Long.parseLong(id));
+		entrust.setRow_id(row_id);
+		if (c_dt != null && !c_dt.equals(""))
+			entrust.setC_dt(sdf.parse(c_dt));
+		if (up_dt != null && !up_dt.equals(""))
+			entrust.setUp_dt(sdf.parse(up_dt));
+		entrust.setC_id(c_id);
+		entrust.setCode(code);
+		entrust.setProd_id(prod_id);
+		entrust.setTy_lv(ty_lv);
+		entrust.setQy_lv(qy_lv);
+		entrust.setJl_id(jl_id);
+		entrust.setSp_id(sp_id);
+		entrust.setLq_id(lq_id);
+		entrust.setSt_lv(st_lv);
+		entrust.setPay_lv(pay_lv);
+		entrust.setPrice(price);
+		if (cs_n != null && !cs_n.equals(""))
+			entrust.setCs_n(Long.parseLong(cs_n));
+		entrust.setSyr_id(syr_id);
+		entrust.setJh_dt(jh_dt);
+		entrust.setCg_f(cg_f);
+		entrust.setCm_tx(cm_tx);
+		entrust.setFlg(flg);
+		entrust.setPid(pid);
+		entrust.setLs_n(ls_n);
+		entrust.setGg_code(gg_code);
+		entrust.setSy_code(sy_code);
+		entrust.setEwm(ewm);
+		entrust.setBu_id(bu_id);
+		if (wt_dt != null && !wt_dt.equals(""))
+			entrust.setWt_dt(sdf.parse(wt_dt));
+		entrust.setSubmit(submit);
+		if (sjwc_dt != null && !sjwc_dt.equals(""))
+			entrust.setSjwc_dt(sdf.parse(sjwc_dt));
+		if (ff_dt != null && !ff_dt.equals(""))
+			entrust.setFf_dt(sdf.parse(ff_dt));
+		entrust.setFq_flg(fq_flg);
+		entrust.setSpyj_t(spyj_t);
+		if (copy_id != null && !copy_id.equals(""))
+			entrust.setCopy_id(Long.parseLong(copy_id));
+		entrust.setCjz_type(cjz_type);
+		entrust.setShow_flg(show_flg);
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			iEntrustService.updateWTEntrustFlow(entrust, p_status,
 					entrust_samples, entrust_pins,entrust_assets);
 			msg.append("\"success\",\"msg\":");
 			msg.append("\"更新成功！\"");

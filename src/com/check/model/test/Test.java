@@ -260,5 +260,13 @@ public class Test {
 		this.e_flg = e_flg;
 	}
 	
+	private String p_print_flag;
+	public String getP_print_flag() {
+		return p_print_flag;
+	}
+	public void setP_print_flag(String p_print_flag) {
+		this.p_print_flag = p_print_flag;
+	}
+	
 
 }

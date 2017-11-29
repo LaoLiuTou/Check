@@ -5,7 +5,7 @@
 	<select id="selecttestById" parameterType="String" resultType="Test">
 		 
 		SELECT a.*,  b.nm_t as s_nm_t,c.name as sy_name,d.name as sh_name,
-		f.nm_t as pact_nm_t,g.nm_t as a_nm_t
+		f.nm_t as pact_nm_t,g.nm_t as a_nm_t,h.print_flag as p_print_flag 
 		FROM test a  
 		LEFT JOIN sample  b ON a.SAMPLE_ID=b.ID 
 		LEFT JOIN members c ON a.SY_ID=c.ID 
@@ -13,6 +13,7 @@
 		LEFT JOIN entrust e ON a.PID=e.ID 
 		LEFT JOIN pact    f ON e.PID=f.ID 
 		LEFT JOIN accnt   g ON f.PID=g.ID  
+		LEFT JOIN prod   h ON h.ID=e.PROD_ID  
 		WHERE a.ID=#{id} 
 	</select>
 
@@ -26,7 +27,7 @@
 
 	<select id="selecttestByParam" parameterType="java.util.Map" resultType="Test">
 		SELECT a.*,  b.nm_t as s_nm_t,c.name as sy_name,d.name as sh_name,
-		f.nm_t as pact_nm_t,g.nm_t as a_nm_t,e.flg as e_flg 
+		f.nm_t as pact_nm_t,g.nm_t as a_nm_t,e.flg as e_flg ,h.print_flag as p_print_flag 
 		FROM test a  
 		LEFT JOIN sample  b ON a.SAMPLE_ID=b.ID 
 		LEFT JOIN members c ON a.SY_ID=c.ID 
@@ -34,6 +35,7 @@
 		LEFT JOIN entrust e ON a.PID=e.ID 
 		LEFT JOIN pact    f ON e.PID=f.ID 
 		LEFT JOIN accnt   g ON f.PID=g.ID  
+		LEFT JOIN prod   h ON h.ID=e.PROD_ID 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
 			<if test="row_id != null"> AND a.ROW_ID =#{row_id} </if>

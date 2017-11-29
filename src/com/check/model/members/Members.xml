@@ -29,6 +29,7 @@
 		LEFT JOIN accnt d on d.id=c.pid  
 		LEFT JOIN bu e on e.id=m.bu_id   
 		LEFT JOIN departments f on f.id=m.departments_id   
+		LEFT JOIN auth_group_access g on g.uid=m.id    
 		 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND m.ID =#{id} </if>
@@ -48,44 +49,52 @@
 			<if test="bu_id != null"> AND m.BU_ID =#{bu_id} </if>
 			<if test="img != null"> AND m.IMG =#{img} </if>
 			<if test="sign != null"> AND m.SIGN =#{sign} </if>
-			<if test="name != null"> AND m.NAME =#{name} </if>
+			<if test="name != null"> AND m.NAME LIKE #{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
 			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
 			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
 			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
+			<if test="group_id != null"> AND g.GROUP_ID =#{group_id} </if>
 		</trim>  
 		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountmembersByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(ID) 
-		FROM members 
+		SELECT COUNT(m.ID) 
+		FROM members  m
+		left join auth_group_access aga on m.id=aga.uid  
+		LEFT JOIN cont c on m.id=c.user_id  
+		LEFT JOIN accnt d on d.id=c.pid  
+		LEFT JOIN bu e on e.id=m.bu_id   
+		LEFT JOIN departments f on f.id=m.departments_id   
+		LEFT JOIN auth_group_access g on g.uid=m.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="row_id != null"> AND ROW_ID =#{row_id} </if>
-			<if test="username != null"> AND USERNAME =#{username} </if>
-			<if test="userpwd != null"> AND USERPWD =#{userpwd} </if>
-			<if test="resp != null"> AND RESP =#{resp} </if>
-			<if test="status != null"> AND STATUS =#{status} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="type != null"> AND TYPE =#{type} </if>
+			<if test="id != null"> AND m.ID =#{id} </if>
+			<if test="row_id != null"> AND m.ROW_ID =#{row_id} </if>
+			<if test="username != null"> AND m.USERNAME =#{username} </if>
+			<if test="userpwd != null"> AND m.USERPWD =#{userpwd} </if>
+			<if test="resp != null"> AND m.RESP =#{resp} </if>
+			<if test="status != null"> AND m.STATUS =#{status} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(m.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(m.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND m.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(m.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(m.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND m.UP_DT =#{up_dt} </if>
+			<if test="type != null"> AND m.TYPE =#{type} </if>
 			<if test="typeno != null"> AND m.TYPE &lt;&gt; #{typeno} </if>
-			<if test="bu_id != null"> AND BU_ID =#{bu_id} </if>
-			<if test="img != null"> AND IMG =#{img} </if>
-			<if test="sign != null"> AND SIGN =#{sign} </if>
-			<if test="name != null"> AND NAME =#{name} </if>
+			<if test="bu_id != null"> AND m.BU_ID =#{bu_id} </if>
+			<if test="img != null"> AND m.IMG =#{img} </if>
+			<if test="sign != null"> AND m.SIGN =#{sign} </if>
+			<if test="name != null"> AND m.NAME LIKE #{name} </if>
 			<if test="sign_flg != null"> AND m.SIGN_FLG =#{sign_flg} </if>
 			<if test="accnt_id != null"> AND m.ACCNT_ID =#{accnt_id} </if>
 			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
 			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
 			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
+			<if test="group_id != null"> AND g.GROUP_ID =#{group_id} </if>
 		</trim>  
 	</select>
 

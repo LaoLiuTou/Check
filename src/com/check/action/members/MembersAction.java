@@ -358,6 +358,7 @@ public class MembersAction implements Action {
 			paramMap.put("last_name", last_name);
 			paramMap.put("accnt_id_null", accnt_id_null);
 			paramMap.put("departments_id", departments_id);
+			paramMap.put("group_id", group_id);
 			
 			
 			 
@@ -553,6 +554,7 @@ public class MembersAction implements Action {
 		paramMap.put("last_name", last_name);
 		paramMap.put("accnt_id_null", accnt_id_null);
 		paramMap.put("departments_id", departments_id);
+		paramMap.put("group_id", group_id);
 		
 
 		//StringBuffer msg = new StringBuffer("{\"state\":");

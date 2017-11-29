@@ -23,7 +23,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
 			<if test="loc != null"> AND LOC =#{loc} </if>
 			<if test="kh_t != null"> AND KH_T =#{kh_t} </if>
 			<if test="zh_t != null"> AND ZH_T =#{zh_t} </if>
@@ -55,7 +55,7 @@
 			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
 			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
 			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
-			<if test="nm_t != null"> AND NM_T =#{nm_t} </if>
+			<if test="nm_t != null"> AND NM_T LIKE #{nm_t} </if>
 			<if test="loc != null"> AND LOC =#{loc} </if>
 			<if test="kh_t != null"> AND KH_T =#{kh_t} </if>
 			<if test="zh_t != null"> AND ZH_T =#{zh_t} </if>

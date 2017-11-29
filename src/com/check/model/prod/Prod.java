@@ -207,4 +207,49 @@ public class Prod {
 		this.flg = flg;
 	}
 	
+	
+	private Long sh_id;
+	private Long sp_id;
+	private String print_flag;
+	public Long getSh_id() {
+		return sh_id;
+	}
+	public void setSh_id(Long sh_id) {
+		this.sh_id = sh_id;
+	}
+	public Long getSp_id() {
+		return sp_id;
+	}
+	public void setSp_id(Long sp_id) {
+		this.sp_id = sp_id;
+	}
+	public String getPrint_flag() {
+		return print_flag;
+	}
+	public void setPrint_flag(String print_flag) {
+		this.print_flag = print_flag;
+	}
+	
+	private Long templete_id;
+	public Long getTemplete_id() {
+		return templete_id;
+	}
+	public void setTemplete_id(Long templete_id) {
+		this.templete_id = templete_id;
+	}
+	private String c_nm_t;
+	private String c_cm_tx;
+	public String getC_nm_t() {
+		return c_nm_t;
+	}
+	public void setC_nm_t(String c_nm_t) {
+		this.c_nm_t = c_nm_t;
+	}
+	public String getC_cm_tx() {
+		return c_cm_tx;
+	}
+	public void setC_cm_tx(String c_cm_tx) {
+		this.c_cm_tx = c_cm_tx;
+	}
+	
 }
