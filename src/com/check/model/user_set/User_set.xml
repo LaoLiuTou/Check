@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.dao.user_set.IUser_setMapper"> 
+	<select id="selectuser_setById" parameterType="String" resultType="User_set">
+		SELECT a.* ,b.name as m_name,b.username as username,d.title as a_title 
+		FROM user_set a 
+		LEFT JOIN members b on a.members_id=b.id 
+		LEFT JOIN auth_group_access c on b.id=c.uid 
+		LEFT JOIN auth_group d on c.group_id=d.id 
+		WHERE a.ID=#{id}
+	</select>
+
+
+	<delete id="deleteuser_set" parameterType="String"> 
+		DELETE FROM user_set WHERE ID=#{id}
+	</delete>
+	<delete id="deleteuser_setBytyle" parameterType="String"> 
+		DELETE FROM user_set WHERE TY_LV=#{tylv}
+	</delete>
+
+	<select id="selectuser_setByParam" parameterType="java.util.Map" resultType="User_set">
+		SELECT a.* ,b.name as m_name,b.username as username,d.title as a_title 
+		FROM user_set a 
+		LEFT JOIN members b on a.members_id=b.id 
+		LEFT JOIN auth_group_access c on b.id=c.uid 
+		LEFT JOIN auth_group d on c.group_id=d.id 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="members_id != null"> AND a.MEMBERS_ID =#{members_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="group_id != null"> AND c.GROUP_ID =#{group_id} </if>
+			<if test="m_name != null"> AND b.NAME LIKE #{m_name} </if>
+		</trim>  
+		ORDER BY a.ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select>
+
+	<select id="selectCountuser_setByParam" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(a.ID) 
+		FROM user_set a 
+		LEFT JOIN members b on a.members_id=b.id 
+		LEFT JOIN auth_group_access c on b.id=c.uid 
+		LEFT JOIN auth_group d on c.group_id=d.id 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="ty_lv != null"> AND a.TY_LV =#{ty_lv} </if>
+			<if test="members_id != null"> AND a.MEMBERS_ID =#{members_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND a.C_ID =#{c_id} </if>
+			<if test="bu_id != null"> AND a.BU_ID =#{bu_id} </if>
+			<if test="group_id != null"> AND c.GROUP_ID =#{group_id} </if>
+			<if test="m_name != null"> AND b.NAME LIKE #{m_name} </if>
+		</trim>  
+	</select>
+
+	<update id="updateuser_set" parameterType="User_set">
+		UPDATE user_set 
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID=#{id}, </if>
+			<if test="ty_lv != null">TY_LV=#{ty_lv}, </if>
+			<if test="members_id != null">MEMBERS_ID=#{members_id}, </if>
+			<if test="c_dt != null">C_DT=#{c_dt}, </if>
+			<if test="up_dt != null">UP_DT=#{up_dt}, </if>
+			<if test="c_id != null">C_ID=#{c_id}, </if>
+			<if test="bu_id != null">BU_ID=#{bu_id}, </if>
+		</trim>
+		WHERE ID=#{id}
+	</update>
+
+	<insert id="adduser_set" parameterType="User_set">
+		INSERT INTO user_set 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="ty_lv != null">TY_LV, </if>
+			<if test="members_id != null">MEMBERS_ID, </if>
+			<if test="c_dt != null">C_DT, </if>
+			<if test="up_dt != null">UP_DT, </if>
+			<if test="c_id != null">C_ID, </if>
+			<if test="bu_id != null">BU_ID, </if>
+		</trim>
+		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+			<if test="ty_lv != null">#{ty_lv}, </if>
+			<if test="members_id != null">#{members_id}, </if>
+			<if test="c_dt != null">#{c_dt}, </if>
+			<if test="up_dt != null">#{up_dt}, </if>
+			<if test="c_id != null">#{c_id}, </if>
+			<if test="bu_id != null">#{bu_id}, </if>
+		</trim>
+		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+</mapper>
