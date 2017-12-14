@@ -89,48 +89,33 @@ public class TestServiceImpl  implements ITestService {
 			}
 		}
 		else*/
-		if(test.getStatus()!=null&&test.getStatus().equals("检验中")){
-			test.setStatus("检验中");
-			
-			result=iTestMapper.updatetest(test);
-			if(result>0){
-				test=iTestMapper.selecttestById(test.getId()+"");
-				Entrust entrust  = new Entrust();
-				entrust.setId(Long.parseLong(test.getPid()));
-				entrust.setSt_lv("检验中");
-				iEntrustMapper.updateentrust(entrust);
-				
-				
-				//修改样品   stlv  已检验
-				if(test.getSample_id()!=null){
-					//Sample tempSample= iSampleMapper.selectsampleById(test.getSample_id());
-					Sample tempSample = new Sample();
-					tempSample.setId(Long.parseLong(test.getSample_id()));
-					tempSample.setJd_lv("已检验");
-					
-					iSampleMapper.updatesample(tempSample);
-				}
-				
-			}
-		}
-		else if(test.getStatus()!=null&&test.getStatus().equals("待审核")){
+	 
+		if(test.getStatus()!=null&&test.getStatus().equals("待审核")){
 			test.setStatus("待审核");
 			
 			 
 			result=iTestMapper.updatetest(test);
 			if(result>0){
 				test=iTestMapper.selecttestById(test.getId()+"");
-				Map paramMap = new HashMap();
+				/*Map paramMap = new HashMap();
 				paramMap.put("pid", test.getPid());
 				int totalNum = iTestMapper.selectCounttestByParam(paramMap);
 				//paramMap.put("status", "待审核");
 				paramMap.put("sum_status", "('待审核','已取消')");
 				int subNum= iTestMapper.selectCounttestByParam(paramMap);
-				if(totalNum==subNum){
+				if(totalNum==subNum){*/
 					Entrust entrust  = new Entrust();
 					entrust.setId(Long.parseLong(test.getPid()));
 					entrust.setSt_lv("检验中");
 					iEntrustMapper.updateentrust(entrust);
+				//}
+				//修改样品   stlv  已检验
+				if(test.getSample_id()!=null){
+					//Sample tempSample= iSampleMapper.selectsampleById(test.getSample_id());
+					Sample tempSample = new Sample();
+					tempSample.setId(Long.parseLong(test.getSample_id()));
+					tempSample.setJd_lv("已检验");
+					iSampleMapper.updatesample(tempSample);
 				}
 				
 			}
@@ -154,15 +139,28 @@ public class TestServiceImpl  implements ITestService {
 					iEntrustMapper.updateentrust(entrust);
 					 
 				}
-				//修改样品   stlv  已检验
-				if(test.getSample_id()!=null){
-					//Sample tempSample= iSampleMapper.selectsampleById(test.getSample_id());
-					Sample tempSample = new Sample();
-					tempSample.setId(Long.parseLong(test.getSample_id()));
-					tempSample.setJd_lv("已检验");
+				
+			}
+		}
+		else if(test.getStatus()!=null&&test.getStatus().equals("待检验")){
+			test.setStatus("待检验");
+			
+			
+			result=iTestMapper.updatetest(test);
+			if(result>0){
+				test=iTestMapper.selecttestById(test.getId()+"");
+				/*Map paramMap = new HashMap();
+				paramMap.put("pid", test.getPid());
+				int totalNum = iTestMapper.selectCounttestByParam(paramMap);
+				paramMap.put("sum_status", "('待检验','已取消')");
+				int subNum= iTestMapper.selectCounttestByParam(paramMap);
+				if(totalNum==subNum){*/
+					Entrust entrust  = new Entrust();
+					entrust.setId(Long.parseLong(test.getPid()));
+					entrust.setSt_lv("检验中");
+					iEntrustMapper.updateentrust(entrust);
 					
-					iSampleMapper.updatesample(tempSample);
-				}
+				//}
 				
 			}
 		}
@@ -217,44 +215,6 @@ public class TestServiceImpl  implements ITestService {
 				
 			}
 		} 
-		else if(test.getStatus()!=null&&test.getStatus().equals("新建-检验中")){
-			test.setStatus("检验中");
-			result=iTestMapper.updatetest(test);
-			if(result>0){
-				test=iTestMapper.selecttestById(test.getId()+"");
-				/*Map  paramMap = new HashMap ();
-				paramMap.put("fromPage",0);
-				paramMap.put("toPage",1); 
-				paramMap.put("pid", test.getPid());
-				List<Entrust_sample> esList= iEntrust_sampleMapper.selectentrust_sampleByParam(paramMap);
-				if(esList.size()>0){
-					Sample sample = iSampleMapper.selectsampleById(esList.get(0).getSample_id()+"");
-					if(sample!=null){
-						Sample temp= new Sample();
-						temp.setId(sample.getId());
-						temp.setJd_lv("已检验");
-						iSampleMapper.updatesample(temp);
-					}
-					
-				}*/
-				Entrust entrust  = new Entrust();
-				entrust.setId(Long.parseLong(test.getPid()));
-				entrust.setSt_lv("检验中");
-				iEntrustMapper.updateentrust(entrust);
-				 
-				//修改样品   stlv  已检验
-				if(test.getSample_id()!=null){
-					//Sample tempSample= iSampleMapper.selectsampleById(test.getSample_id());
-					Sample tempSample = new Sample();
-					tempSample.setId(Long.parseLong(test.getSample_id()));
-					tempSample.setJd_lv("已检验");
-					
-					iSampleMapper.updatesample(tempSample);
-				}
-			}
-			 
-			
-		}
 		else{
 			result=iTestMapper.updatetest(test);
 		}

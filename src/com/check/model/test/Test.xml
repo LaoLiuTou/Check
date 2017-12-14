@@ -68,11 +68,13 @@
 			<if test="sum_status != null"> AND a.STATUS IN ${sum_status} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
+			<if test="status_in != null"> AND a.STATUS IN ${status_in} </if>
 			<if test="e_flg != null"> AND e.FLG =#{e_flg} </if>
 			
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
 			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND g.NM_T LIKE #{a_nm_t} </if>
+			<if test="mut_param != null"> AND ${mut_param} </if>
 			 
 		</trim>  
 		ORDER BY a.ID DESC 
@@ -120,11 +122,12 @@
 			<if test="sum_status != null"> AND a.STATUS IN ${sum_status} </if>
 			<if test="fq_flg != null"> AND a.FQ_FLG =#{fq_flg} </if>
 			<if test="ewm != null"> AND a.EWM =#{ewm} </if>
+			<if test="status_in != null"> AND a.STATUS IN ${status_in} </if>
 			<if test="e_flg != null"> AND e.FLG =#{e_flg} </if>
 			<if test="s_nm_t != null"> AND b.NM_T LIKE #{s_nm_t} </if>
 			<if test="pact_nm_t != null"> AND f.NM_T LIKE #{pact_nm_t} </if>
 			<if test="a_nm_t != null"> AND g.NM_T LIKE #{a_nm_t} </if>
-			 
+			 <if test="mut_param != null"> AND ${mut_param} </if>
 		</trim>   
 	</select>
 

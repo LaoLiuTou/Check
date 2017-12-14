@@ -179,10 +179,11 @@ public class EntrustServiceImpl  implements IEntrustService {
 			}
 			
 			if(entrust.getSt_lv()!=null){
+			 
 				Test test = new Test();
 				test.setPid(entrust.getId()+"");
-				if(entrust.getSt_lv().equals("已完成")){
-					test.setStatus("已完成");
+				if(entrust.getSt_lv().equals("已存档")){
+					test.setStatus("已存档");
 					iTestService.updatetestbypid(test);
 				}
 				else if(entrust.getSt_lv().equals("检验中")){
@@ -193,12 +194,39 @@ public class EntrustServiceImpl  implements IEntrustService {
 					test.setStatus("已发放");
 					iTestService.updatetestbypid(test);
 				}
-				else if(entrust.getSt_lv().equals("已存档")){
-					test.setStatus("已存档");
+				else if(entrust.getSt_lv().equals("已取消")){
+					test.setStatus("已取消");
+					iTestService.updatetestbypid(test);
+					
+					//修改样品
+					Map paramMap = new HashMap ();
+					paramMap.put("pid", entrust.getId()+"");
+					 
+					//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+					int esnum = iEntrust_sampleMapper.selectCountentrust_sampleByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",esnum);
+					List<Entrust_sample> esList= iEntrust_sampleMapper.selectentrust_sampleByParam(paramMap);
+					
+					for(Entrust_sample es:esList){
+						if(es.getSample_id()!=null){
+							//Sample tempSample= iSampleService.selectsampleById(es.getSample_id());
+							Sample tempSample = new Sample();
+							tempSample.setId(Long.parseLong(es.getSample_id()));
+							tempSample.setJd_lv("已取消");
+							iSampleService.updatesample(tempSample);
+							
+						}
+						 
+					}
+					
+				}
+				else if(entrust.getSt_lv().equals("需调整")){
+					test.setStatus("需调整");
 					iTestService.updatetestbypid(test);
 				}
-				else if(entrust.getSt_lv().equals("审批中")){
-					test.setStatus("审批中");
+				else if(entrust.getSt_lv().equals("已分配")){
+					test.setStatus("待检验");
 					iTestService.updatetestbypid(test);
 				}
 				else{
@@ -452,10 +480,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 		 
 		 
 		 if(entrust.getSt_lv()!=null){
-				Test test = new Test();
+			 Test test = new Test();
 				test.setPid(entrust.getId()+"");
-				if(entrust.getSt_lv().equals("已完成")){
-					test.setStatus("已完成");
+				if(entrust.getSt_lv().equals("已存档")){
+					test.setStatus("已存档");
 					iTestService.updatetestbypid(test);
 				}
 				else if(entrust.getSt_lv().equals("检验中")){
@@ -466,20 +494,39 @@ public class EntrustServiceImpl  implements IEntrustService {
 					test.setStatus("已发放");
 					iTestService.updatetestbypid(test);
 				}
-				else if(entrust.getSt_lv().equals("已存档")){
-					test.setStatus("已存档");
+				else if(entrust.getSt_lv().equals("已取消")){
+					test.setStatus("已取消");
 					iTestService.updatetestbypid(test);
-				}
-				else if(entrust.getSt_lv().equals("审批中")){
-					test.setStatus("审批中");
-					iTestService.updatetestbypid(test);
+					
+					//修改样品
+					Map paramMap = new HashMap ();
+					paramMap.put("pid", entrust.getId()+"");
+					 
+					//paramMap.put("up_dtFrom", sdf.parse(updatetime));
+					int esnum = iEntrust_sampleMapper.selectCountentrust_sampleByParam(paramMap);
+					paramMap.put("fromPage",0);
+					paramMap.put("toPage",esnum);
+					List<Entrust_sample> esList= iEntrust_sampleMapper.selectentrust_sampleByParam(paramMap);
+					
+					for(Entrust_sample es:esList){
+						if(es.getSample_id()!=null){
+							//Sample tempSample= iSampleService.selectsampleById(es.getSample_id());
+							Sample tempSample = new Sample();
+							tempSample.setId(Long.parseLong(es.getSample_id()));
+							tempSample.setJd_lv("已取消");
+							iSampleService.updatesample(tempSample);
+							
+						}
+						 
+					}
+					
 				}
 				else if(entrust.getSt_lv().equals("需调整")){
 					test.setStatus("需调整");
 					iTestService.updatetestbypid(test);
 				}
 				else if(entrust.getSt_lv().equals("已分配")){
-					test.setStatus("新建");
+					test.setStatus("待检验");
 					iTestService.updatetestbypid(test);
 				}
 				else{
@@ -943,13 +990,16 @@ public class EntrustServiceImpl  implements IEntrustService {
 		int result =0;
 		
 		//默认实验人,审批人
-		Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
-		entrust.setSyr_id(prod.getSy_id());
+		//Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
+		/*if(prod.getSy_id()!=null){
+			entrust.setSyr_id(prod.getSy_id());
+		}*/
 		//entrust.setSp_id(prod.getSp_id()+"");
 		
 		result=iEntrustMapper.updateentrust(entrust);
 		if(result>0){
 			entrust=iEntrustMapper.selectentrustById(entrust.getId()+"");
+			Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
 			List<String> testidList= new ArrayList<String>();
 			//样品sampless
 			for(int index=0;index<entrust_samples.size();index++){
@@ -986,7 +1036,10 @@ public class EntrustServiceImpl  implements IEntrustService {
 				test.setSample_id(sample.getId()+"");
 				test.setStatus("新建");
 				test.setSy_id(entrust.getSyr_id());
-				test.setSh_id(prod.getSh_id()+"");
+				if(prod!=null&&prod.getSh_id()!=null){
+					test.setSh_id(prod.getSh_id()+"");
+				}
+				
 				
 				int testresult = Integer.parseInt(iTestService.addtest(test).toString());
 				if(testresult>0){
@@ -1023,7 +1076,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 				paramMap.put("toPage",prodnum);
 				List<Prod> prodList=iProdService.selectprodByParam(paramMap); */
 				Prod temp =iProdService.selectprodById(entrust_pin.getJcx_id());
-				//for(Prod temp : prodList){
+				if(temp!=null){
 					
 					for(String tempStr :testidList){
 						Results presults=new Results();
@@ -1085,7 +1138,7 @@ public class EntrustServiceImpl  implements IEntrustService {
 							}
 						}
 					}
-				//}
+				}
 				//结果表results start
 			}
 			
@@ -1526,7 +1579,9 @@ public class EntrustServiceImpl  implements IEntrustService {
 						entrust_asset.setAgree_id(entrust.getId()+"");
 						entrust_asset.setAss_id(temp.getAsset_id()+"");
 						entrust_asset.setC_id(entrust.getC_id());
-						entrust_asset.setFlag(temp.getFlag());
+						if(temp!=null&&temp.getFlag()!=null){
+							entrust_asset.setFlag(temp.getFlag());
+						}
 						iEntrust_assetMapper.addentrust_asset(entrust_asset);
 					}
 					
@@ -2094,8 +2149,12 @@ public class EntrustServiceImpl  implements IEntrustService {
 		test.setSample_id(sample.getId()+"");
 		test.setStatus("新建");
 		Prod prod = iProdService.selectprodById(entrust.getProd_id()); 
-		test.setSy_id(entrust.getSyr_id());
-		test.setSh_id(prod.getSh_id()+"");
+		if(entrust!=null&&entrust.getSyr_id()!=null){
+			test.setSy_id(entrust.getSyr_id());
+		}
+		if(prod!=null&&prod.getSh_id()!=null){
+			test.setSh_id(prod.getSh_id()+"");
+		}
 		
 		int testresult = Integer.parseInt(iTestService.addtest(test).toString());
 		if(testresult>0){

@@ -656,6 +656,16 @@ public class EntrustAction implements Action {
 		this.entrust_assets = entrust_assets;
 	}
 
+	private String mut_param;
+	
+	public String getMut_param() {
+		return mut_param;
+	}
+
+	public void setMut_param(String mut_param) {
+		this.mut_param = mut_param;
+	}
+
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -1444,6 +1454,312 @@ public class EntrustAction implements Action {
 		}
 		return null;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String remote() throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		
+		StringBuffer msg = new StringBuffer("{\"state\":");
+		try {
+			// if(entrustnum!=null&&!entrustnum.equals("")){
+			
+			List<String> cancelIdList = new ArrayList<String>();
+			
+			
+			// 保存检测项目id不重复创建委托单
+			List<Sample> sampleList = new ArrayList<Sample>();
+			// String[] sampleId= sampleIds.split("\\|");
+			JSONObject sampleidJO = JSONObject.fromObject(sampleids);
+			// JSONObject entrustnumJO = JSONObject.fromObject(entrustnums);
+			Iterator iterator = sampleidJO.keys();
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				Sample sample = iSampleService.selectsampleById(key);
+				if (sample != null) {
+					sampleList.add(sample);
+					//状态为已取消停止新建
+					if(sample.getSt_lv()!=null&&sample.getSt_lv().equals("已取消")){
+						cancelIdList.add(sample.getId()+"");
+					}
+				}
+				
+			}
+			
+			if(cancelIdList.size()==0){
+				// 分类
+				TreeMap sampleMap = (TreeMap) sort(sampleList);
+				Iterator it = sampleMap.keySet().iterator();
+				while (it.hasNext()) {
+					String key = (String) it.next();
+					List<Sample> templist = (List<Sample>) sampleMap.get(key);
+					System.out.print("\n" + key + ":");
+					Prod prod = iProdService.selectprodById(key);
+					Pact pact = iPactService.selectpactById(templist.get(0)
+							.getPid());
+					
+					Entrust entrust = new Entrust();
+					entrust.setBu_id(bu_id);
+					entrust.setProd_id(key);
+					entrust.setJl_id(pact.getJl_id());
+					// entrust.setSp_id(key)
+					entrust.setSyr_id(prod.getSy_id());
+					entrust.setPid(pact.getId() + "");
+					if (templist.get(0).getSy_dt() != null) {
+						entrust.setWt_dt(sdf.parse(templist.get(0).getSy_dt()));
+					}
+					entrust.setC_id(c_id);
+					wt_dt = templist.get(0).getSy_dt();
+					// bu_id = pact.getBu_id();
+					// c_id = pact.getC_id();
+					pid = pact.getId() + "";
+					// 编号
+					if (templist.get(0).getFlg().equals("Y")) {
+						entrust.setCode(createAppend());
+					} else {
+						entrust.setCode(createCode());
+					}
+					
+					// 流水号
+					entrust.setLs_n(createLs_t());
+					
+					// 默认值
+					entrust.setSt_lv("新建");
+					entrust.setCjz_type("远程委托");
+					entrust.setShow_flg("N");
+					entrust.setCg_f(cg_f);
+					entrust.setFlg("Y");
+					entrust.setTy_lv("一般委托");
+					entrust.setQy_lv("现场");
+					
+					Bu bu = iBuService.selectbuById(bu_id);
+					if (bu != null) {
+						entrust.setSp_id(bu.getApprove());
+					}
+					entrust.setPay_lv("未付款");
+					// 常规价、复检价
+					if (cg_f != null) {
+						if (cg_f.equals("Y")) {
+							entrust.setPrice(prod.getCgj());
+						} else if (cg_f.equals("N")) {
+							entrust.setPrice(prod.getFjj());
+						}
+					}
+					//
+					entrust.setCs_n(Long.parseLong(templist.size() + ""));
+					// 更新委托单字段gg_code、sy_code
+					List<String> gg_code = new ArrayList<String>();
+					List<String> sy_code = new ArrayList<String>();
+					for (Sample tempSample : templist) {
+						gg_code.add(tempSample.getGg_t());
+						sy_code.add(tempSample.getPart());
+					}
+					
+					String gg_codeStr = StringUtils.join(gg_code, " ");
+					String sy_codeStr = "";
+					for (String partStr : sy_code) {
+						if (sy_code.indexOf(partStr) == 0) {
+							sy_codeStr += partStr + "、";
+							
+						} else {
+							if (partStr.length() > 5) {
+								sy_codeStr += partStr
+										.substring(5, partStr.length()) + "、";
+							}
+						}
+						
+					}
+					if (sy_codeStr.length() > 0) {
+						sy_codeStr = sy_codeStr.substring(0,
+								sy_codeStr.length() - 1);
+					}
+					entrust.setGg_code(gg_codeStr);
+					entrust.setSy_code(sy_codeStr);
+					
+					// 待确定
+					// entrust.setJh_dt();
+					if(entrust.getJh_dt()==null||entrust.getJh_dt().equals("")){
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(entrust.getWt_dt());
+						gc.add(5, Integer.parseInt(prod.getZq_n() + ""));
+						entrust.setJh_dt(sdf.format(gc.getTime()));
+						// entrust.setSjwc_dt();
+					}
+					
+					
+					Members tempMembers = iMembersService.selectmembersById(c_id);
+					if (tempMembers != null) {
+						if (tempMembers.getAccnt_id() != null) {
+							Accnt accnt = iAccntService.selectaccntById(tempMembers
+									.getAccnt_id() + "");
+							entrust.setLq_id(accnt.getCont_id());
+						}
+					}
+					
+					entrust.setSp_id(prod.getSp_id()+"");
+					int result = Integer.parseInt(iEntrustService.addentrust(
+							entrust).toString());
+					if (result > 0) {
+						String qrResult = MatrixToImageWriter.createQrImage("TG_"
+								+ entrust.getId());
+						if (qrResult.length() > 0) {
+							HttpServletRequest request = ServletActionContext
+									.getRequest();
+							String path = request.getScheme() + "://"
+									+ request.getServerName() + ":"
+									+ request.getServerPort()
+									+ request.getContextPath();
+							Entrust upentrust = new Entrust();
+							upentrust.setId(entrust.getId());
+							upentrust.setEwm(path + "/QRImages/" + qrResult);
+							iEntrustService.updateentrust(upentrust);
+						}
+						
+						// /中间表
+						Map paramMap = new HashMap();
+						paramMap.put("pid", prod.getId());
+						paramMap.put("ty_lv", "检测项目");
+						// paramMap.put("up_dtFrom", sdf.parse(updatetime));
+						int prodnum = iProdService.selectCountprodByParam(paramMap);
+						paramMap.put("fromPage", 0);
+						paramMap.put("toPage", prodnum);
+						List<Prod> prodList = iProdService
+								.selectprodByParam(paramMap);
+						for (Prod temp : prodList) {
+							if (entrust.getCg_f() != null
+									&& entrust.getCg_f().equals("Y")) {
+								//
+								Entrust_pin entrust_pin = new Entrust_pin();
+								entrust_pin.setC_id(entrust.getC_id());
+								entrust_pin.setJc_f("Y");
+								entrust_pin.setJcx_id(temp.getId() + "");
+								entrust_pin.setPid(entrust.getId() + "");
+								iEntrust_pinService.addentrust_pin(entrust_pin);
+							} else {
+								Entrust_pin entrust_pin = new Entrust_pin();
+								entrust_pin.setC_id(entrust.getC_id());
+								entrust_pin.setJc_f(temp.getFj_f());
+								entrust_pin.setJcx_id(temp.getId() + "");
+								entrust_pin.setPid(entrust.getId() + "");
+								iEntrust_pinService.addentrust_pin(entrust_pin);
+							}
+						}
+						
+						
+						for (int i = 0; i < templist.size(); i++) {
+							Sample sample = templist.get(i);
+							
+							//更新样品
+							Sample upsample = new Sample();
+							upsample.setId(sample.getId());
+							upsample.setJd_lv("已接收");
+							iSampleService.updatesample(upsample);
+							
+							Entrust_sample entrust_sample = new Entrust_sample();
+							entrust_sample.setC_id(entrust.getC_id());
+							entrust_sample.setPid(entrust.getId() + "");
+							entrust_sample.setSample_id(sample.getId() + "");
+							iEntrust_sampleService
+							.addentrust_sample(entrust_sample);
+						}
+						
+						
+						//
+						paramMap = new HashMap();
+						paramMap.put("prod_id", key); 
+						// paramMap.put("up_dtFrom", sdf.parse(updatetime));
+						int prod_assetnum = iProd_assetService.selectCountprod_assetByParam(paramMap);
+						paramMap.put("fromPage", 0);
+						paramMap.put("toPage", prod_assetnum);
+						List<Prod_asset> tempList=iProd_assetService.selectprod_assetByParam(paramMap);
+						for(Prod_asset temp :tempList){
+							Entrust_asset entrust_asset = new Entrust_asset();
+							entrust_asset.setAgree_id(entrust.getId()+"");
+							entrust_asset.setAss_id(temp.getAsset_id()+"");
+							entrust_asset.setC_id(entrust.getC_id());
+							entrust_asset.setFlag(temp.getFlag());
+							iEntrust_assetService.addentrust_asset(entrust_asset);
+						}
+						
+					}
+					
+					/*for (int i = 0; i < templist.size(); i++) {
+						Sample sample = templist.get(i);
+
+						// 更新样品
+						int ennum = Integer.parseInt(sampleidJO.getString(sample
+								.getId() + ""));
+						for (int j = 0; j < ennum; j++) {
+							sample.setId(null);
+							// 编号
+							sample.setPart(createSampleCode(sample.getBu_id(),
+									prod.getId() + ""));
+							// 批号
+							sample.setLot(createSampleLot(sample.getBu_id(),
+									sample.getSy_dt(), pact.getId() + "",
+									prod.getId() + "", sample.getC_id()));
+							sample.setSt_lv("已接收");
+
+							int sresult = Integer.parseInt(iSampleService
+									.addsample(sample).toString());
+							if (sresult > 0) {
+								String qrResult = MatrixToImageWriter
+										.createQrImage("PS_" + sample.getId());
+								if (qrResult.length() > 0) {
+									HttpServletRequest request = ServletActionContext
+											.getRequest();
+									String path = request.getScheme() + "://"
+											+ request.getServerName() + ":"
+											+ request.getServerPort()
+											+ request.getContextPath();
+									Sample upsample = new Sample();
+									upsample.setId(sample.getId());
+									upsample.setEwm(path + "/QRImages/" + qrResult);
+									iSampleService.updatesample(upsample);
+								}
+								logger.info(sample.getId() + "添加成功！");
+								Entrust_sample entrust_sample = new Entrust_sample();
+								entrust_sample.setC_id(entrust.getC_id());
+								entrust_sample.setPid(entrust.getId() + "");
+								entrust_sample.setSample_id(sample.getId() + "");
+								iEntrust_sampleService
+										.addentrust_sample(entrust_sample);
+
+							}
+						}
+					}*/
+					
+					
+					
+					
+					
+				}
+				
+				msg.append("\"success\",\"msg\":\"添加成功。\"");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\""+StringUtils.join(cancelIdList,"|")+"\""); 
+			}
+			
+			// msg.append(StringUtils.join(idList,"|")+"\"");
+			/*
+			 * } else{ msg.append("\"failure\",\"msg\":");
+			 * msg.append("\"委托组数不能为空\""); }
+			 */
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"添加失败！\"");
+			logger.info("添加失败！。");
+			e.printStackTrace();
+		}
+		msg.append("}");
+		if (callback == null) {
+			response.getWriter().write(msg.toString());
+		} else {
+			response.getWriter().write(callback + "(" + msg.toString() + ")");
+		}
+		return null;
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<String, ArrayList> sort(List<Sample> sampleList) {
@@ -1520,6 +1836,7 @@ public class EntrustAction implements Action {
 		paramMap.put("cjz_type", cjz_type);
 		paramMap.put("show_flg", show_flg);
 		paramMap.put("p_pid", p_pid);
+		paramMap.put("mut_param", mut_param);
 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
@@ -1855,6 +2172,7 @@ public class EntrustAction implements Action {
 		paramMap.put("cjz_type", cjz_type);
 		paramMap.put("show_flg", show_flg);
 		paramMap.put("p_pid", p_pid);
+		paramMap.put("mut_param", mut_param);
 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {

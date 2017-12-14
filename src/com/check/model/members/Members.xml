@@ -55,12 +55,17 @@
 			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
 			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
 			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
+			<if test="key1 != null"> AND m.KEY1 =#{key1} </if>
+			<if test="key2 != null"> AND m.KEY2 =#{key2} </if>
+			<if test="key3 != null"> AND m.KEY3 =#{key3} </if>
+			<if test="key4 != null"> AND m.KEY4 =#{key4} </if>
+			<if test="is_safety != null"> AND m.IS_SAFETY =#{is_safety} </if>
 			<if test="group_id != null"> AND g.GROUP_ID =#{group_id} </if>
 		</trim>  
 		ORDER BY m.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
-
+ 
 	<select id="selectCountmembersByParam" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(m.ID) 
 		FROM members  m
@@ -94,6 +99,11 @@
 			<if test="accnt_id_null != null"> AND m.ACCNT_ID IS NULL </if>
 			<if test="last_name != null"> AND m.LAST_NAME =#{last_name} </if>
 			<if test="departments_id != null"> AND m.DEPARTMENTS_ID =#{departments_id} </if>
+			<if test="key1 != null"> AND m.KEY1 =#{key1} </if>
+			<if test="key2 != null"> AND m.KEY2 =#{key2} </if>
+			<if test="key3 != null"> AND m.KEY3 =#{key3} </if>
+			<if test="key4 != null"> AND m.KEY4 =#{key4} </if>
+			<if test="is_safety != null"> AND m.IS_SAFETY =#{is_safety} </if>
 			<if test="group_id != null"> AND g.GROUP_ID =#{group_id} </if>
 		</trim>  
 	</select>
@@ -118,6 +128,11 @@
 			<if test="accnt_id != null">ACCNT_ID=#{accnt_id}, </if>
 			<if test="last_name != null">LAST_NAME=#{last_name}, </if>
 			<if test="departments_id != null">DEPARTMENTS_ID=#{departments_id}, </if>
+			<if test="key1 != null">KEY1=#{key1}, </if>
+			<if test="key2 != null">KEY2=#{key2}, </if>
+			<if test="key3 != null">KEY3=#{key3}, </if>
+			<if test="key4 != null">KEY4=#{key4}, </if>
+			<if test="is_safety != null">IS_SAFETY=#{is_safety}, </if>
 		</trim>
 		WHERE ID=#{id}
 	</update>
@@ -141,7 +156,13 @@
 			<if test="accnt_id != null">ACCNT_ID, </if>
 			<if test="last_name != null">LAST_NAME, </if>
 			<if test="departments_id != null">DEPARTMENTS_ID, </if>
+			<if test="key1 != null">KEY1, </if>
+			<if test="key2 != null">KEY2, </if>
+			<if test="key3 != null">KEY3, </if>
+			<if test="key4 != null">KEY4, </if>
+			<if test="is_safety != null">IS_SAFETY, </if>
 		</trim>
+		
 		<trim prefix="VALUES (" suffix=")" suffixOverrides="," >
 			<if test="row_id != null">#{row_id}, </if>
 			<if test="username != null">#{username}, </if>
@@ -159,6 +180,12 @@
 			<if test="accnt_id != null">#{accnt_id}, </if>
 			<if test="last_name != null">#{last_name}, </if>
 			<if test="departments_id != null">#{departments_id}, </if>
+			<if test="key1 != null">#{key1}, </if>
+			<if test="key2 != null">#{key2}, </if>
+			<if test="key3 != null">#{key3}, </if>
+			<if test="key4 != null">#{key4}, </if>
+			<if test="is_safety != null">#{is_safety}, </if>
+			 
 		</trim>
 		<selectKey order="AFTER" resultType="long" keyProperty="id" > 
 			SELECT LAST_INSERT_ID()

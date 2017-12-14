@@ -70,6 +70,8 @@
 			
 			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
 			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
+			
+			 <if test="mut_param != null"> AND ${mut_param} </if>
 		</trim>  
 		GROUP BY p.ID 
 		ORDER BY p.ID DESC 
@@ -119,6 +121,8 @@
 			
 			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
 			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
+			 <if test="mut_param != null"> AND ${mut_param} </if>
+			
 		</trim>  
 	</select>
 

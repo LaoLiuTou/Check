@@ -175,14 +175,11 @@ public class StatusAction implements Action {
 	public void setCm_tx(String cm_tx) {
 		this.cm_tx = cm_tx;
 	}
-	 
-	private Long group_id;
-	
-	 
-	public Long getGroup_id() {
+	private String group_id;
+	public String getGroup_id() {
 		return group_id;
 	}
-	public void setGroup_id(Long group_id) {
+	public void setGroup_id(String group_id) {
 		this.group_id = group_id;
 	}
 	public String add() throws Exception {
@@ -204,6 +201,8 @@ public class StatusAction implements Action {
 		if(c_id!=null&&!c_id.equals(""))
 		status.setC_id(Long.parseLong(c_id));
 		status.setCm_tx(cm_tx);
+		if(group_id!=null&&!group_id.equals(""))
+		status.setGroup_id(Long.parseLong(group_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			int result = Integer.parseInt(iStatusService.addstatus(status).toString());
@@ -241,19 +240,13 @@ public class StatusAction implements Action {
 			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 			if(up_dtTo!=null&&!up_dtTo.equals(""))
 			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
-			if(curr_status!=null&&!curr_status.equals("")){
-				paramMap.put("curr_status", curr_status);
-			}
-			else{
-				paramMap.put("null_status", "not null");
-			}
+			paramMap.put("curr_status", curr_status);
 			paramMap.put("step_status", step_status);
 			paramMap.put("type", type);
 			paramMap.put("sort", sort);
 			paramMap.put("flag", flag);
 			paramMap.put("c_id", c_id);
 			paramMap.put("cm_tx", cm_tx);
-			if(group_id!=null&&!group_id.equals(""))
 			paramMap.put("group_id", group_id);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
@@ -309,6 +302,8 @@ public class StatusAction implements Action {
 		if(c_id!=null&&!c_id.equals(""))
 		status.setC_id(Long.parseLong(c_id));
 		status.setCm_tx(cm_tx);
+		if(group_id!=null&&!group_id.equals(""))
+		status.setGroup_id(Long.parseLong(group_id));
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			iStatusService.updatestatus(status);
@@ -403,19 +398,13 @@ public class StatusAction implements Action {
 			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 			if(up_dtTo!=null&&!up_dtTo.equals(""))
 			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
-			if(curr_status!=null&&!curr_status.equals("")){
-				paramMap.put("curr_status", curr_status);
-			}
-			else{
-				paramMap.put("null_status", "not null");
-			}
+			paramMap.put("curr_status", curr_status);
 			paramMap.put("step_status", step_status);
 			paramMap.put("type", type);
 			paramMap.put("sort", sort);
 			paramMap.put("flag", flag);
 			paramMap.put("c_id", c_id);
 			paramMap.put("cm_tx", cm_tx);
-			if(group_id!=null&&!group_id.equals(""))
 			paramMap.put("group_id", group_id);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {

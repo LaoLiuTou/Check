@@ -42,7 +42,7 @@ public class EncryptFilter extends StrutsPrepareAndExecuteFilter {
 				    String uri = request.getServletPath();
 				    
 				    //对请求的uri(即api)进行判断，如果是登录的uri则直接放行，如果是其他api则对sign进行验证操作
-				    if( !uri.startsWith("/loginMembers")
+				    if( !uri.startsWith("/loginMembers")&&!uri.startsWith("/validateMembers")
 				    		&& !uri.startsWith("/app") &&
 				    		!uri.startsWith("/QRImages") && !uri.startsWith("/config")
 				    		&& !uri.startsWith("/upload")

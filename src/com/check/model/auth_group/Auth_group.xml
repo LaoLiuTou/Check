@@ -3,7 +3,10 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.dao.auth_group.IAuth_groupMapper"> 
 	<select id="selectauth_groupById" parameterType="String" resultType="Auth_group">
-		SELECT * FROM auth_group WHERE ID=#{id}
+		SELECT a.*,b.nm_t as b_nm_t 
+		FROM auth_group a 
+		LEFT JOIN Bu b on a.bu_id=b.id 
+		WHERE a.ID=#{id}
 	</select>
 
 
@@ -14,13 +17,14 @@
 
 	
 	<select id="selectauth_groupByTreeParam" parameterType="java.util.Map" resultType="Auth_group">
-		SELECT a.* ,c.ID as u_id,c.NAME as u_name 
+		SELECT a.* ,c.ID as u_id,c.NAME as u_name ,d.nm_t as b_nm_t 
 		FROM auth_group a 
 		LEFT JOIN auth_group_access b ON a.id=b.group_id 
 		LEFT JOIN members c ON b.uid=c.id 
+		LEFT JOIN Bu d on a.bu_id=d.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
-			<if test="title != null"> AND a.TITLE =#{title} </if>
+			<if test="title != null"> AND a.TITLE LIKE #{title} </if>
 			<if test="status != null"> AND a.STATUS =#{status} </if>
 			<if test="rules != null"> AND a.RULES =#{rules} </if>
 			<if test="resp != null"> AND a.RESP =#{resp} </if>
@@ -35,11 +39,12 @@
 		ORDER BY a.ID DESC  
 	</select>
 	<select id="selectauth_groupByParam" parameterType="java.util.Map" resultType="Auth_group">
-		SELECT a.* 
+		SELECT a.* ,b.nm_t as b_nm_t 
 		FROM auth_group a  
+		LEFT JOIN Bu b on a.bu_id=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND a.ID =#{id} </if>
-			<if test="title != null"> AND a.TITLE =#{title} </if>
+			<if test="title != null"> AND a.TITLE LIKE #{title} </if>
 			<if test="status != null"> AND a.STATUS =#{status} </if>
 			<if test="rules != null"> AND a.RULES =#{rules} </if>
 			<if test="resp != null"> AND a.RESP =#{resp} </if>

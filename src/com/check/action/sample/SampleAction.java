@@ -562,6 +562,14 @@ public class SampleAction implements Action {
 	public void setP_pid(String p_pid) {
 		this.p_pid = p_pid;
 	}
+	private String mut_param;
+	
+	public String getMut_param() {
+		return mut_param;
+	}
+	public void setMut_param(String mut_param) {
+		this.mut_param = mut_param;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -880,6 +888,7 @@ public class SampleAction implements Action {
 			
 			paramMap.put("show_flg", show_flg);
 			paramMap.put("p_pid", p_pid);
+			paramMap.put("mut_param", mut_param);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iSampleService.selectsampleByParam(paramMap); 
@@ -1000,10 +1009,19 @@ public class SampleAction implements Action {
 		response.setContentType("text/html;charset=UTF-8"); 
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
-			iSampleService.deletesample(id);
-			msg.append("\"success\",\"msg\":");
-			msg.append("\"删除成功！\"");
-			logger.info(id+"删除成功！");
+			Sample sample=iSampleService.selectsampleById(id);
+			if(sample.getShow_flg().equals("N")){
+				iSampleService.deletesample(id);
+				msg.append("\"success\",\"msg\":");
+				msg.append("\"删除成功！\"");
+				logger.info(id+"删除成功！");
+			}
+			else{
+				msg.append("\"failure\",\"msg\":");
+				msg.append("\"该样品已通过！\"");
+			}
+				
+			
 		} catch (Exception e) {
 			logger.info(id+"删除失败！"+e);
 			msg.append("\"failure\",\"msg\":");
@@ -1139,6 +1157,7 @@ public class SampleAction implements Action {
 			paramMap.put("e_code", e_code); 
 			paramMap.put("show_flg", show_flg);
 			paramMap.put("p_pid", p_pid);
+			paramMap.put("mut_param", mut_param);
 			
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {

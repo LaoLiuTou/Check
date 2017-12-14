@@ -505,6 +505,121 @@ public class Auth_ruleAction implements Action {
 		}
 		return null;
 	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String tree() throws Exception {
+		
+		response.setContentType("text/html;charset=UTF-8"); 
+		StringBuffer msg = new StringBuffer();
+		Map  paramMap = new HashMap ();
+		paramMap.put("id", id);
+		paramMap.put("name", name);
+		paramMap.put("title", title);
+		paramMap.put("status", status);
+		paramMap.put("condition", condition);
+		paramMap.put("sort", sort);
+		paramMap.put("parentid", parentid);
+		paramMap.put("type", type);
+		paramMap.put("url", url);
+		if(c_dtFrom!=null&&!c_dtFrom.equals(""))
+			paramMap.put("c_dtFrom", sdf.parse(c_dtFrom));
+		if(c_dtTo!=null&&!c_dtTo.equals(""))
+			paramMap.put("c_dtTo", sdf.parse(c_dtTo));
+		if(up_dtFrom!=null&&!up_dtFrom.equals(""))
+			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
+		if(up_dtTo!=null&&!up_dtTo.equals(""))
+			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		//StringBuffer msg = new StringBuffer("{\"state\":");
+		msg.append("{\"state\":");
+		try {
+			totalnumber=iAuth_ruleService.selectCountauth_ruleByParam(paramMap);
+			paramMap.put("fromPage",0);
+			paramMap.put("toPage",totalnumber);
+			list=iAuth_ruleService.selectauth_ruleByParam(paramMap); 
+		
+			//XD  数据库时间
+			String dbtime= iAccntService.selectDbtime();
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+				public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+					return value;  
+				} 
+				public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+					if(value instanceof Date){ 
+						return sdf.format((Date)value);
+					}
+					return value; 
+				}
+			});
+			
+			
+			//tree
+	 
+			JSONArray allJA=JSONArray.fromObject(list, jsonConfig);
+			JSONArray parentJA=getParent(allJA);
+			JSONArray resultJA=new JSONArray();
+			
+			for(int i=0;i<parentJA.size();i++){
+				JSONObject parentJO=parentJA.getJSONObject(i);
+				JSONObject sobJO=getChild(parentJO, allJA);
+				//parentJO.accumulate("sub", sobJO);
+				resultJA.add(sobJO);
+			}
+			 
+			msg.append("\"success\",\"count\":\""+totalnumber+"\",\"msg\":");
+			msg.append(resultJA);
+			msg.append(",\"dbtime\":\""+dbtime+"\"");
+			logger.info("获取列表成功！");
+		} catch (Exception e) {
+			msg.append("\"failure\",\"msg\":");
+			msg.append("\"查询失败.\"");
+			logger.info("获取列表失败！"+e);
+			e.printStackTrace();
+		}
+		msg.append("}"); 
+		
+		
+		if(callback==null){
+			response.getWriter().write(msg.toString());
+		}
+		else{
+			response.getWriter().write(callback+"("+msg.toString()+")");
+		}
+		return null;
+	}
+	
+	private JSONArray getParent(JSONArray allJA){
+		JSONArray resultJA=new JSONArray();
+		for(int i=0;i<allJA.size();i++){
+			JSONObject parentJO=allJA.getJSONObject(i);
+			if (parentJO.getString("parentid").equals("0")) {
+				resultJA.add(parentJO);
+            }
+			/*if (parentJO.getString("id").equals("108")) {
+				resultJA.add(parentJO);
+			}*/
+			  
+        }
+		return resultJA;
+	}
+	private JSONObject getChild(JSONObject parentJO,JSONArray allJA){
+		JSONArray resultJA=new JSONArray();
+			
+		for(int j=0;j<allJA.size();j++){
+			JSONObject sonJO=allJA.getJSONObject(j);
+			if (sonJO.getString("parentid").equals(parentJO.getString("id"))) {
+				//resultJA.add(sonJO);
+				JSONObject tempJO=getChild(sonJO,allJA);
+				//System.out.println(tempJO);
+				resultJA.add(tempJO);
+            }
+			  
+        }
+		parentJO.accumulate("sub", resultJA);
+		 
+		return parentJO;
+	}
+	
+	
 	public String append() throws Exception {
 		response.setContentType("text/html;charset=UTF-8"); 
 		StringBuffer msg = new StringBuffer();

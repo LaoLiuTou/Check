@@ -181,4 +181,40 @@ public class Members {
 		this.d_nm_t = d_nm_t;
 	}
 	
+	private Long key1;
+	private Long key2;
+	private Long key3;
+	private Long key4;
+	private Long is_safety;
+	public Long getKey1() {
+		return key1;
+	}
+	public void setKey1(Long key1) {
+		this.key1 = key1;
+	}
+	public Long getKey2() {
+		return key2;
+	}
+	public void setKey2(Long key2) {
+		this.key2 = key2;
+	}
+	public Long getKey3() {
+		return key3;
+	}
+	public void setKey3(Long key3) {
+		this.key3 = key3;
+	}
+	public Long getKey4() {
+		return key4;
+	}
+	public void setKey4(Long key4) {
+		this.key4 = key4;
+	}
+	public Long getIs_safety() {
+		return is_safety;
+	}
+	public void setIs_safety(Long is_safety) {
+		this.is_safety = is_safety;
+	}
+	
 }

@@ -89,4 +89,12 @@ public class Auth_group {
 	}
 	
 
+	private String b_nm_t;
+	public String getB_nm_t() {
+		return b_nm_t;
+	}
+	public void setB_nm_t(String b_nm_t) {
+		this.b_nm_t = b_nm_t;
+	}
+	
 }

@@ -377,7 +377,14 @@ public class PactAction implements Action {
 	public void setWjxy_type(String wjxy_type) {
 		this.wjxy_type = wjxy_type;
 	}
-
+	private String mut_param;
+	
+	public String getMut_param() {
+		return mut_param;
+	}
+	public void setMut_param(String mut_param) {
+		this.mut_param = mut_param;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -610,6 +617,7 @@ public class PactAction implements Action {
 			paramMap.put("a_e", a_e);
 			paramMap.put("a_sv", a_sv);
 			paramMap.put("wjxy_type", wjxy_type);
+			paramMap.put("mut_param", mut_param);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iPactService.selectpactByParam(paramMap); 
@@ -820,6 +828,7 @@ public class PactAction implements Action {
 		paramMap.put("a_e", a_e);
 		paramMap.put("a_sv", a_sv);
 		paramMap.put("wjxy_type", wjxy_type);
+		paramMap.put("mut_param", mut_param);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

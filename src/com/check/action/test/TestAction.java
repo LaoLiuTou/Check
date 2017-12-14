@@ -354,6 +354,23 @@ public class TestAction implements Action {
 		this.e_flg = e_flg;
 	}
 	
+	private String status_in;
+	
+	public String getStatus_in() {
+		return status_in;
+	}
+	public void setStatus_in(String status_in) {
+		this.status_in = status_in;
+	}
+	private String mut_param;
+	
+	
+	public String getMut_param() {
+		return mut_param;
+	}
+	public void setMut_param(String mut_param) {
+		this.mut_param = mut_param;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -470,10 +487,12 @@ public class TestAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("ewm", ewm);
+			paramMap.put("status_in", status_in);
 			paramMap.put("s_nm_t", s_nm_t);
 			paramMap.put("pact_nm_t", pact_nm_t);
 			paramMap.put("a_nm_t", a_nm_t);
 			paramMap.put("e_flg", e_flg);
+			paramMap.put("mut_param", mut_param);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iTestService.selecttestByParam(paramMap); 
@@ -775,7 +794,9 @@ public class TestAction implements Action {
 			paramMap.put("status", status);
 			paramMap.put("fq_flg", fq_flg);
 			paramMap.put("ewm", ewm);
+			paramMap.put("status_in", status_in);
 			paramMap.put("e_flg", e_flg);
+			paramMap.put("mut_param", mut_param);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iTestService.selectCounttestByParam(paramMap);

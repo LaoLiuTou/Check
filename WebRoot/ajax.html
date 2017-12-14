@@ -43,11 +43,11 @@ alert(localStorage.getItem("test")); */
 				console.log(timestamp);
 				console.log(hash);
 			    $.ajax({
-			           url:'http://192.168.1.144/Check/treeAuth_group',
+			           url:'http://192.168.1.144/Check/treeAuth_rule',
 			           type:"POST",
 			           //dataType : "json",
  //http://192.168.1.144/Check/Entrust?pid=2613&wt_dt=2017-01-20&bu_id=1&c_id=10
-			           data : {'bu_id':'1'},
+			           //data : {'st_lv':'已分配','entrust_ids':'32328','show_flg':'Y'},
  
      
 			          // data : {'nm_t':'%敦化市牡丹江%','code':'%GHJC%','a_e':'%吉林珂海水利水%','a_sv':'%吉林%'},

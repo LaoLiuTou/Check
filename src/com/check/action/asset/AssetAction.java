@@ -308,6 +308,15 @@ public class AssetAction implements Action {
 	public void setNext_yh_dt(String next_yh_dt) {
 		this.next_yh_dt = next_yh_dt;
 	}
+	
+	private String mut_param;
+	
+	public String getMut_param() {
+		return mut_param;
+	}
+	public void setMut_param(String mut_param) {
+		this.mut_param = mut_param;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -407,6 +416,7 @@ public class AssetAction implements Action {
 			paramMap.put("bxjz_dt", bxjz_dt);
 			paramMap.put("m_name", m_name);
 			paramMap.put("a_nm_t", a_nm_t);
+			paramMap.put("mut_param", mut_param);
 			
 			 
 			  
@@ -631,6 +641,7 @@ public class AssetAction implements Action {
 			paramMap.put("bxjz_dt", bxjz_dt);
 			paramMap.put("m_name", m_name);
 			paramMap.put("a_nm_t", a_nm_t);
+			paramMap.put("mut_param", mut_param);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			totalnumber=iAssetService.selectCountassetByParam(paramMap);

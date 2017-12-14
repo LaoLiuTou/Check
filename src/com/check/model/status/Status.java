@@ -85,9 +85,7 @@ public class Status {
 	public void setCm_tx(String cm_tx) {
 		this.cm_tx = cm_tx;
 	}
-
-
-	/** id */
+	/** 角色id */
 	private  Long group_id;
 	public Long getGroup_id() {
 		return group_id;
@@ -95,5 +93,7 @@ public class Status {
 	public void setGroup_id(Long group_id) {
 		this.group_id = group_id;
 	}
- 
+
+
+
 }

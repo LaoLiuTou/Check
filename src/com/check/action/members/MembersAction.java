@@ -29,6 +29,7 @@ import com.check.utils.CacheToRedis;
 import com.check.utils.MD5Encryption;
 import com.check.utils.RedisUtil;
 import com.check.utils.TokenUtils;
+import com.check.utils.UsbKeyLock;
 import com.opensymphony.xwork2.Action;
 public class MembersAction implements Action {
 	private int page;
@@ -265,6 +266,58 @@ public class MembersAction implements Action {
 	public void setGroup_id(String group_id) {
 		this.group_id = group_id;
 	}
+	
+	private String key1;
+	private String key2;
+	private String key3;
+	private String key4;
+	private String is_safety;
+ 
+	public String getKey1() {
+		return key1;
+	}
+	public void setKey1(String key1) {
+		this.key1 = key1;
+	}
+	public String getKey2() {
+		return key2;
+	}
+	public void setKey2(String key2) {
+		this.key2 = key2;
+	}
+	public String getKey3() {
+		return key3;
+	}
+	public void setKey3(String key3) {
+		this.key3 = key3;
+	}
+	public String getKey4() {
+		return key4;
+	}
+	public void setKey4(String key4) {
+		this.key4 = key4;
+	}
+	public String getIs_safety() {
+		return is_safety;
+	}
+	public void setIs_safety(String is_safety) {
+		this.is_safety = is_safety;
+	}
+	private String rand;
+	private String value;
+ 
+	public String getRand() {
+		return rand;
+	}
+	public void setRand(String rand) {
+		this.rand = rand;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -288,6 +341,19 @@ public class MembersAction implements Action {
 		members.setSign(sign);
 		members.setName(name);
 		members.setSign_flg(sign_flg);
+		if(key1!=null&&!key1.equals(""))
+			members.setKey1(Long.parseLong(key1));
+		if(key2!=null&&!key2.equals(""))
+			members.setKey2(Long.parseLong(key2));
+		if(key3!=null&&!key3.equals(""))
+			members.setKey3(Long.parseLong(key3));
+		if(key4!=null&&!key4.equals(""))
+			members.setKey4(Long.parseLong(key4));
+		if(is_safety!=null&&!is_safety.equals(""))
+			members.setIs_safety(Long.parseLong(is_safety));
+	 
+		
+		
 		if(accnt_id!=null&&!accnt_id.equals(""))
 			members.setAccnt_id(Long.parseLong(accnt_id));
 		if(departments_id!=null&&!departments_id.equals(""))
@@ -420,12 +486,24 @@ public class MembersAction implements Action {
 		members.setSign(sign);
 		members.setName(name);
 		members.setSign_flg(sign_flg);
+		
 		if(accnt_id!=null&&!accnt_id.equals(""))
 			members.setAccnt_id(Long.parseLong(accnt_id));
 
 		if(departments_id!=null&&!departments_id.equals(""))
 			members.setDepartments_id(Long.parseLong(departments_id));
 		members.setLast_name(last_name);
+		
+		if(key1!=null&&!key1.equals(""))
+			members.setKey1(Long.parseLong(key1));
+		if(key2!=null&&!key2.equals(""))
+			members.setKey2(Long.parseLong(key2));
+		if(key3!=null&&!key3.equals(""))
+			members.setKey3(Long.parseLong(key3));
+		if(key4!=null&&!key4.equals(""))
+			members.setKey4(Long.parseLong(key4));
+		if(is_safety!=null&&!is_safety.equals(""))
+			members.setIs_safety(Long.parseLong(is_safety));
 		
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
@@ -650,7 +728,7 @@ public class MembersAction implements Action {
 	}
     
   	
-  	@SuppressWarnings({ "unchecked", "rawtypes" })
+  	@SuppressWarnings({ "unchecked", "rawtypes", "static-access" })
   	public String login() throws Exception {
   		
   		response.setContentType("text/html;charset=UTF-8"); 
@@ -668,27 +746,157 @@ public class MembersAction implements Action {
   				//System.out.println(members.getUserpwd());
   				//System.out.println(MD5Encryption.getEncryption(userpwd));
   				if(members.getUserpwd().toLowerCase().equals(MD5Encryption.getEncryption(userpwd).toLowerCase())){
-  					JsonConfig jsonConfig = new JsonConfig();
-  					jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
-  						public Object processArrayValue(Object value, JsonConfig jsonConfig) {
-  							return value;  
-  						} 
-  						public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
-  							if(value instanceof Date){ 
-  								return sdf.format((Date)value);
+  					
+  					//private String rond;
+  					//private String value;
+  					if(members.getIs_safety()!=null&&members.getIs_safety()==0){
+  						JsonConfig jsonConfig = new JsonConfig();
+  						jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+  							public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+  								return value;  
+  							} 
+  							public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+  								if(value instanceof Date){ 
+  									return sdf.format((Date)value);
+  								}
+  								return value; 
   							}
-  							return value; 
+  						});
+  						msg.append("\"success\",\"msg\":");
+  						msg.append(JSONObject.fromObject(members, jsonConfig));
+  						List<Auth_rule> auList= iAuth_ruleService.selectauth_ruleByUserId(members.getId()+"");
+  						String userToken= UUID.randomUUID().toString();
+  						msg.append(",\"token\":");
+  						msg.append("\""+userToken+"\"");
+  						msg.append(",\"auth_rule\":");
+  						msg.append(JSONArray.fromObject(auList, jsonConfig));
+  						TokenUtils.add(userToken, System.currentTimeMillis()+"");
+  					}
+  					else{
+  						 
+  						msg.append("\"success\",\"msg\":");
+	  	  				msg.append("\"key\"");
+  						 
+  						
+  					}
+  					 
+  					
+  					//System.out.println(TokenUtils.get(userToken));
+  				}
+  				else{
+  					msg.append("\"failure\",\"msg\":");
+  					msg.append("\"密码不正确！\"");
+  					
+  				}
+  				
+  			}
+  			else{
+  				
+  				msg.append("\"failure\",\"msg\":");
+  				msg.append("\"用户不存在！\"");
+  			}
+  			
+  			logger.info("获取列表成功！");
+  		} catch (Exception e) {
+  			msg.append("\"failure\",\"msg\":");
+  			msg.append("\"查询失败.\"");
+  			logger.info("获取列表失败！"+e);
+  			e.printStackTrace();
+  		}
+  		msg.append("}");
+  		if(callback==null){
+  			response.getWriter().write(msg.toString());
+  		}
+  		else{
+  			response.getWriter().write(callback+"("+msg.toString()+")");
+  		}
+  		return null;
+  	}
+  	@SuppressWarnings({ "unchecked", "rawtypes", "static-access" })
+  	public String validate() throws Exception {
+  		
+  		response.setContentType("text/html;charset=UTF-8"); 
+  		Map  paramMap = new HashMap ();
+  		paramMap.put("fromPage",0);
+  		paramMap.put("toPage",1); 
+  		
+  		paramMap.put("username", username);
+  		paramMap.put("status", "1");
+  		StringBuffer msg = new StringBuffer("{\"state\":");
+  		try {
+  			list=iMembersService.selectmembersByParam(paramMap); 
+  			if(list.size()>0){
+  				members= list.get(0);
+  				//System.out.println(members.getUserpwd());
+  				//System.out.println(MD5Encryption.getEncryption(userpwd));
+  				if(members.getUserpwd().toLowerCase().equals(MD5Encryption.getEncryption(userpwd).toLowerCase())){
+  					
+  					//private String rond;
+  					//private String value;
+  					if(members.getIs_safety()!=null&&members.getIs_safety()==0){
+  						
+  						JsonConfig jsonConfig = new JsonConfig();
+  						jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+  							public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+  								return value;  
+  							} 
+  							public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+  								if(value instanceof Date){ 
+  									return sdf.format((Date)value);
+  								}
+  								return value; 
+  							}
+  						});
+  						msg.append("\"success\",\"msg\":");
+  						msg.append(JSONObject.fromObject(members, jsonConfig));
+  						List<Auth_rule> auList= iAuth_ruleService.selectauth_ruleByUserId(members.getId()+"");
+  						String userToken= UUID.randomUUID().toString();
+  						msg.append(",\"token\":");
+  						msg.append("\""+userToken+"\"");
+  						msg.append(",\"auth_rule\":");
+  						msg.append(JSONArray.fromObject(auList, jsonConfig));
+  						TokenUtils.add(userToken, System.currentTimeMillis()+"");
+  					}
+  					else{
+  						int param1=Integer.parseInt(rand);
+  						int param2=Integer.parseInt(members.getKey1()+"");
+  						int param3=Integer.parseInt(members.getKey2()+"");
+  						int param4=Integer.parseInt(members.getKey3()+"");
+  						int param5=Integer.parseInt(members.getKey4()+"");
+  						long sign=new UsbKeyLock().shiled(param1, param2, param3, param4, param5);
+  						System.out.println("KEY:"+sign);
+  						if(value.equals(sign+"")){
+  							
+  							JsonConfig jsonConfig = new JsonConfig();
+  							jsonConfig.registerJsonValueProcessor(Date.class, new JsonValueProcessor() {
+  								public Object processArrayValue(Object value, JsonConfig jsonConfig) {
+  									return value;  
+  								} 
+  								public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { 
+  									if(value instanceof Date){ 
+  										return sdf.format((Date)value);
+  									}
+  									return value; 
+  								}
+  							});
+  							msg.append("\"success\",\"msg\":");
+  							msg.append(JSONObject.fromObject(members, jsonConfig));
+  							List<Auth_rule> auList= iAuth_ruleService.selectauth_ruleByUserId(members.getId()+"");
+  							String userToken= UUID.randomUUID().toString();
+  							msg.append(",\"token\":");
+  							msg.append("\""+userToken+"\"");
+  							msg.append(",\"auth_rule\":");
+  							msg.append(JSONArray.fromObject(auList, jsonConfig));
+  							TokenUtils.add(userToken, System.currentTimeMillis()+"");
   						}
-  					});
-  					msg.append("\"success\",\"msg\":");
-  					msg.append(JSONObject.fromObject(members, jsonConfig));
-  					List<Auth_rule> auList= iAuth_ruleService.selectauth_ruleByUserId(members.getId()+"");
-  					String userToken= UUID.randomUUID().toString();
-  					msg.append(",\"token\":");
-  					msg.append("\""+userToken+"\"");
-  					msg.append(",\"auth_rule\":");
-  					msg.append(JSONArray.fromObject(auList, jsonConfig));
-  					TokenUtils.add(userToken, System.currentTimeMillis()+"");
+  						else{
+  							msg.append("\"failure\",\"msg\":");
+  							msg.append("\"U盾与账号不匹配！\"");
+  						}
+  						
+  						
+  					}
+  					
   					
   					//System.out.println(TokenUtils.get(userToken));
   				}
