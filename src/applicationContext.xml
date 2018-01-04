@@ -245,4 +245,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 <bean id="iUser_setService" class="com.check.service.user_set.User_setServiceImpl"></bean>
+<bean id="iReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.check.dao.report.IReportMapper "/>
+	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+<bean id="iReportService" class="com.check.service.report.ReportServiceImpl"></bean>
 </beans>

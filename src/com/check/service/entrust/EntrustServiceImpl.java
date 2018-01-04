@@ -1515,7 +1515,9 @@ public class EntrustServiceImpl  implements IEntrustService {
 					entrust.setPrice(pProd.getFjj());
 				}
 				//实验人id
+				if(pProd.getSy_id()!=null)
 				entrust.setSyr_id(pProd.getSy_id());
+				if(pProd.getSp_id()!=null)
 				entrust.setSp_id(pProd.getSp_id()+"");
 				
 				//试验次数

@@ -12,36 +12,40 @@
 	</delete>
 
 	<select id="selectauth_group_accessByParam" parameterType="java.util.Map" resultType="Auth_group_access">
-		SELECT *
-		FROM auth_group_access
+		SELECT a.*,b.status as status 
+		FROM auth_group_access a 
+		left join members b on a.uid=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="uid != null"> AND UID =#{uid} </if>
-			<if test="group_id != null"> AND GROUP_ID =#{group_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="uid != null"> AND a.UID =#{uid} </if>
+			<if test="group_id != null"> AND a.GROUP_ID =#{group_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="status != null"> AND b.status =#{status} </if>
 		</trim>  
-		ORDER BY ID DESC 
+		ORDER BY a.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>
 
 	<select id="selectCountauth_group_accessByParam" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(id) 
-		FROM auth_group_access 
+		SELECT COUNT(a.id) 
+		FROM auth_group_access a 
+		left join members b on a.uid=b.id 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="id != null"> AND ID =#{id} </if>
-			<if test="uid != null"> AND UID =#{uid} </if>
-			<if test="group_id != null"> AND GROUP_ID =#{group_id} </if>
-			<if test="c_dtFrom != null"> AND unix_timestamp(C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
-			<if test="c_dtTo != null"> AND unix_timestamp(C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
-			<if test="c_dt != null"> AND C_DT =#{c_dt} </if>
-			<if test="up_dtFrom != null"> AND unix_timestamp(UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
-			<if test="up_dtTo != null"> AND unix_timestamp(UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
-			<if test="up_dt != null"> AND UP_DT =#{up_dt} </if>
+			<if test="id != null"> AND a.ID =#{id} </if>
+			<if test="uid != null"> AND a.UID =#{uid} </if>
+			<if test="group_id != null"> AND a.GROUP_ID =#{group_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(a.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(a.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND a.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(a.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(a.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND a.UP_DT =#{up_dt} </if>
+			<if test="status != null"> AND b.status =#{status} </if>
 		</trim>  
 	</select>
 

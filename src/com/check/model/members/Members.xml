@@ -22,14 +22,15 @@
 
 	<select id="selectmembersByParam" parameterType="java.util.Map" resultType="Members">
 		SELECT m.*,aga.group_id as group_id ,c.nm_t as c_nm_t ,d.nm_t as a_nm_t,
-		e.nm_t as b_nm_t ,f.nm_t as d_nm_t
+		e.nm_t as b_nm_t ,f.nm_t as d_nm_t ,h.title as group_title 
 		FROM members m 
 		left join auth_group_access aga on m.id=aga.uid  
 		LEFT JOIN cont c on m.id=c.user_id  
 		LEFT JOIN accnt d on d.id=c.pid  
 		LEFT JOIN bu e on e.id=m.bu_id   
 		LEFT JOIN departments f on f.id=m.departments_id   
-		LEFT JOIN auth_group_access g on g.uid=m.id    
+		LEFT JOIN auth_group_access g on g.uid=m.id   
+		LEFT JOIN auth_group h on g.group_id=h.id  
 		 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND m.ID =#{id} </if>

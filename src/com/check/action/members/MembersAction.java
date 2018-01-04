@@ -471,6 +471,7 @@ public class MembersAction implements Action {
 		members.setId(Long.parseLong(id));
 		members.setRow_id(row_id);
 		members.setUsername(username);
+		if(userpwd!=null&&!userpwd.equals(""))
 		members.setUserpwd(MD5Encryption.getEncryption(userpwd));
 		members.setResp(resp);
 		if(status!=null&&!status.equals(""))

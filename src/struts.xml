@@ -356,5 +356,9 @@
 			<result name="list">/pages/user_set/user_setList.jsp</result>
 		</action>
 	</package>
+	<package name="Report" namespace="/"  extends="struts-default">
+		<action name="*Report" class="com.check.action.report.ReportAction" method="{1}">
+		</action>
+	</package>
 	
 </struts>

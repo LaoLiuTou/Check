@@ -22,7 +22,7 @@
 		DELETE FROM pact WHERE ID=#{id}
 	</delete>
 
-	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
+<!-- 	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
 		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
 		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment ,a6.name as m_name 
 		 
@@ -74,6 +74,98 @@
 			 <if test="mut_param != null"> AND ${mut_param} </if>
 		</trim>  
 		GROUP BY p.ID 
+		ORDER BY p.ID DESC 
+		LIMIT #{fromPage},#{toPage} 
+	</select> -->
+	<select id="selectpactByParam" parameterType="java.util.Map" resultType="Pact">
+		SELECT p.*, a1.NM_T as A_E, a2.NM_T as A_SV,a3.NM_T as A_DB, a4.NM_T as JL_NM_T,a5.NM_T as cont_nm_t,  
+		SUM(p1.ZK_N) as sum_zk_n,SUM(p1.PAYMENT) as sum_payment ,a6.name as m_name 
+		 
+		FROM pact p left join  accnt a1 on p.PID=a1.ID  left join accnt a2 on p.JL_ID=a2.ID 
+		left join accnt a3 on p.DB_ID=a3.ID left join  cont a4 on p.JL_CONT_ID = a4.ID left join
+		cont a5 on p.CONT_ID = a5.ID  left join pay p1  on p.ID= p1.PID  
+		LEFT JOIN members a6 on a6.id=p.c_id 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null"> AND p.ID =#{id} </if>
+			<if test="row_id != null"> AND p.ROW_ID =#{row_id} </if>
+			<if test="c_dtFrom != null"> AND unix_timestamp(p.C_DT) &gt;=unix_timestamp(#{c_dtFrom}) </if>
+			<if test="c_dtTo != null"> AND unix_timestamp(p.C_DT) &lt;=unix_timestamp(#{c_dtTo}) </if>
+			<if test="c_dt != null"> AND p.C_DT =#{c_dt} </if>
+			<if test="up_dtFrom != null"> AND unix_timestamp(p.UP_DT) &gt;=unix_timestamp(#{up_dtFrom}) </if>
+			<if test="up_dtTo != null"> AND unix_timestamp(p.UP_DT) &lt;=unix_timestamp(#{up_dtTo}) </if>
+			<if test="up_dt != null"> AND p.UP_DT =#{up_dt} </if>
+			<if test="c_id != null"> AND p.C_ID =#{c_id} </if>
+			<if test="pid != null"> AND p.PID =#{pid} </if>
+			<if test="code != null"> AND p.CODE LIKE #{code} </if>
+			<if test="ty_lv != null"> AND p.TY_LV LIKE #{ty_lv} </if>
+			<if test="nm_t != null"> AND p.NM_T LIKE #{nm_t} </if>
+			<if test="jl_id != null"> AND p.JL_ID =#{jl_id} </if>
+			<if test="jl_cont_id != null"> AND p.JL_CONT_ID =#{jl_cont_id} </if>
+			<if test="st_lv != null"> AND p.ST_LV LIKE #{st_lv} </if>
+			<if test="qd_dt != null"> AND p.QD_DT =#{qd_dt} </if>
+			<if test="sjwc_dt != null"> AND p.SJWC_DT =#{sjwc_dt} </if>
+			<if test="sjks_dt != null"> AND p.SJKS_DT =#{sjks_dt} </if>
+			<if test="jhwc_dt != null"> AND p.JHWC_DT =#{jhwc_dt} </if>
+			<if test="ff_dt != null"> AND p.FF_DT =#{ff_dt} </if>
+			<if test="wtfy != null"> AND p.WTFY =#{wtfy} </if>
+			<if test="db_id != null"> AND p.DB_ID =#{db_id} </if>
+			<if test="cont_id != null"> AND p.CONT_ID =#{cont_id} </if>
+			<if test="bu_id != null"> AND p.BU_ID =#{bu_id} </if>
+			<if test="ls_t != null"> AND p.LS_T =#{ls_t} </if>
+			<if test="state != null"> AND p.STATE =#{state} </if>
+			<if test="city != null"> AND p.CITY =#{city} </if>
+			<if test="county != null"> AND p.COUNTY =#{county} </if>
+			<if test="street != null"> AND p.STREET =#{street} </if>
+			<if test="flg != null"> AND p.FLG LIKE #{flg} </if>
+			<if test="ewm != null"> AND p.EWM =#{ewm} </if>
+			<if test="terms != null"> AND p.TERMS =#{terms} </if>
+			<if test="cm_tx != null"> AND p.CM_TX =#{cm_tx} </if>
+			<if test="tj_f != null"> AND p.TJ_F =#{tj_f} </if>
+			<if test="wjxy_type != null"> AND p.WJXY_TYPE =#{wjxy_type} </if>
+			
+			<if test="a_e != null"> AND a1.NM_T LIKE #{a_e} </if>
+			<if test="a_sv != null"> AND a2.NM_T LIKE #{a_sv} </if>
+			
+			 <if test="mut_param != null"> AND ${mut_param} </if>
+		</trim>  
+		GROUP BY  p.`ID`,
+	   p.`ROW_ID`,
+	   p.`C_DT`,
+	   p.`UP_DT`,
+	   p.`C_ID`,
+	   p.`PID`,
+	   p.`CODE`,
+	   p.`TY_LV`,
+	   p.`WJXY_TYPE`,
+	   p.`NM_T`,
+	   p.`JL_ID`,
+	   p.`JL_CONT_ID`,
+	   p.`ST_LV`,
+	   p.`QD_DT`,
+	   p.`SJWC_DT`,
+	   p.`SJKS_DT`,
+	   p.`JHWC_DT`,
+	   p.`FF_DT`,
+	   p.`WTFY`,
+	   p.`DB_ID`,
+	   p.`CONT_ID`,
+	   p.`BU_ID`,
+	   p.`LS_T`,
+	   p.`STATE`,
+	   p.`CITY`,
+	   p.`COUNTY`,
+	   p.`STREET`,
+	   p.`FLG`,
+	   p.`EWM`,
+	   p.`TERMS`,
+	   p.`CM_TX`,
+	   p.`TJ_F`,
+		a1.NM_T ,
+		a2.NM_T ,
+		a3.NM_T , 
+		a4.NM_T ,
+		a5.NM_T ,
+		a6.name
 		ORDER BY p.ID DESC 
 		LIMIT #{fromPage},#{toPage} 
 	</select>

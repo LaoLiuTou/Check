@@ -146,6 +146,14 @@ public class Auth_group_accessAction implements Action {
 	public void setUp_dt(String up_dt) {
 		this.up_dt = up_dt;
 	}
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String add() throws Exception {
 		response.setCharacterEncoding("UTF-8"); 
 		response.setContentType("text/html;charset=UTF-8"); 
@@ -203,6 +211,7 @@ public class Auth_group_accessAction implements Action {
 			paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 			if(up_dtTo!=null&&!up_dtTo.equals(""))
 			paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+			paramMap.put("status", status);
 		StringBuffer msg = new StringBuffer("{\"state\":");
 		try {
 			list=iAuth_group_accessService.selectauth_group_accessByParam(paramMap); 
@@ -357,6 +366,7 @@ public class Auth_group_accessAction implements Action {
 		paramMap.put("up_dtFrom", sdf.parse(up_dtFrom));
 		if(up_dtTo!=null&&!up_dtTo.equals(""))
 		paramMap.put("up_dtTo", sdf.parse(up_dtTo));
+		paramMap.put("status", status);
 		//StringBuffer msg = new StringBuffer("{\"state\":");
 		msg.append("{\"state\":");
 		try {

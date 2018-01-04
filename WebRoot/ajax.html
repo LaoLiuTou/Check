@@ -19,7 +19,7 @@ alert(localStorage.getItem("test")); */
 </script>
 <script type="text/javascript">
    $.ajax({
-           url:'http://192.168.1.144/Check/loginMembers',
+           url:'http://192.168.1.112:8080/Check/loginMembers',
            type:"POST",
            //dataType : "json",
            //data : {'nm_t':'%吉林%水源水利%'},
@@ -43,13 +43,13 @@ alert(localStorage.getItem("test")); */
 				console.log(timestamp);
 				console.log(hash);
 			    $.ajax({
-			           url:'http://192.168.1.144/Check/treeAuth_rule',
+			           url:'http://192.168.1.112:8080/Check/Report',
 			           type:"POST",
 			           //dataType : "json",
  //http://192.168.1.144/Check/Entrust?pid=2613&wt_dt=2017-01-20&bu_id=1&c_id=10
-			           //data : {'st_lv':'已分配','entrust_ids':'32328','show_flg':'Y'},
+			           //data : {'param':'[{sample:{id:"103744,103743",nm_t:"我现场",st_lv:"良好"},entrust:{id:"31941"},cont:{id:"1",nm_t:"2345333333"},accnt:{postal:"其"}},{sample:{id:"103742",nm_tt:"十大歌手",st_lv:"良好"},entrust:{id:"31944"},cont:{ph_p:"23",nm_t:"十大歌手"},accnt:{postal:"23"}}]'},
+			           //data : {"page":"1","size":"10","id":"1024"},
  
-     
 			          // data : {'nm_t':'%敦化市牡丹江%','code':'%GHJC%','a_e':'%吉林珂海水利水%','a_sv':'%吉林%'},
 			          // data : {"jd_lv_state":"('未委托','已发货','待发货','null','已提交','已接收')"},
 			           //data : {'c_id':'5',"jd_lv_state":"('已取消','已委托','已检验')"},

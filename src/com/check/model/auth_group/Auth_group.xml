@@ -65,7 +65,7 @@
 		FROM auth_group 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="id != null"> AND ID =#{id} </if>
-			<if test="title != null"> AND TITLE =#{title} </if>
+			<if test="title != null"> AND TITLE LIKE #{title} </if>
 			<if test="status != null"> AND STATUS =#{status} </if>
 			<if test="rules != null"> AND RULES =#{rules} </if>
 			<if test="resp != null"> AND RESP =#{resp} </if>
